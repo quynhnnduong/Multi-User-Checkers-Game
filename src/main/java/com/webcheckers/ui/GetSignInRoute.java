@@ -44,9 +44,7 @@ public class GetSignInRoute implements Route {
         LOG.finer("GetSignInRoute is invoked.");
         //
         Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "Sign In");
-        vm.put("textfield", "First Name"); //TODO: Handle text field | Check
-        vm.put("signIn", "Sign In"); //TODO: Handle Button | Check
+        vm.put("title", "Sign in");
 
         // render the View
         return templateEngine.render(new ModelAndView(vm , "signIn.ftl"));

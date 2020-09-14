@@ -15,7 +15,7 @@
         <#include "message.ftl" />
 
         <form action="./signin" method="POST">
-            <input id=${textfield} name=${textfield}>
+            <input name="textfield">
             <button type="submit">Sign-In</button>
         </form>
 

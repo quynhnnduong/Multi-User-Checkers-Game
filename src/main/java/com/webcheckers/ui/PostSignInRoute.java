@@ -16,6 +16,7 @@ public class PostSignInRoute implements Route {
     private final TemplateEngine templateEngine;
 
 
+
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
      *
@@ -44,12 +45,13 @@ public class PostSignInRoute implements Route {
     public Object handle(Request request, Response response) throws Exception {
         LOG.finer("GetSignInRoute is invoked.");
         //
+        final String Name = request.queryParams("textfield");
+
         Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "You're Signed In");
-        vm.put("textfield", "First Name"); //TODO: Handle text field | Check
-        vm.put("signIn", "Sign In"); //TODO: Handle Button | Check
+        vm.put("title", Name);
+
 
         // render the View
-        return templateEngine.render(new ModelAndView(vm , "signIn.ftl"));
+        return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }
 }
