@@ -6,7 +6,7 @@ a web micro-framework.
 
 ## Team
 
-- MEMBER1
+- Shubhang Mehrotra (sm9943)
 - MEMBER2
 - MEMBER3
 - MEMBER4
