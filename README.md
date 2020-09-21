@@ -7,7 +7,7 @@ a web micro-framework.
 ## Team
 
 - Shubhang Mehrotra (sm9943)
-- MEMBER2
+- Joel Clyne (jmc4514)
 - MEMBER3
 - MEMBER4
 
