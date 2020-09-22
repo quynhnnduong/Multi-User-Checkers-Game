@@ -9,7 +9,8 @@ a web micro-framework.
 - Shubhang Mehrotra (sm9943)
 - Joel Clyne (jmc4514)
 - Sasha Persaud
-- MEMBER4
+- Quynh Duong (quynhnnduong)
+- MEMBER5
 
 
 ## Prerequisites
