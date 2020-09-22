@@ -10,7 +10,7 @@ a web micro-framework.
 - Joel Clyne (jmc4514)
 - Sasha Persaud
 - Quynh Duong (quynhnnduong)
-- MEMBER5
+- Dmitry Selin (des3358)
 
 
 ## Prerequisites
