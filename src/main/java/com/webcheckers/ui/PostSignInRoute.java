@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+/**
+ * @author Joel Clyne (jmc4514)
+ */
 public class PostSignInRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
