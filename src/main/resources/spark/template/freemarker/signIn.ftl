@@ -14,8 +14,8 @@
         <!-- Provide a message to the user, if supplied. -->
         <#include "message.ftl" />
 
-        <form action="./signin" method="POST">
-            <input name="textfield">
+        <form id="username" action="./signin" method="POST">
+            <input name="text_field">
             <button type="submit">Sign-In</button>
         </form>
 

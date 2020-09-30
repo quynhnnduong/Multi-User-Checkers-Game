@@ -47,8 +47,9 @@ public class PostSignInRoute implements Route {
         final String Name = request.queryParams("textfield");
 
         Map<String, Object> vm = new HashMap<>();
-        vm.put("title","Welcome!");
+        vm.put("title", "Welcome!");
         vm.put("isLoggedIn", true);
+       // vm.put("player_name", Name); Sasha added this, ignore for now
 
         // render the View
         return templateEngine.render(new ModelAndView(vm , "home.ftl"));
