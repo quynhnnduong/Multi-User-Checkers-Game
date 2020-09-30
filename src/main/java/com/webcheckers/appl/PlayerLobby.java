@@ -1,4 +1,4 @@
-package com.webcheckers.util;
+package com.webcheckers.appl;
 
 import com.webcheckers.model.Player;
 

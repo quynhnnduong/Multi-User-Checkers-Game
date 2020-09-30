@@ -26,10 +26,7 @@
             or replay archived games
     -->
     <#if isLoggedIn??>
-        <include "nav-bar.ftl" />
         <h1>Player Lobby</h1>
-
-
 
     </#if>
 

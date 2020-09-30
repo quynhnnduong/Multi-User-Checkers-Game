@@ -65,6 +65,10 @@ public class GetHomeRoute implements Route {
     //displaying the currently logged in user
     vm.put("currentUser.name", player.getName());
 
+    if (vm.get(isLoggedOn)) {
+      vm.put("player_name", name); // Sasha added this, ignore for now
+    }
+
     // render the View
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }

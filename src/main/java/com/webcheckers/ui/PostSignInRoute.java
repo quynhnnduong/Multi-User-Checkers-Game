@@ -42,14 +42,18 @@ public class PostSignInRoute implements Route {
      */
     @Override
     public Object handle(Request request, Response response) throws Exception {
-        LOG.finer("POSTSignInRoute is invoked.");
-        //
-        final String Name = request.queryParams("textfield");
+        LOG.finer("PostSignInRoute is invoked.");
 
+        /** TODO Get the name, create and add a new Player to the Player Lobby? (i don't think a route can create a player
+         * Then after we redirect to home, put the players in the player lobby
+         * to the vm and insert them into signin.ftl under the condition that
+         * the state of the player/game is IsLoggedOn. Not sure. -Sasha
+         */
+
+        final String name = request.queryParams("text_field");
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Welcome!");
         vm.put("isLoggedIn", true);
-       // vm.put("player_name", Name); Sasha added this, ignore for now
 
         // render the View
         return templateEngine.render(new ModelAndView(vm , "home.ftl"));
