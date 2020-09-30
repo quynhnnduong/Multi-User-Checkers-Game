@@ -2,59 +2,110 @@ package com.webcheckers.util;
 
 import com.webcheckers.model.Player;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * Holds all existing players and add new players
+ * @author Quynh Duong
+ */
 public class PlayerLobby {
 
     /**
-     * Create an ArrayList for players log in
+     * Creates a HashMap for players log in
      */
-    private ArrayList<Player> playerList;
+    private Map<String,Player> players;
 
+    // constructors
+
+    /**
+     * New PlayerLobby set up
+     */
     public PlayerLobby(){
-        playerList = new ArrayList<Player>();
+        players = new HashMap<>();
     }
 
     /**
-     * Signs a player in.
-     *
-     * @param name name of player
-     * @return player object
+     * Adds new player to the players map.
+     * @param player player to add
+     * @return boolean
      */
-    public Player newPlayer(String name) {
-        Player player = new Player(name);
-        playerList.add(player);
-        return player;
+    public boolean addPlayer(Player player) {
+        if (players.containsValue(player)){
+            return false;
+        }
+        if(!isNameValid(player.getName())){
+            return false;
+        }
+        players.put(player.getName(), player);
+        return true;
     }
 
     /**
      * Gets the number of players logged in.
-     * @return size of playerList
+     * @return size of players
      */
-    public int getPlayerCount(){
-        return playerList.size();
+    public int getPlayerSize(){
+        return players.size();
     }
 
     /**
-     * Adds player to the playerList.
-     * @param player player to add
-     */
-    public void addPlayer(Player player) {
-        playerList.add(player);
-    }
-
-
-    /**
-     * Removes player from the playerList.
-     * @param player
+     * Removes player from the players map.
+     * @param player player to remove
      */
     public void removePlayer(Player player){
-        playerList.remove(player);
+        players.remove(player);
     }
 
-//    public Player getPlayer(String name){
-//
-//    }
+    /**
+     * Get all of the players
+     * @return set of players
+     */
+    public Collection<Player> getAllPlayers() {
+        return players.values();
+    }
+
+    /**
+     * Get all of the players name
+     * @return set of players name
+     */
+    public Collection<String> getAllPlayersName(){
+        return players.keySet();
+    }
+
+    /**
+     * Get all of the players
+     * @return set of players map
+     */
+    public Map<String, Player> getPlayersMap() {
+        return players;
+    }
+
+    /**
+     * get a player from the map
+     * @param name name of player to find
+     * @return player
+     */
+    public Player getPlayer(String name){
+        return players.get(name);
+    }
+
+    /**
+     * Checks if a string contains at least one alphanumeric character
+     * @param name string to check
+     * @return boolean
+     */
+    public boolean isNameValid(String name){
+        char[] chars = name.toCharArray();
+
+        for (char c : chars) {
+            if(!Character.isLetter(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }
 
