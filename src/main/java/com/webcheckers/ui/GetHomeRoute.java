@@ -111,7 +111,7 @@ public class GetHomeRoute implements Route {
       Player currentPlayer = playerLobby.getPlayer(httpSession.attribute(PLAYER_NAME_ATTR));
       vm.put("currentUser", currentPlayer);
       vm.put(LOGGED_IN_ATTR, true);
-      //Player currentPlayer = httpSession.attribute()
+      //Player currentPlayer = httpSession.attribute( )
     }
 
 
