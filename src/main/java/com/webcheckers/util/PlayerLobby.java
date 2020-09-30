@@ -52,5 +52,9 @@ public class PlayerLobby {
         playerList.remove(player);
     }
 
+//    public Player getPlayer(String name){
+//
+//    }
+
 }
 
