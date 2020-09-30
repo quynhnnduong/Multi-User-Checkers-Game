@@ -62,6 +62,8 @@ public class GetHomeRoute implements Route {
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
 
+    vm.put("currentUser", player);
+
     //displaying the currently logged in user
     vm.put("currentUser.name", player.getName());
 
