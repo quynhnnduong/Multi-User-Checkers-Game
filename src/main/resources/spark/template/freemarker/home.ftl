@@ -25,7 +25,9 @@
             spectating active games,
             or replay archived games
     -->
-    <h1>Player Lobby</h1>
+    <#if isLoggedIn??>
+      <h1>Player Lobby</h1>
+    </#if>
 
 
   </div>
