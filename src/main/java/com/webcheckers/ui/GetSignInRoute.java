@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.util.Message;
 import spark.*;
 
 import java.util.HashMap;
@@ -44,9 +45,8 @@ public class GetSignInRoute implements Route {
         LOG.finer("GetSignInRoute is invoked.");
         //
         Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "Sign In");
-        vm.put("textfield", "First Name"); //TODO: Handle text field | Check
-        vm.put("signIn", "Sign In"); //TODO: Handle Button | Check
+        vm.put("title", "Sign in");
+        vm.put("message", Message.info("Sign in with your username.")); // Sasha added this while trying to track a bug
 
         // render the View
         return templateEngine.render(new ModelAndView(vm , "signIn.ftl"));

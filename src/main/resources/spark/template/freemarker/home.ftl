@@ -2,7 +2,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-  <meta http-equiv="refresh" content="10">
+
   <title>Web Checkers | ${title}</title>
   <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
@@ -12,8 +12,10 @@
 
   <h1>Web Checkers | ${title}</h1>
 
+
   <!-- Provide a navigation bar -->
   <#include "nav-bar.ftl" />
+
 
   <div class="body">
 
@@ -25,6 +27,12 @@
             spectating active games,
             or replay archived games
     -->
+    <#if isSignedIn??>
+        <h1>Player Lobby</h1>
+           <p>${player_name}</p>
+
+    </#if>
+
 
   </div>
 

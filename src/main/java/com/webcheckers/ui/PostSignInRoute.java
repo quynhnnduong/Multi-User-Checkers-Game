@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.PlayerLobby;
 import spark.*;
 
 import java.util.HashMap;
@@ -42,14 +43,27 @@ public class PostSignInRoute implements Route {
      */
     @Override
     public Object handle(Request request, Response response) throws Exception {
-        LOG.finer("GetSignInRoute is invoked.");
-        //
+        LOG.finer("PostSignInRoute is invoked.");
+
+        /** TODO Get the name, create and add a new Player to the Player Lobby? (i don't think a route can create a player
+         * Then after we redirect to home, put the players in the player lobby
+         * to the vm and insert them into signin.ftl under the condition that
+         * the state of the player/game is IsLoggedOn. Not sure. -Sasha
+         */
+
+        final String name = request.queryParams("text_field");
         Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "You're Signed In ");
-        vm.put("textfield", "First Name"); //TODO: Handle text field | Check
-        vm.put("signIn", "Sign In"); //TODO: Handle Button | Check
+        vm.put("title", "Welcome!");
+
+        PlayerLobby playerLobby = new PlayerLobby();
+        playerLobby.addPlayer(name);
+
+        // TODO sign in the player instead of constructing player instances with default true for sign in
+
+        vm.put("isSignedIn", playerLobby.getPlayer(name).getIsSignedIn());
+        vm.put("player_name", playerLobby.getPlayer(name).getName()); // TODO breaks the Law of Demeter
 
         // render the View
-        return templateEngine.render(new ModelAndView(vm , "signIn.ftl"));
+        return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }
 }
