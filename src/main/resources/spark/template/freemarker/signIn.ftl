@@ -14,11 +14,9 @@
         <!-- Provide a message to the user, if supplied. -->
         <#include "message.ftl" />
 
-        <form action="./signin" method="POST">
-            <input id=${textfield} name=${textfield}>
-            <button type="submit">Sign-In</button>
-            <!--<input type="text" id=${textfield} name=${textfield}> -->
-            <!--<input type="button" id=${signIn} name=${signIn}> -->
+        <form>
+            <input type="text" id=${textfield} name=${textfield}>
+            <input type="button" id=${signIn} name=${signIn}>
         </form>
 
     </div>
