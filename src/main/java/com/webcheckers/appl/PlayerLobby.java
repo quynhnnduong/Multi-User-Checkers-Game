@@ -22,9 +22,16 @@ public class PlayerLobby {
     /**
      * New PlayerLobby set up
      */
-    public PlayerLobby(){
+    public PlayerLobby(GameCenter gameCenter){
+        this.gameCenter = gameCenter;
         players = new HashMap<>();
     }
+
+    /**
+     * Holds a like to the one and only GameCenter
+     * @author Joel Clyne
+     */
+    private GameCenter gameCenter;
 
     /**
      * Adds new player to the players map.

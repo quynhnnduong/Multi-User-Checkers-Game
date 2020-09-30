@@ -27,10 +27,9 @@
             spectating active games,
             or replay archived games
     -->
-    <#if isSignedIn??>
+    <#if loggedIn>
         <h1>Player Lobby</h1>
-           <p>${player_name}</p>
-
+           <p>${currentUser.getName()}</p>
     </#if>
 
 
