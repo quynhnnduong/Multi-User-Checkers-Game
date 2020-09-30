@@ -9,7 +9,11 @@ public class PlayerLobby {
     /**
      * Create an ArrayList for players log in
      */
-    private ArrayList<Player> playerList = new ArrayList<Player>();
+    private ArrayList<Player> playerList;
+
+    public PlayerLobby(){
+        playerList = new ArrayList<Player>();
+    }
 
     /**
      * Signs a player in.
@@ -17,19 +21,10 @@ public class PlayerLobby {
      * @param name name of player
      * @return player object
      */
-    public Player player(String name) {
-        Player p = new Player(name);
-        playerList.add(p);
-        return p;
-    }
-
-
-    /**
-     * Adds player to the playerList.
-     * @param player player to add
-     */
-    public void add(Player player) {
+    public Player newPlayer(String name) {
+        Player player = new Player(name);
         playerList.add(player);
+        return player;
     }
 
     /**
@@ -38,6 +33,23 @@ public class PlayerLobby {
      */
     public int getPlayerCount(){
         return playerList.size();
+    }
+
+    /**
+     * Adds player to the playerList.
+     * @param player player to add
+     */
+    public void addPlayer(Player player) {
+        playerList.add(player);
+    }
+
+
+    /**
+     * Removes player from the playerList.
+     * @param player
+     */
+    public void removePlayer(Player player){
+        playerList.remove(player);
     }
 
 }
