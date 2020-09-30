@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.model.Player;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -37,6 +38,9 @@ public class GetHomeRoute implements Route {
     LOG.config("GetHomeRoute is initialized.");
   }
 
+  //Temporary Player Name
+  Player player = new Player("John Cena");
+
   /**
    * Render the WebCheckers Home page.
    *
@@ -57,6 +61,9 @@ public class GetHomeRoute implements Route {
 
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
+
+    //displaying the currently logged in user
+    vm.put("currentUser.name", player.getName());
 
     // render the View
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
