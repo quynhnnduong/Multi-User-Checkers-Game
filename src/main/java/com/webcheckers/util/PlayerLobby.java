@@ -33,7 +33,7 @@ public class PlayerLobby {
     }
 
     /**
-     * Gets the number of players log in.
+     * Gets the number of players logged in.
      * @return size of playerList
      */
     public int getPlayerCount(){
