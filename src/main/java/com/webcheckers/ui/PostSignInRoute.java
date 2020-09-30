@@ -54,11 +54,15 @@ public class PostSignInRoute implements Route {
         final String name = request.queryParams("text_field");
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Welcome!");
-        vm.put("isLoggedIn", true);
+
         PlayerLobby playerLobby = new PlayerLobby();
         playerLobby.addPlayer(name);
 
-        vm.put("player_name", playerLobby.getPlayer(name).getName());
+        // TODO sign in the player instead of constructing player instances with default true for sign in
+
+        vm.put("isSignedIn", playerLobby.getPlayer(name).getIsSignedIn());
+        vm.put("player_name", playerLobby.getPlayer(name).getName()); // TODO breaks the Law of Demeter
+
         // render the View
         return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }

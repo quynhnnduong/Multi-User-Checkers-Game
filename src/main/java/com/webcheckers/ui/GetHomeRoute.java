@@ -38,8 +38,10 @@ public class GetHomeRoute implements Route {
     LOG.config("GetHomeRoute is initialized.");
   }
 
+
   //Temporary Player Name
-  Player player = new Player("John Cena");
+  Player player = new Player("John Cena"); // Sasha commented this out to figure out how to get a player from the
+  //                      player lobby
 
   /**
    * Render the WebCheckers Home page.
@@ -62,7 +64,11 @@ public class GetHomeRoute implements Route {
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
 
+    // access the currently logged in user
+
+    player.signOut();
     vm.put("currentUser", player);
+    vm.put("isCurrentSignedIn", player.getIsSignedIn());
 
     //displaying the currently logged in user
     vm.put("currentUser.name", player.getName());

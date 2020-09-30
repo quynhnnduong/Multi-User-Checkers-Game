@@ -12,8 +12,10 @@
 
   <h1>Web Checkers | ${title}</h1>
 
+
   <!-- Provide a navigation bar -->
   <#include "nav-bar.ftl" />
+
 
   <div class="body">
 
@@ -25,7 +27,7 @@
             spectating active games,
             or replay archived games
     -->
-    <#if isLoggedIn??>
+    <#if isSignedIn??>
         <h1>Player Lobby</h1>
            <p>${player_name}</p>
 
