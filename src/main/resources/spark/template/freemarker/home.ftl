@@ -27,6 +27,7 @@
     -->
     <#if isLoggedIn??>
         <h1>Player Lobby</h1>
+           <p>${player_name}</p>
 
     </#if>
 

@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.PlayerLobby;
 import spark.*;
 
 import java.util.HashMap;
@@ -54,7 +55,10 @@ public class PostSignInRoute implements Route {
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Welcome!");
         vm.put("isLoggedIn", true);
+        PlayerLobby playerLobby = new PlayerLobby();
+        playerLobby.addPlayer(name);
 
+        vm.put("player_name", playerLobby.getPlayer(name).getName());
         // render the View
         return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }

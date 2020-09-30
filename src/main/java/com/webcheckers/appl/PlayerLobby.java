@@ -28,10 +28,14 @@ public class PlayerLobby {
 
     /**
      * Adds new player to the players map.
-     * @param player player to add
+     * @param name name of player to add
      * @return boolean
      */
-    public boolean addPlayer(Player player) {
+    public boolean addPlayer(String name) {
+
+        Player player = new Player(name);
+
+        // TODO modify later
         if (players.containsValue(player)){
             return false;
         }
