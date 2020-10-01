@@ -17,8 +17,9 @@ public class PostSignInRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
     private final TemplateEngine templateEngine;
-    public static final String PLAYER_NAME_ATTR = "playerName";
     private PlayerLobby playerLobby;
+
+    public static final String PLAYER_NAME_ATTR = "playerName";
     public static final String PLAYERLOBBY_KEY = "playerLobby";
     private static final String LOGGED_IN_ATTR = "loggedIn";
     /**
@@ -76,7 +77,11 @@ public class PostSignInRoute implements Route {
             session.attribute(PLAYER_NAME_ATTR, name);
 
             //adds the name to the playerlobby
-            playerLobby.addPlayer(name);
+            if(!playerLobby.addPlayer(name)){
+                response.redirect(WebServer.SIGNIN_URL);
+            }
+
+
 
             // TODO sign in the player instead of constructing player instances with default true for sign in
             vm.put(LOGGED_IN_ATTR, true);

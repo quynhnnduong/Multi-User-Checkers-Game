@@ -103,19 +103,12 @@ public class PlayerLobby {
     }
 
     /**
-     * Checks if a string contains at least one alphanumeric character
+     * Checks if a string contains at least one alphanumeric character or a space
      * @param name string to check
      * @return boolean
      */
     public boolean isNameValid(String name){
-        char[] chars = name.toCharArray();
-
-        for (char c : chars) {
-            if(!Character.isLetter(c)) {
-                return false;
-            }
-        }
-        return true;
+        return name.matches("[A-Za-z0-9 ]+");
     }
 
 }
