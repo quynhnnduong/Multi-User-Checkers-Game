@@ -19,6 +19,7 @@ public class PostSignInRoute implements Route {
     private final TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
 
+
     public static final String PLAYER_NAME_ATTR = "playerName";
     public static final String PLAYERLOBBY_KEY = "playerLobby";
     private static final String LOGGED_IN_ATTR = "loggedIn";

@@ -11,13 +11,24 @@ import java.util.Map;
  * @author Quynh Duong
  */
 public class PlayerLobby {
+    //
+    // attributes
+    //
 
     /**
      * Creates a HashMap for players log in
      */
     private Map<String,Player> players;
 
+    /**
+     * Holds a like to the one and only GameCenter
+     * @author Joel Clyne
+     */
+    private GameCenter gameCenter;
+
+    //
     // constructors
+    //
 
     /**
      * New PlayerLobby set up
@@ -27,11 +38,6 @@ public class PlayerLobby {
         players = new HashMap<>();
     }
 
-    /**
-     * Holds a like to the one and only GameCenter
-     * @author Joel Clyne
-     */
-    private GameCenter gameCenter;
 
     /**
      * Adds new player to the players map.
@@ -39,7 +45,6 @@ public class PlayerLobby {
      * @return boolean
      */
     public boolean addPlayer(String name) {
-
         Player player = new Player(name);
 
         // TODO modify later
@@ -66,7 +71,7 @@ public class PlayerLobby {
      * @param player player to remove
      */
     public void removePlayer(Player player){
-        players.remove(player);
+        players.remove(player.getName());
     }
 
     /**

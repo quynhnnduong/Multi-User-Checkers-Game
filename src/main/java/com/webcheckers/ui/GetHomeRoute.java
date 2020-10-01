@@ -25,6 +25,8 @@ public class GetHomeRoute implements Route {
   private static final String LOGGED_IN_ATTR = "loggedIn";
   //the object for displaying the player name (not sure why its not being used)
   public static final String PLAYER_NAME_ATTR = "playerName";
+  //the object to display the current online players on the home page.
+  public static final String PLAYER_MSG_ATTR = "playersMessage";
 
   //stolen from webcheckers - keeps records of all the games (probably don't need this since player lobby is a combination
   //of gamecenter and player services, in order to remove this, you have to go all the way from application where its made, and
@@ -96,6 +98,7 @@ public class GetHomeRoute implements Route {
 
       // show the not signed in page
       vm.put(LOGGED_IN_ATTR, false);
+      vm.put(PLAYER_MSG_ATTR, gameCenter.getPlayersMessage());
      // if this is someone who returned to the home screen
       //player.signOut();
       //these are relics from when we used JOHN CENA as the temporary player
@@ -111,6 +114,7 @@ public class GetHomeRoute implements Route {
       Player currentPlayer = playerLobby.getPlayer(httpSession.attribute(PLAYER_NAME_ATTR));
       vm.put("currentUser", currentPlayer);
       vm.put(LOGGED_IN_ATTR, true);
+      vm.put(PLAYER_MSG_ATTR, gameCenter.getPlayersMessage());
       //Player currentPlayer = httpSession.attribute()
     }
 
