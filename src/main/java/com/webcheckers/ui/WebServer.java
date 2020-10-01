@@ -44,6 +44,8 @@ import spark.TemplateEngine;
  * </p>
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author Shubhang Mehrotra
+ *
  */
 public class WebServer {
   private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
@@ -60,8 +62,12 @@ public class WebServer {
   /**
    * The URL pattern to request the Sign-In page
    */
-
     public static final String SIGNIN_URL = "/signin";
+
+  /**
+   * The URL pattern to request the Sign-In page
+   */
+  public static final String GAME_URL = "/game";
 
   //
   // Attributes
@@ -157,6 +163,9 @@ public class WebServer {
 
     //Reloads sign-in page after signing in
     post(SIGNIN_URL, new PostSignInRoute(templateEngine, gameCenter, playerLobby));
+
+    //shows the game page
+    get(GAME_URL, new GetGameRoute(templateEngine));
     //
     LOG.config("WebServer is initialized.");
   }
