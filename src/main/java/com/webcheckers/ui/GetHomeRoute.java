@@ -116,7 +116,7 @@ public class GetHomeRoute implements Route {
       vm.put("currentUser", currentPlayer);
       vm.put(LOGGED_IN_ATTR, true);
       vm.put(PLAYER_MSG_ATTR, playerLobby.getPlayerSize());
-      //vm.put("message", gameCenter.getPlayersMessage());
+      //vm.put("message", gameCenter.getPlayersMessage() );
       //Player currentPlayer = httpSession.attribute()
     }
 
