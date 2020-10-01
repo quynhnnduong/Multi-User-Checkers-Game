@@ -79,7 +79,7 @@ public class PostSignInRoute implements Route {
             //this adds the the name of the player to the current session - add the name to playerlobby later
             session.attribute(PLAYER_NAME_ATTR, name);
 
-            //adds the name to the playerlobby
+            //adds the name to the playerlobby.
             if(!playerLobby.addPlayer(name)){
                 response.redirect(WebServer.SIGNIN_URL);
             }
