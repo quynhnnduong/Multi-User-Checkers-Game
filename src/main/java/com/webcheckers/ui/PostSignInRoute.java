@@ -84,7 +84,7 @@ public class PostSignInRoute implements Route {
                 response.redirect(WebServer.SIGNIN_URL);
             }
 
-            vm.put("playersMessage", gameCenter.getPlayersMessage());
+            vm.put("playersMessage", "");
 
             // TODO sign in the player instead of constructing player instances with default true for sign in
             vm.put(LOGGED_IN_ATTR, true);

@@ -18,13 +18,13 @@ public class PlayerLobby {
     /**
      * Creates a HashMap for players log in
      */
-    private Map<String,Player> players;
+    private Map<String,Player> players = new HashMap<>();
 
     /**
      * Holds a like to the one and only GameCenter
      * @author Joel Clyne
      */
-    GameCenter gameCenter;
+    private final GameCenter gameCenter;
 
     //
     // constructors
@@ -35,7 +35,6 @@ public class PlayerLobby {
      */
     public PlayerLobby(GameCenter gameCenter){
         this.gameCenter = gameCenter;
-        players = new HashMap<>();
     }
 
 

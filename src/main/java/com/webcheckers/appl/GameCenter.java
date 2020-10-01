@@ -14,25 +14,20 @@ public class GameCenter {
     //The guessing game has player centers access the game center, but never the game center access the player lobby
     //private PlayerLobby playerLobby;
 
-
-    // Output strings
-    public final Message NO_PLAYERS_MSG = Message.info("No one is playing Web Checkers right now :(");
-    public final Message PLAYERS_ONLINE_MSG = Message.info("Players are online");
-
     public final String PLAYERS_ONLINE = ("%d Players are online. \n Join them!");
     public final String NO_PLAYERS = ("No one is playing Web Checkers right now :(");
 
-    private PlayerLobby playerLobby = new PlayerLobby(this);
+    //private final  PlayerLobby playerLobby = new PlayerLobby(this);
 
-//    /** Make a new PlayerLobby for the newly connected player
-//     *
-//     * @return
-//     */
-//    public PlayerLobby newPlayerLobby(){
-//        return new PlayerLobby(this);
-//    }
-//
-//    private PlayerLobby playerLobby = newPlayerLobby();
+    /** Make a new PlayerLobby for the newly connected player
+     *
+     * @return
+     */
+    public PlayerLobby newPlayerLobby(){
+        return new PlayerLobby(this);
+    }
+
+    private PlayerLobby playerLobby = newPlayerLobby();
 
 //    /**
 //     * Create a new {WebCheckersGame} game.
@@ -42,10 +37,6 @@ public class GameCenter {
 //     */
 //    public GuessGame getGame() {
 //        return new GuessGame();       future implementation.
-//    }
-
-//    public String getPlayersOnlineMsg(){
-//        return String.format("%d Players are currently Online. Join them!", playerLobby.getPlayerSize());
 //    }
 
     /**
