@@ -99,7 +99,7 @@ public class GetHomeRoute implements Route {
       // show the not signed in page
       vm.put(LOGGED_IN_ATTR, false);
       vm.put(PLAYER_MSG_ATTR, gameCenter.getPlayersMessage());
-      //vm.put("message", gameCenter.getPlayersMessage());
+      //vm.put("message", gameCenter.getPlayersMessage( ));
      // if this is someone who returned to the home screen
       //player.signOut();
       //these are relics from when we used JOHN CENA as the temporary player
