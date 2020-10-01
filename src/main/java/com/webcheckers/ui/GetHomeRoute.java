@@ -41,6 +41,7 @@ public class GetHomeRoute implements Route {
   //this is the replacement for game center, and there will be one playerlobby created in Application that will be passed into
   //all the routes
   private PlayerLobby playerLobby;
+  private static final String PLAYER_LOBBY_MSG = " player(s) in lobby";
 
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
@@ -115,7 +116,7 @@ public class GetHomeRoute implements Route {
       Player currentPlayer = playerLobby.getPlayer(httpSession.attribute(PLAYER_NAME_ATTR));
       vm.put("currentUser", currentPlayer);
       vm.put(LOGGED_IN_ATTR, true);
-      vm.put(PLAYER_MSG_ATTR, playerLobby.getPlayerSize());
+      vm.put(PLAYER_MSG_ATTR, playerLobby.getPlayerSize() + PLAYER_LOBBY_MSG);
       //vm.put("message", gameCenter.getPlayersMessage()  );
       //Player currentPlayer = httpSession.attribute()
     }
