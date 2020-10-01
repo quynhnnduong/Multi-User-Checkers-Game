@@ -25,7 +25,6 @@ public class GetSignInRoute implements Route {
      */
     public GetSignInRoute(final TemplateEngine templateEngine) {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
-        //
         LOG.config("GetSignInRoute is initialized.");
     }
 

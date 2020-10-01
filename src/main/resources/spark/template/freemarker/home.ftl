@@ -21,7 +21,7 @@
 
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
-
+      ${playersMessage}
     <!-- TODO: future content on the Home:
             to start games,
             spectating active games,

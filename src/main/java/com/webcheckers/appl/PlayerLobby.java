@@ -24,7 +24,7 @@ public class PlayerLobby {
      * Holds a like to the one and only GameCenter
      * @author Joel Clyne
      */
-    private GameCenter gameCenter;
+    GameCenter gameCenter;
 
     //
     // constructors
@@ -54,7 +54,7 @@ public class PlayerLobby {
         if(!isNameValid(player.getName())){
             return false;
         }
-        players.put(player.getName(), player);
+        players.put(name, player);
         return true;
     }
 

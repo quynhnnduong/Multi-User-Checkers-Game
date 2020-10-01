@@ -1,5 +1,8 @@
 package com.webcheckers.appl;
 
+import com.webcheckers.model.Player;
+import com.webcheckers.util.Message;
+
 import java.util.logging.Logger;
 
 /**Class to keep track of the Application-wide information and data.
@@ -13,18 +16,23 @@ public class GameCenter {
 
 
     // Output strings
-    public final static String NO_PLAYERS = "No one is playing Web Checkers right now :(";
-    public final static String PLAYERS_ONLINE = "%d Players are currently Online. Join them!";
+    public final Message NO_PLAYERS_MSG = Message.info("No one is playing Web Checkers right now :(");
+    public final Message PLAYERS_ONLINE_MSG = Message.info("Players are online");
 
-    /** Make a new PlayerLobby for the newly connected player
-     *
-     * @return
-     */
-    public PlayerLobby newPlayerLobby(){
-        return new PlayerLobby(this);
-    }
+    public final String PLAYERS_ONLINE = ("%d Players are online. \n Join them!");
+    public final String NO_PLAYERS = ("No one is playing Web Checkers right now :(");
 
-    private PlayerLobby playerLobby = newPlayerLobby();
+    private PlayerLobby playerLobby = new PlayerLobby(this);
+
+//    /** Make a new PlayerLobby for the newly connected player
+//     *
+//     * @return
+//     */
+//    public PlayerLobby newPlayerLobby(){
+//        return new PlayerLobby(this);
+//    }
+//
+//    private PlayerLobby playerLobby = newPlayerLobby();
 
 //    /**
 //     * Create a new {WebCheckersGame} game.
@@ -36,13 +44,17 @@ public class GameCenter {
 //        return new GuessGame();       future implementation.
 //    }
 
+//    public String getPlayersOnlineMsg(){
+//        return String.format("%d Players are currently Online. Join them!", playerLobby.getPlayerSize());
+//    }
+
     /**
      * Get a user message about the players online
      *
      * @return
      *   The message to the visitor about the number of players online.
      */
-    public synchronized String getPlayersMessage() {
+    public String getPlayersMessage() {
         if(playerLobby.getPlayerSize() >= 1) {
             return String.format(PLAYERS_ONLINE, playerLobby.getPlayerSize());
         } else {

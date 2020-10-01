@@ -18,6 +18,7 @@ public class PostSignInRoute implements Route {
     private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
     private final TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
+    private GameCenter gameCenter;
 
 
     public static final String PLAYER_NAME_ATTR = "playerName";
@@ -33,6 +34,7 @@ public class PostSignInRoute implements Route {
     public PostSignInRoute(final TemplateEngine templateEngine, final GameCenter gameCenter, PlayerLobby playerLobby) {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
         this.playerLobby = playerLobby;
+        this.gameCenter = gameCenter;
         //
         LOG.config("PostSignInRoute is initialized.");
     }
@@ -82,12 +84,13 @@ public class PostSignInRoute implements Route {
                 response.redirect(WebServer.SIGNIN_URL);
             }
 
-
+            vm.put("playersMessage", gameCenter.getPlayersMessage());
 
             // TODO sign in the player instead of constructing player instances with default true for sign in
             vm.put(LOGGED_IN_ATTR, true);
             //the current player of the session is the current user
             vm.put("currentUser", playerLobby.getPlayer(session.attribute(PLAYER_NAME_ATTR)));
+
 
             //they are logged in, unnecessary since if you've arrived on this post page, that means that you just signed in
             //although I ddi keep the logged in attr up there so  it doesnt break
@@ -104,6 +107,7 @@ public class PostSignInRoute implements Route {
             response.redirect(WebServer.HOME_URL);
         }
         // render the View
+
         return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }
 }
