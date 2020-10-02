@@ -44,15 +44,14 @@ public class PlayerLobby {
      * @return boolean
      */
     public boolean addPlayer(String name) {
-        Player player = new Player(name);
+        if (players.containsKey(name)){
+            return false;
+        }
 
-        // TODO modify later
-        if (players.containsValue(player)){
+        if (!isNameValid(name)){
             return false;
         }
-        if(!isNameValid(player.getName())){
-            return false;
-        }
+        Player player = new Player(name);
         players.put(name, player);
         return true;
     }
