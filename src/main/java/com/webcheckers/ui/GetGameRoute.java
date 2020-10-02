@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 /**
  * The UI Controller to GET the Game page.
- * @author Shubhang Mehrotra
+ * @author Shubhang Mehrotra(sm9943)
  */
 public class GetGameRoute implements Route {
     private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
