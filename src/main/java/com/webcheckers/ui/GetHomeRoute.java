@@ -28,6 +28,8 @@ public class GetHomeRoute implements Route {
   //the object to display the current online players on the home page.
   public static final String PLAYER_MSG_ATTR = "playersMessage";
 
+
+
   //stolen from webcheckers - keeps records of all the games (probably don't need this since player lobby is a combination
   //of gamecenter and player services, in order to remove this, you have to go all the way from application where its made, and
   //remove it later, but since we don't have much time and the website doesn't crash don't worry about it)
