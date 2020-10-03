@@ -117,6 +117,8 @@ public class GetHomeRoute implements Route {
       //tells the playerlobby to get the player with the name of this session's player
       Player currentPlayer = playerLobby.getPlayer(httpSession.attribute(PLAYER_NAME_ATTR));
       vm.put("currentUser", currentPlayer);
+      //gets the players hashset to display all the players
+      vm.put("playerList", playerLobby.getPlayers());
       vm.put(LOGGED_IN_ATTR, true);
       vm.put(PLAYER_MSG_ATTR, playerLobby.getPlayerSize() + PLAYER_LOBBY_MSG);
       //vm.put("message", gameCenter.getPlayersMessage()  );

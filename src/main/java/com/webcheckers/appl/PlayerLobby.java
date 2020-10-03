@@ -2,10 +2,7 @@ package com.webcheckers.appl;
 
 import com.webcheckers.model.Player;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Holds all existing players and add new players
@@ -19,7 +16,7 @@ public class PlayerLobby {
     /**
      * Creates a HashMap for players log in
      */
-    private Set<Player> players = new HashSet<>();
+    private HashSet<Player> players = new HashSet<>();
 
     /**
      * Holds a like to the one and only GameCenter
@@ -90,6 +87,10 @@ public class PlayerLobby {
         players.remove(player);
     }
 
+    public HashSet<Player> getPlayers(){
+        return players;
+    }
+
     /**
      * Get all of the players
      * @return set of players
@@ -103,8 +104,12 @@ public class PlayerLobby {
      * Get all of the players name
      * @return set of players name
 
-    public Collection<String> getAllPlayersName(){
-        return players.keySet();
+    public ArrayList<String> getAllPlayersName(){
+        ArrayList playerNames = new ArrayList<String>();
+        for (Player player : players){
+            playerNames.add(player.getName());
+        }
+        return playerNames;
     }
      */
 
