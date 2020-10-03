@@ -79,7 +79,7 @@ public class GetHomeRoute implements Route {
     final Session httpSession = request.session();
 
     LOG.finer("GetHomeRoute is invoked.");
-    //
+
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 

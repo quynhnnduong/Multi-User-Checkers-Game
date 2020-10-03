@@ -22,11 +22,7 @@
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
       ${playersMessage}
-    <!-- TODO: future content on the Home:
-            to start games,
-            spectating active games,
-            or replay archived games
-    -->
+
     <#if loggedIn>
         <h1>Player Lobby</h1>
            <p>${currentUser.getName()}</p>

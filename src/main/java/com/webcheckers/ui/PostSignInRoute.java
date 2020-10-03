@@ -96,18 +96,12 @@ public class PostSignInRoute implements Route {
             //although I ddi keep the logged in attr up there so  it doesnt break
             //vm.put("isSignedIn", playerLobby.getPlayer(session.attribute(PLAYER_NAME_ATTR)).getIsSignedIn());
 
-            //using player_name is wack, its much better to just use the player object as currentUser.getName()
-            //vm.put("player_name", playerLobby.getPlayer(session.attribute(PLAYER_NAME_ATTR)).getName()); // TODO breaks the Law of Demeter
-
-
-
         } else {
             //panic bcs that's not supposed to happen
             //redirect to the homepage
             response.redirect(WebServer.HOME_URL);
         }
         // render the View
-
         return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }
 }
