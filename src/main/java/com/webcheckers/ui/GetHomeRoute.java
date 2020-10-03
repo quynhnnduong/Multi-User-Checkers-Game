@@ -92,7 +92,6 @@ public class GetHomeRoute implements Route {
     if (httpSession.attribute(PLAYERLOBBY_KEY) == null) {
 
       // get the object that will provide client-specific services for this player
-      //playerLobby = gameCenter.newPlayerLobby();
       //say that this player lobby object belongs to the current session - this is the key connecting the current session to the
       //one playerlobby that all the sessions will share
       httpSession.attribute(PLAYERLOBBY_KEY, playerLobby);
@@ -100,27 +99,21 @@ public class GetHomeRoute implements Route {
       // show the not signed in page
       vm.put(LOGGED_IN_ATTR, false);
       vm.put(PLAYER_MSG_ATTR, gameCenter.getPlayersMessage());
-      //vm.put("message", gameCenter.getPlayersMessage( ));
-     // if this is someone who returned to the home screen
-      //player.signOut();
-      //these are relics from when we used JOHN CENA as the temporary player
-      //vm.put("currentUser", player);
-      //vm.put("isCurrentSignedIn", player.getIsSignedIn());
-      //displaying the currently logged in user
-      //vm.put("currentUser.name", player.getName());
-    //a logged in person returns
+
+
     } else {
       //home.ftl has all the magic which displays the stuff, it gets the name from PostSignInRoute
 
       //tells the playerlobby to get the player with the name of this session's player
       Player currentPlayer = playerLobby.getPlayer(httpSession.attribute(PLAYER_NAME_ATTR));
       vm.put("currentUser", currentPlayer);
+
+
       //gets the players hashset to display all the players
       vm.put("playerList", playerLobby.getPlayers());
       vm.put(LOGGED_IN_ATTR, true);
       vm.put(PLAYER_MSG_ATTR, playerLobby.getPlayerSize() + PLAYER_LOBBY_MSG);
-      //vm.put("message", gameCenter.getPlayersMessage()  );
-      //Player currentPlayer = httpSession.attribute()
+
     }
 
 
