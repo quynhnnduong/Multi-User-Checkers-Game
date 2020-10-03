@@ -16,12 +16,12 @@ public class Piece {
     }
 
     /**
-     * TODO: I have no idea how to return an ENUM, but that's what it says in the docs
+     * TODO (Shubhang): I have no idea how to return an ENUM, but that's what it says in the docs
      */
     public enum getColor{}
 
     /**
-     * TODO: I have no idea how to return an ENUM, but that's what it says in the docs
+     * TODO (Shubhang): I have no idea how to return an ENUM, but that's what it says in the docs
      */
     public enum getType{}
 }

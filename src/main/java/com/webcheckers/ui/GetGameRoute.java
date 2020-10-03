@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.model.Board;
 import com.webcheckers.model.BoardView;
 import com.webcheckers.model.Player;
 import com.webcheckers.util.Message;
@@ -22,7 +23,7 @@ public class GetGameRoute implements Route {
 
     private final Player player = new Player("shubh");  //just to check stuff (shubhang)
     private final Player player2 = new Player("shubhang");
-    private final BoardView  boardView = new BoardView();
+    private final BoardView  boardView = new BoardView(new Board());
 
     private final HashMap<String, Object> map = null;
 
