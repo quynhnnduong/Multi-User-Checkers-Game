@@ -54,7 +54,7 @@ public class GetGameRoute implements Route {
     }
 
     /**
-     * Render the Game page.
+     * Render the Game page
      *
      * @param request
      *   the HTTP request
