@@ -3,6 +3,7 @@ package com.webcheckers.ui;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
+import com.webcheckers.util.Message;
 import spark.*;
 
 import java.util.HashMap;
@@ -24,6 +25,8 @@ public class PostSignInRoute implements Route {
     public static final String PLAYER_NAME_ATTR = "playerName";
     public static final String PLAYERLOBBY_KEY = "playerLobby";
     private static final String LOGGED_IN_ATTR = "loggedIn";
+    private static final Message INVALID_NAME_MSG = Message.info("Invalid Name. Please try again.");
+
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
      *
@@ -81,6 +84,7 @@ public class PostSignInRoute implements Route {
 
             //adds the name to the playerlobby.
             if(!playerLobby.addPlayer(name)){
+                vm.put("message", INVALID_NAME_MSG);
                 response.redirect(WebServer.SIGNIN_URL);
             }
 
