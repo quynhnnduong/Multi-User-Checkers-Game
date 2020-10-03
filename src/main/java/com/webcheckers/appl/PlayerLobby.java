@@ -42,19 +42,16 @@ public class PlayerLobby {
      * @return boolean
      */
     public boolean addPlayer(String name) {
-        Player newPlayer = new Player(name);
-
-        // As long as this Player with this exact name is not already in the set of players,
-        // and as long as the name this player has is valid, this player can be added to the set.
-        // TODO: (Sasha) Information Expert: Should isNameValid be contained in the Player class, since it concerns Player data, not PlayerLobby data?
-
-        if (!players.contains(newPlayer) && isNameValid(name)){
-            players.add(newPlayer);
+        if (isNameValid(name) && !players.contains(getPlayer(name))) {    //check if player name is valid and the name is not taken
+            Player newPlayer = new Player(name);    //create a player
+            players.add(newPlayer);             // TODO: (Sasha) Information Expert: Should isNameValid be
+                                                // contained in the Player class, since it concerns Player data,
+                                                // not PlayerLobby data?
             return true;
         }
-
         return false;
     }
+
 
     /**
      * Look for a Player in the PlayerLobby. If they are found, return the player.
@@ -87,9 +84,9 @@ public class PlayerLobby {
         players.remove(player);
     }
 
-    public HashSet<Player> getPlayers(){
-        return players;
-    }
+    public HashSet<Player> getPlayers(){ return players; }
+
+
 
     /**
      * Get all of the players
