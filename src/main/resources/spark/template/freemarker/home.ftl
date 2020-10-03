@@ -25,7 +25,7 @@
 
     <#if loggedIn>
         <h1>Player Lobby</h1>
-           <p>${currentUser.getName()}</p>
+       <#include "player_list.ftl"/>
     </#if>
 
 

@@ -4,5 +4,14 @@
             <!-- if the player in the list is not the current user, print the player as a button with a link to /game -->
 
     <#if playerList??>
-        <>
+        <!--Display everyone in the player lobby except the current user-->
+        <#list playerList as user>
+            <#if user != currentUser>
+                <a>${user.getName()}</a>
+                <form action="./game" method="GET">
+                    <button type="submit">Start A Game</button>
+                </form>
+            </#if>
+        </#list>
+    </#if>
 </div>
