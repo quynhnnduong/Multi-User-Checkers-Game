@@ -7,7 +7,7 @@ package com.webcheckers.model;
  */
 public class Player {
     private String name;
-    private boolean isSignedIn;
+    private boolean isSignedIn; // TODO: (Sasha) We may not need this; currentUser in the vm map should do the job
 
     public Player(String name){
         this.name = name;

@@ -3,12 +3,13 @@ package com.webcheckers.appl;
 import com.webcheckers.model.Player;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Holds all existing players and add new players
- * @author Quynh Duong
+ * @author Quynh Duong, Sasha Persaud
  */
 public class PlayerLobby {
     //
@@ -18,7 +19,7 @@ public class PlayerLobby {
     /**
      * Creates a HashMap for players log in
      */
-    private Map<String,Player> players = new HashMap<>();
+    private Set<Player> players = new HashSet<>();
 
     /**
      * Holds a like to the one and only GameCenter
@@ -44,16 +45,33 @@ public class PlayerLobby {
      * @return boolean
      */
     public boolean addPlayer(String name) {
-        if (players.containsKey(name)){
-            return false;
+        Player newPlayer = new Player(name);
+
+        // As long as this Player with this exact name is not already in the set of players,
+        // and as long as the name this player has is valid, this player can be added to the set.
+        // TODO: (Sasha) Information Expert: Should isNameValid be contained in the Player class, since it concerns Player data, not PlayerLobby data?
+
+        if (!players.contains(newPlayer) && isNameValid(name)){
+            players.add(newPlayer);
+            return true;
         }
 
-        if (!isNameValid(name)){
-            return false;
+        return false;
+    }
+
+    /**
+     * Look for a Player in the PlayerLobby. If they are found, return the player.
+     * If they are not found, return null.
+     * @param name name of player to find
+     * @return player, null
+     */
+    public Player getPlayer(String name){
+        for (Player player : players) {
+            if (player.getName().equals(name)) {
+                return player;
+            }
         }
-        Player player = new Player(name);
-        players.put(name, player);
-        return true;
+        return null;
     }
 
     /**
@@ -69,41 +87,37 @@ public class PlayerLobby {
      * @param player player to remove
      */
     public void removePlayer(Player player){
-        players.remove(player.getName());
+        players.remove(player);
     }
 
     /**
      * Get all of the players
      * @return set of players
-     */
+
     public Collection<Player> getAllPlayers() {
         return players.values();
     }
+     */
 
     /**
      * Get all of the players name
      * @return set of players name
-     */
+
     public Collection<String> getAllPlayersName(){
         return players.keySet();
     }
+     */
 
     /**
      * Get all of the players
      * @return set of players map
-     */
+
     public Map<String, Player> getPlayersMap() {
         return players;
     }
-
-    /**
-     * get a player from the map
-     * @param name name of player to find
-     * @return player
      */
-    public Player getPlayer(String name){
-        return players.get(name);
-    }
+
+
 
     /**
      * Checks if a string contains at least one alphanumeric character or a space
