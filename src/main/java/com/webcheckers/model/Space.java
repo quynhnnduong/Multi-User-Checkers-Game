@@ -1,12 +1,23 @@
 package com.webcheckers.model;
 
 /**
- * Model object to represent a Space in the Rows on the boards
+ * Model object to represent a Space in the row on the boards
  * @author Shubhang Mehrotra
  */
 public class Space {
     private int cellIdx;
+    private Piece piece;
 
+    /**
+     * Constructor for creating a space on the board
+     * @param cellIdx index of cell
+     * @param piece the piece on current space
+     */
+    public Space(int cellIdx, Piece piece){
+        this.cellIdx = cellIdx;
+        this.piece = piece;
+
+    }
     public int getCellIdx() {
         return cellIdx;
     }
@@ -17,7 +28,7 @@ public class Space {
      * @return boolean
      */
     public boolean isValid(){
-        return false;
+        return true;
     }
 
     /**
@@ -25,6 +36,6 @@ public class Space {
      * @return
      */
     public Piece getPiece(){
-        return new Piece();
+        return piece;
     }
 }
