@@ -9,9 +9,11 @@
             <#if user != currentUser>
                 <a>${user.getName()}</a>
                 <form action="./game" method="GET">
-                    <button type="submit">Start A Game</button>
+                    <button name="opponent" value=${"a"?replace("a", user.getName())} type="submit">Start A Game</button>
                 </form>
             </#if>
         </#list>
     </#if>
 </div>
+
+<!--"" =(opponent)"?replace("(opponent)", user.getName())} -->
