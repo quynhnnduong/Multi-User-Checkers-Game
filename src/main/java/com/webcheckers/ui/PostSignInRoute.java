@@ -93,7 +93,7 @@ public class PostSignInRoute implements Route {
 
 
             //they are logged in, unnecessary since if you've arrived on this post page, that means that you just signed in
-            //although I ddi keep the logged in attr up there so  it doesnt break
+            //although I did keep the logged in attr up there so  it doesn't break
             //vm.put("isSignedIn", playerLobby.getPlayer(session.attribute(PLAYER_NAME_ATTR)).getIsSignedIn());
 
         } else {
