@@ -114,6 +114,7 @@ public class GetHomeRoute implements Route {
       //gets the players hashset to display all the players
       vm.put("playerList", playerLobby.getPlayers());
       vm.put(LOGGED_IN_ATTR, true);
+      // TODO: Put an if statement to check the
       vm.put(PLAYER_MSG_ATTR, playerLobby.getPlayerSize() + PLAYER_LOBBY_MSG);
 
     }

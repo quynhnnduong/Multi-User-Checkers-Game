@@ -25,6 +25,10 @@ public class GetGameRoute implements Route {
     private final Player player2 = new Player("shubhang");
     private final BoardView  boardView = new BoardView(new Board());
 
+    //TODO: have a conversion here, which converts from the model tier to the UI View element.
+    // have a constructor which takes a 2D array and convert it to what the Freemarker template is expecting.
+    // All the moves can be made in the way we have decided in the model.
+
     private final HashMap<String, Object> map = null;
 
 
