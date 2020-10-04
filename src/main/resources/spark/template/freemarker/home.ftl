@@ -21,10 +21,11 @@
 
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
-      ${playersMessage}
+
 
     <#if loggedIn>
         <h1>Player Lobby</h1>
+        ${playersMessage}
        <#include "player_list.ftl"/>
     </#if>
 
