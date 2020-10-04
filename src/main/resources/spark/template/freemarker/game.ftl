@@ -61,8 +61,8 @@
         <div class="game-board">
           <table id="game-board">
             <tbody>
-            <#list board.iterator() as row>
-              <tr data-row="${row.index}">
+            <#list board.iterator() as row>     <!-- go though each row. -->
+              <tr data-row="${row.index}">      <!-- have an index in each row -->
               <#list row.iterator() as space>
                 <td data-cell="${space.cellIdx}"
                     <#if space.isValid() >
