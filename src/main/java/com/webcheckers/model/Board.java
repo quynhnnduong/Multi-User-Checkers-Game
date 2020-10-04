@@ -12,7 +12,7 @@ public class Board {
     private Piece.getColor currentPlayerColor;
 
     /**
-     * Initialize a board
+     * Initialize a  checker board
      */
     public Board(){
         //Initialize the board with the given size from BoardView
