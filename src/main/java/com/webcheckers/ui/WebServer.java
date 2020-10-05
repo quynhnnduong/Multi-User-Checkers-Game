@@ -165,7 +165,7 @@ public class WebServer {
     post(SIGNIN_URL, new PostSignInRoute(templateEngine, gameCenter, playerLobby));
 
     //shows the game page
-    get(GAME_URL, new GetGameRoute(templateEngine));
+    get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
     //
     LOG.config("WebServer is initialized.");
   }
