@@ -1,9 +1,11 @@
-package com.webcheckers.ui;
 
+/**
+package com.webcheckers.model.oldBoard;
 
-import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.model.BoardView;
 import com.webcheckers.model.Player;
+import com.webcheckers.model.oldBoard.Board;
+import com.webcheckers.model.oldBoard.BoardView;
+import com.webcheckers.ui.GetHomeRoute;
 import com.webcheckers.util.Message;
 import spark.*;
 
@@ -12,27 +14,29 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import static com.webcheckers.ui.PostSignInRoute.PLAYER_NAME_ATTR;
-
 /**
  * The UI Controller to GET the Game page.
  * @author Shubhang Mehrotra(sm9943)
- * Added getting the correct player object for both players
- * @author Joel Clyne
- */
+
 public class GetGameRoute implements Route {
     private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
     private final TemplateEngine templateEngine;
-    private final PlayerLobby playerLobby;
-
 
     private Message message = Message.info("Here"); //ignore for now (shubhang)
 
-    private Player player2;
-    private final BoardView boardView = new BoardView();
+    private final Player player = new Player("shubh");  //just to check stuff (shubhang)
+    private final Player player2 = new Player("shubhang");
+    private final BoardView  boardView = new BoardView(new Board());
+
+    //TODO: have a conversion here, which converts from the model tier to the UI View element.
+    // have a constructor which takes a 2D array and convert it to what the Freemarker template is expecting.
+    // All the moves can be made in the way we have decided in the model.
 
     private final HashMap<String, Object> map = null;
 
+
+    private final Player redPlayer = player;
+    private final Player whitePlayer = player2;
 
     enum viewMode {
         PLAY,
@@ -50,10 +54,9 @@ public class GetGameRoute implements Route {
      *
      * @param templateEngine
      *   the HTML template rendering engine
-     */
-    public GetGameRoute(final TemplateEngine templateEngine, PlayerLobby playerLobby) {
+
+    public GetGameRoute(final TemplateEngine templateEngine) {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
-        this.playerLobby = playerLobby;
         //
         LOG.config("GetGameRoute is initialized.");
     }
@@ -68,22 +71,10 @@ public class GetGameRoute implements Route {
      *
      * @return
      *   the rendered HTML for the Game page
-     */
+
     @Override
     public Object handle(Request request, Response response) throws Exception {
-
-        //gets the current player
         final Session session = request.session();
-
-        //makes the current player the red player
-        Player player = playerLobby.getPlayer(session.attribute(PLAYER_NAME_ATTR));
-        Player redPlayer = player;
-
-        //gets the player2 from the url param opponent and makes them the white player
-        Player player2 = playerLobby.getPlayer(request.queryParams("opponent"));
-        Player whitePlayer = player2;
-
-        //TODO find out proper way to assign red and blue players
 
         LOG.finer("GetGameRoute is invoked.");
         //
@@ -103,3 +94,4 @@ public class GetGameRoute implements Route {
         return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }
 }
+*/

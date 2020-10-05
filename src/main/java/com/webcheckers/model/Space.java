@@ -18,6 +18,14 @@ public class Space {
         this.piece = piece;
 
     }
+
+    /**Alt constructor for generating a space with no piece
+     * @param cellIdx index of cell
+     */
+    public Space(int cellIdx){
+        this.cellIdx = cellIdx;
+    }
+
     public int getCellIdx() {
         return cellIdx;
     }
