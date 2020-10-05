@@ -83,8 +83,6 @@ public class GetGameRoute implements Route {
         Player player2 = playerLobby.getPlayer(request.queryParams("opponent"));
         Player whitePlayer = player2;
 
-        //TODO find out proper way to assign red and blue players
-
         LOG.finer("GetGameRoute is invoked.");
         //
         Map<String, Object> vm = new HashMap<>();

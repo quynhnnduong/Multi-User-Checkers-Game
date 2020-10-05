@@ -2,7 +2,7 @@ package com.webcheckers.model;
 
 /**
  * Model object to represent a Space in the row on the boards
- * @author Shubhang Mehrotra
+ * @author Shubhang Mehrotra, Joel Clyne
  */
 public class Space {
     private int cellIdx;
@@ -19,7 +19,8 @@ public class Space {
 
     }
 
-    /**Alt constructor for generating a space with no piece
+    /**
+     * Alt constructor for generating a space with no piece
      * @param cellIdx index of cell
      */
     public Space(int cellIdx){
@@ -40,8 +41,9 @@ public class Space {
     }
 
     /**
-     * TODO: Implement Piece
-     * @return
+     * gets the piece at the current space
+     * returns null if there is no piece there
+     * @return the piece at the current space
      */
     public Piece getPiece(){
         return piece;

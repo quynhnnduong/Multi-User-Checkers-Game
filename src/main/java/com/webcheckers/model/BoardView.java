@@ -2,11 +2,17 @@ package com.webcheckers.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
+
+/**
+ * Model class to view the 8 rows that comprise the board
+ * @author Joel Clyne
+ */
 
 public class BoardView implements Iterable<Row>{
 
     static final int BOARD_SIZE = 8;
+
+    //An iterable list of rows
     private ArrayList<Row> rows;
 
     /**
@@ -24,19 +30,19 @@ public class BoardView implements Iterable<Row>{
     /**
      * Returns an iterator for the rows
      * @return the iterator for the rows
-     * @author Joel Clyne
      */
     @Override
-    public Iterator iterator() {
+    public Iterator<Row> iterator() {
         return rows.iterator();
     }
 
     /**
      * Generate an arraylist of 8 rows to create a "board"
+     * @return an arraylist of 8 rows
      */
     public ArrayList<Row> generateEightRowBoard(){
         ArrayList<Row> rows = new ArrayList<>();
-        for (int rowIdx = 0; rowIdx < 8; rowIdx++){
+        for (int rowIdx = 0; rowIdx < BOARD_SIZE; rowIdx++){
             rows.add(new Row(rowIdx));
         }
         return rows;

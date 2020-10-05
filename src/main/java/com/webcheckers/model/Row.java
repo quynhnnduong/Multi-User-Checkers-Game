@@ -10,10 +10,12 @@ import java.util.Iterator;
 public class Row implements Iterable<Space> {
 
     private int index;
+    //the list of spaces in the row
     private ArrayList<Space> spaces;
 
     /**
-     * Sets row in board
+     * creates a row with an index and an arrayList of spaces
+     * needs no space parameter because generateEightSpaceRow makes it
      * @param index index of row
      */
     public Row(int index){
@@ -24,7 +26,6 @@ public class Row implements Iterable<Space> {
     /**
      * gets iterator for the row's spaces
      * @return iterator of spaces
-     * @author Joel Clyne
      */
     @Override
     public Iterator<Space> iterator() {
@@ -38,6 +39,7 @@ public class Row implements Iterable<Space> {
 
     /**
      * Generate an arraylist of 8 spaces to create a "row"
+     * @return an arrayList of 8 spaces
      */
     public ArrayList<Space> generateEightSpaceRow(){
         ArrayList<Space> spaces = new ArrayList<>();
