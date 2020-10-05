@@ -77,22 +77,23 @@ public class GetGameRoute implements Route {
 
         //makes the current player the red player
         Player player = playerLobby.getPlayer(session.attribute(PLAYER_NAME_ATTR));
-        Player redPlayer = player;
+        Player redPlayer;
 
         //gets the player2 from the url param opponent and makes them the white player
         Player player2 = playerLobby.getPlayer(request.queryParams("opponent"));
-        Player whitePlayer = player2;
+        Player whitePlayer;
 
         LOG.finer("GetGameRoute is invoked.");
         //
         Map<String, Object> vm = new HashMap<>();
 
 
+        //System.out.println(player2.getName());
         //check if the opponent is not currently playing a game
-        if (player2.getIsMidGame()){
+        if (player2.getIsMidGame() && !player2.getCallingPlayer()){
             //redirect and tell the current user that the person they picked is facing someone else
             session.attribute(GetHomeRoute.LEGIT_OPPONENT, false);
-            response.redirect(WebServer.HOME_URL);
+            //response.redirect(WebServer.HOME_URL);
         } else {
 
 
@@ -102,9 +103,31 @@ public class GetGameRoute implements Route {
 
             //set the current and opponent's states to playing in playerLobby
             playerLobby.startPlayer(player.getName());
-            playerLobby.startPlayer(player2.getName());
+            //set player 2 to be called for a game
+            player2.startCallingPlayer();
+            //
 
-            //TODO whenever we get to coding the win state, set all these to not playing
+            //then tell playerLobby those two players are opponents
+            playerLobby.setOpponentMatch(player, player2);
+
+            //TODO whenever we get to coding the win state, set all these to not playing, and remove the opponents from each other
+        }
+
+        //check if current player came in from a refresh of home.ftl - aka someone clicked on them and now they're being forced into a game
+        //this is the only situation where they would already be mid game
+        if (player.getIsMidGame()){
+            //make the opponent the red player
+            redPlayer = player2;
+            //and the current player white
+            whitePlayer = player;
+        } else {
+            //put them in the midgame state
+            playerLobby.startPlayer(player2.getName());
+            //no longer called
+            player2.stopCallingPlayer();
+            //vice versa
+            redPlayer = player;
+            whitePlayer = player2;
         }
 
 
@@ -121,6 +144,7 @@ public class GetGameRoute implements Route {
 
 
         // render the View
+        System.out.println(player2.getName());
         return templateEngine.render(new ModelAndView(vm , "game.ftl"));
     }
 }

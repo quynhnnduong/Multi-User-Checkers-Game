@@ -102,6 +102,15 @@ public class PlayerLobby {
         player.startPlaying();
     }
 
+    public void setOpponentMatch(Player  player1, Player player2){
+        player1.setOpponent(player2);
+        player2.setOpponent(player1);
+    }
+
+    public Player getPlayerOpponent(Player player){
+        return player.getOpponent();
+    }
+
 
 
     /**

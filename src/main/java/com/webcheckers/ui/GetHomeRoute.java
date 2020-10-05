@@ -147,6 +147,16 @@ public class GetHomeRoute implements Route {
       // TODO: Put an if statement to check the
       vm.put(PLAYER_MSG_ATTR, playerLobby.getPlayerSize() + PLAYER_LOBBY_MSG);
 
+      //check if the current player has been called to a game
+      if (playerLobby.getPlayer(httpSession.attribute(PLAYER_NAME_ATTR)).getCallingPlayer()){
+        //get the name of the current player's opponent from player lobby
+        //Player opponent = new Player("dds");
+        Player opponent = playerLobby.getPlayerOpponent(playerLobby.getPlayer(httpSession.attribute(PLAYER_NAME_ATTR)));
+        String opponentName = opponent.getName();
+        //append it onto the game url so its a bootleg query param
+        response.redirect(WebServer.GAME_URL + "?opponent=" + opponentName);
+      }
+
 
 
 
@@ -160,6 +170,8 @@ public class GetHomeRoute implements Route {
 
     //this is a key that will toggle telling someone if the last opponent they selected is valid
     httpSession.attribute(LEGIT_OPPONENT, true);
+
+
 
       // render the View
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
