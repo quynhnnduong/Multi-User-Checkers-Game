@@ -86,16 +86,39 @@ public class GetGameRoute implements Route {
         LOG.finer("GetGameRoute is invoked.");
         //
         Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "Game");
-        vm.put("currentUser", player);
-        vm.put("loggedIn", true);
-        vm.put("viewMode", viewMode.PLAY);
-        vm.put("modeOptionsAsJSON", map);
-        vm.put("redPlayer", redPlayer);
-        vm.put("whitePlayer", whitePlayer);
-        vm.put("activeColor", activeColor.RED);
-        vm.put("board", boardView);
-        vm.put("message", message);
+
+
+        //check if the opponent is not currently playing a game
+        if (player2.getIsMidGame()){
+            //redirect and tell the current user that the person they picked is facing someone else
+            session.attribute(GetHomeRoute.LEGIT_OPPONENT, false);
+            response.redirect(WebServer.HOME_URL);
+        } else {
+
+
+            //this makes the current player's state be in game according to the httpSession
+            //for showing the error message of choosing to play against someone who's already in game
+            session.attribute(GetHomeRoute.MID_GAME_KEY, true);
+
+            //set the current and opponent's states to playing in playerLobby
+            playerLobby.startPlayer(player.getName());
+            playerLobby.startPlayer(player2.getName());
+
+            //TODO whenever we get to coding the win state, set all these to not playing
+        }
+
+
+            vm.put("title", "Game");
+            vm.put("currentUser", player);
+            vm.put("loggedIn", true);
+            vm.put("viewMode", viewMode.PLAY);
+            vm.put("modeOptionsAsJSON", map);
+            vm.put("redPlayer", redPlayer);
+            vm.put("whitePlayer", whitePlayer);
+            vm.put("activeColor", activeColor.RED);
+            vm.put("board", boardView);
+            vm.put("message", message);
+
 
         // render the View
         return templateEngine.render(new ModelAndView(vm , "game.ftl"));

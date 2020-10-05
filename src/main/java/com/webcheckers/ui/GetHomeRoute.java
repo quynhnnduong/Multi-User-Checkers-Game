@@ -40,6 +40,15 @@ public class GetHomeRoute implements Route {
   //Key in the session attribute map for the player who started the session stating that this player has interracted with the player lobby
   public static final String PLAYERLOBBY_KEY = "playerLobby";
 
+  //the key to determine if a player has entered a name that someone else has
+  public static final String LEGIT_NAME = "legitName";
+
+  //the key to determine if a player picked someone previously who wasn't already playing a game (or they didn't pick anyone)
+  public static final String LEGIT_OPPONENT = "legitOpponent";
+
+  //the key to determine if a player is currently playing a game
+  public static final String MID_GAME_KEY = "midGame";
+
   //this is the replacement for game center, and there will be one playerlobby created in Application that will be passed into
   //all the routes
   private PlayerLobby playerLobby;
@@ -80,15 +89,25 @@ public class GetHomeRoute implements Route {
     // retrieve something with httpSession.attribute(key)
     final Session httpSession = request.session();
 
+
+
     LOG.finer("GetHomeRoute is invoked.");
 
     Map<String, Object> vm = new HashMap<>();
+
+    //this makes the current player's state be in game according to the httpSession
+    //for showing the error message of choosing to play against someone who's already in game
+    httpSession.attribute(MID_GAME_KEY, false);
+
     vm.put("title", "Welcome!");
 
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
     //final PlayerLobby playerLobby = null;
     // access the currently logged in user
+
+    //checks if last person current player picked was mid game
+    boolean legitOpponent;
 
     // if this is a brand new browser session (a new challenger approaches)
     if (httpSession.attribute(PLAYERLOBBY_KEY) == null) {
@@ -98,9 +117,17 @@ public class GetHomeRoute implements Route {
       //one playerlobby that all the sessions will share
       httpSession.attribute(PLAYERLOBBY_KEY, playerLobby);
 
+      //this is a key that will toggle telling someone if the last opponent they selected is valid
+      httpSession.attribute(LEGIT_OPPONENT, true);
+
+      //this is a key that will toggle telling someone if the last name they put in getSignIn is valid
+      httpSession.attribute(LEGIT_NAME, true);
+
       // show the not signed in page
       vm.put(LOGGED_IN_ATTR, false);
       vm.put(PLAYER_MSG_ATTR, gameCenter.getPlayersMessage());
+
+      legitOpponent = true;
 
 
     } else {
@@ -110,6 +137,9 @@ public class GetHomeRoute implements Route {
       Player currentPlayer = playerLobby.getPlayer(httpSession.attribute(PLAYER_NAME_ATTR));
       vm.put("currentUser", currentPlayer);
 
+      //check if the last person they fought against was valid to choose whether or not to display the message
+      legitOpponent = httpSession.attribute(LEGIT_OPPONENT);
+
 
       //gets the players hashset to display all the players
       vm.put("playerList", playerLobby.getPlayers());
@@ -117,8 +147,19 @@ public class GetHomeRoute implements Route {
       // TODO: Put an if statement to check the
       vm.put(PLAYER_MSG_ATTR, playerLobby.getPlayerSize() + PLAYER_LOBBY_MSG);
 
-    }
 
+
+
+    }
+    vm.put(LEGIT_OPPONENT, legitOpponent);
+
+    //Anything below here is to reset when the page is reloaded
+
+    //this is a key that will toggle telling someone if the last name they put in getSignIn is valid
+    httpSession.attribute(LEGIT_NAME, true);
+
+    //this is a key that will toggle telling someone if the last opponent they selected is valid
+    httpSession.attribute(LEGIT_OPPONENT, true);
 
       // render the View
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));

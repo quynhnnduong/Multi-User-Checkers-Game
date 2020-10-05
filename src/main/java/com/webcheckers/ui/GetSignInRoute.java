@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 public class GetSignInRoute implements Route {
     private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
     private final TemplateEngine templateEngine;
+    private final String LEGIT_NAME_KEY = "legitName";
 
 
     /**
@@ -43,9 +44,16 @@ public class GetSignInRoute implements Route {
     public Object handle(Request request, Response response) throws Exception {
         final Session session = request.session();
 
+
+
+
         LOG.finer("GetSignInRoute is invoked.");
-        //
         Map<String, Object> vm = new HashMap<>();
+
+        // the key to tell someone if their last name for signin was taken by someone else (or there was none)
+        boolean legitName = session.attribute(GetHomeRoute.LEGIT_NAME);
+        vm.put(LEGIT_NAME_KEY, legitName);
+
         vm.put("title", "Sign in");
         vm.put("message", Message.info("Sign in with your username.")); // Sasha added this while trying to track a bug
 
