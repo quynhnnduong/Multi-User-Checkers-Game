@@ -22,6 +22,11 @@
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
 
+    <#if legitOpponent == false>
+      <p>That person is already playing with someone else, choose another opponent</p>
+
+    </#if>
+
 
     <#if loggedIn>
         <h1>Player Lobby</h1>

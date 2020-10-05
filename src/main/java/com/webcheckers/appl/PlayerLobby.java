@@ -86,6 +86,22 @@ public class PlayerLobby {
 
     public HashSet<Player> getPlayers(){ return players; }
 
+    /**
+     * turns a player from playing to not playing
+     */
+    public void stopPlayer(String name){
+        Player player = getPlayer(name);
+        player.stopPlaying();
+    }
+
+    /**
+     * turns a player from not playing to playing
+     */
+    public void startPlayer(String name){
+        Player player = getPlayer(name);
+        player.startPlaying();
+    }
+
 
 
     /**

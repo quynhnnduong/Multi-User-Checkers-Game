@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import static com.webcheckers.ui.GetHomeRoute.LEGIT_NAME;
+import static com.webcheckers.ui.GetHomeRoute.LEGIT_OPPONENT;
+
 /**
  * @author Joel Clyne (jmc4514)
  */
@@ -85,6 +88,9 @@ public class PostSignInRoute implements Route {
             //adds the name to the playerlobby.
             if(!playerLobby.addPlayer(name)){
                 vm.put("message", INVALID_NAME_MSG);
+                //this flag shows the message that the last name they put was taken by someone else
+                session.attribute(GetHomeRoute.LEGIT_NAME, false);
+
                 response.redirect(WebServer.SIGNIN_URL);
             }
 
@@ -105,6 +111,9 @@ public class PostSignInRoute implements Route {
             //redirect to the homepage
             response.redirect(WebServer.HOME_URL);
         }
+        //refresh the legit opponent bcs we're going to home.ftl
+        vm.put(LEGIT_OPPONENT, session.attribute(LEGIT_OPPONENT));
+
         // render the View
         return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }

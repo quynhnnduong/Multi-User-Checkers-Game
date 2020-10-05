@@ -13,6 +13,9 @@
 
         <!-- Provide a message to the user, if supplied. -->
         <#include "message.ftl" />
+        <#if legitName == false>
+            <p>Someone else already has that name, choose another one</p>
+        </#if>
 
         <form id="username" action="./signin" method="POST">
             <input name="text_field" required>
