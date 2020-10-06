@@ -110,7 +110,7 @@ public class GetGameRoute implements Route {
             //then tell playerLobby those two players are opponents
             playerLobby.setOpponentMatch(player, player2);
 
-            //TODO whenever we get to coding the win state, set all these to not playing, and remove the opponents from each other
+            //TODO whenever we get to coding the w in state, set all these to not playing, and remove the opponents from each other
         }
 
         //check if current player came in from a refresh of home.ftl - aka someone clicked on them and now they're being forced into a game
