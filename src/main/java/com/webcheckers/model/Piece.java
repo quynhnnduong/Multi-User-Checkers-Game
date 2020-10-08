@@ -1,51 +1,54 @@
 package com.webcheckers.model;
 
 /**
- * Model object to represent a piece
- * @author Shubhang Mehrotra
- *  Added returning Enum and constructor
- * @author Joel Clyne
+ * This class represents the domain object, checkers Pieces. A Piece has
+ * certain attributes (type, color) and occupies a Space on the
+ * checkers board (BoardView).
+ *
+ * @author Shubhang Mehrotra, Joel Clyne, Dmitry Selin
  */
 public class Piece {
 
-    private enum type{
+    /** An enumeration that distinguishes between the two types of checkers Pieces: King and Single */
+    enum Type{
         SINGLE,
         KING
     }
 
-    private enum color{
+    /** An enumeration of the only two colors that a checkers Piece can be: Black and Red */
+    enum Color {
         RED,
         WHITE
     }
 
-    private type rank;
-    private color clr;
+    /** The color of the checkers Piece */
+    private final Color color;
 
+    /** The type of checkers Piece this object is */
+    private Type type;
 
     /**
-     * Constructor for a piece they all start as a single
-     * @param clr the color of the piece
+     * Creates a new checkers Piece. Every Piece always starts
+     * as a SINGLE.
+     *
+     * @param color the color of the checkers Piece
      */
-    public Piece (color clr){
-        this.rank = type.SINGLE;
-        this.clr = clr;
+    public Piece (Color color){
+        type = Type.SINGLE;
+        this.color = color;
     }
 
     /**
-     Returns the pieces's color
-     * @return the enum of the piece's color
-     * @author Joel Clyne
+     * Returns the color of the checkers Piece
+     *
+     * @return an enumeration of the color of the checkers Piece
      */
-    public color getColor(){
-        return clr;
-    }
+    public Color getColor(){ return color; }
 
     /**
-     * Returns the pieces's type
-     * @return the enum of the piece's type
-     * @author Joel Clyne
+     * Returns the checkers Piece's type (KING or SINGLE)
+     *
+     * @return an enumeration of the checkers Piece's type
      */
-    public type getType(){
-        return rank;
-    }
+    public Type getType(){ return type; }
 }
