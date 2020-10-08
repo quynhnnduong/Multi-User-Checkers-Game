@@ -62,4 +62,11 @@ public class Space {
      * @return the Piece occupying the Space or null
      */
     public Piece getPiece(){ return piece; }
+
+    /**
+     * Simply returns the color of the Space.
+     *
+     * @return returns the enumerated color of the Space tile
+     */
+    public SpaceColor getColor() { return color; }
 }
