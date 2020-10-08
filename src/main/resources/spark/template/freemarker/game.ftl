@@ -67,7 +67,7 @@
                 <td data-cell="${space.cellIdx}">
                     <#if space.isValid() >
                     class="Space"
-                    </if>
+                    </#if>
                     >
                 <#if space.piece??>
                   <div class="Piece"
@@ -75,11 +75,11 @@
                        data-type="${space.piece.type}"
                        data-color="${space.piece.color}">
                   </div>
-                </if>
+                </#if>
                 </td>
-              </list>
+              </#list>
               </tr>
-            </list>
+            </#list>
             </tbody>
           </table>
         </div>
