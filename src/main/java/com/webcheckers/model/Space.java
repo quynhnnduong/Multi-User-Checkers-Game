@@ -1,51 +1,65 @@
 package com.webcheckers.model;
 
 /**
- * Model object to represent a Space in the row on the boards
- * @author Shubhang Mehrotra, Joel Clyne
+ * This class represents the "Space" domain object. This object is housed in a
+ * Row object and contains a potential "Piece" object that represents an occupying
+ * checkers Piece.
+ *
+ * @author Shubhang Mehrotra, Joel Clyne, Dmitry Selin
  */
 public class Space {
-    private int cellIdx;
-    private Piece piece;
+
+    /** The index of the Space within a Row of the checkers board */
+    private final int cellIdx;
+
+    /** The color of the Space tile */
+    private final SpaceColor color;
+
+    /** The Piece object occupying the Space */
+    private Piece piece = null;
 
     /**
-     * Constructor for creating a space on the board
-     * @param cellIdx index of cell
-     * @param piece the piece on current space
+     * Creates a new space on the checkers board.
+     *
+     * @param cellIdx index of the Space within a row
+     * @param color the color of the space
      */
-    public Space(int cellIdx, Piece piece){
+    public Space(int cellIdx, SpaceColor color){
         this.cellIdx = cellIdx;
-        this.piece = piece;
-
+        this.color = color;
     }
 
     /**
-     * Alt constructor for generating a space with no piece
-     * @param cellIdx index of cell
+     * Simply returns the index of the Space within a row (0-7)
+     *
+     * @return the index of the Space within a row
      */
-    public Space(int cellIdx){
-        this.cellIdx = cellIdx;
-    }
-
-    public int getCellIdx() {
-        return cellIdx;
-    }
+    public int getCellIdx() { return cellIdx; }
 
     /**
-     * method to check the validity of the space
-     * TODO: Reuires game logic to be written to check the validity of a space.
-     * @return boolean
+     * Places a Piece on this Space.
+     *
+     * @param piece the Piece that is to occupy this Space
      */
-    public boolean isValid(){
-        return true;
-    }
+    public void placePiece(Piece piece) { this.piece = piece; }
 
     /**
-     * gets the piece at the current space
-     * returns null if there is no piece there
-     * @return the piece at the current space
+     * This method simply returns a boolean that corresponds to if this Space is valid for a Piece
+     * to occupy it, meaning it meets the criteria...
+     *
+     * 1. The Space is colored black
+     *
+     * 2. The Space has nno other piece occupying it
+     *
+     * @return if the space is valid for a piece to occupy it
      */
-    public Piece getPiece(){
-        return piece;
-    }
+    public boolean isValid(){ return color == SpaceColor.BLACK && piece == null; }
+
+    /**
+     * Returns the Piece object that is occupying the Space - simply returns
+     * null if there is no Piece occupying the Space.
+     *
+     * @return the Piece occupying the Space or null
+     */
+    public Piece getPiece(){ return piece; }
 }
