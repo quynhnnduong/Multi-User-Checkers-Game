@@ -19,7 +19,7 @@ import static com.webcheckers.ui.GetHomeRoute.LEGIT_OPPONENT;
  */
 public class PostSignInRoute implements Route {
 
-    private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
+    private static final Logger LOG = Logger.getLogger(PostSignInRoute.class.getName());
     private final TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
     private GameCenter gameCenter;
