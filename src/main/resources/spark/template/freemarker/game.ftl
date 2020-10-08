@@ -64,10 +64,10 @@
             <#list board.iterator() as row>     <!-- go though each row. -->
               <tr data-row="${row.index}">      <!-- have an index in each row -->
               <#list row.iterator() as space>
-                <td data-cell="${space.cellIdx}">
+                <td data-cell="${space.cellIdx}"
                     <#if space.isValid() >
                     class="Space"
-                    </if>
+                    </#if>
                     >
                 <#if space.piece??>
                   <div class="Piece"
@@ -75,11 +75,11 @@
                        data-type="${space.piece.type}"
                        data-color="${space.piece.color}">
                   </div>
-                </if>
+                </#if>
                 </td>
-              </list>
+              </#list>
               </tr>
-            </list>
+            </#list>
             </tbody>
           </table>
         </div>
