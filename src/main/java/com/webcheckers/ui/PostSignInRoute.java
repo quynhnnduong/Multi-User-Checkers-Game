@@ -15,6 +15,7 @@ import static com.webcheckers.ui.GetHomeRoute.LEGIT_NAME;
 import static com.webcheckers.ui.GetHomeRoute.LEGIT_OPPONENT;
 
 /**
+ * Class that defines the route that retrieves the App view after signing in.
  * @author Joel Clyne (jmc4514)
  */
 public class PostSignInRoute implements Route {
