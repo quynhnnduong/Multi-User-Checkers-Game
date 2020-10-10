@@ -61,8 +61,8 @@ public class PostSignOutRoute implements Route {
 
         // Create the view-model map and add values that will be displayed in the sign in page.
         Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "Sign in");
-        vm.put("message", Message.info("Sign in with your username."));
+        vm.put("title", "Sign Out");
+        vm.put("message", Message.info("Are you sure you want to sign out?"));
 
         // Clean up the current player's presence in the game.
         // Remove from Player Lobby.
