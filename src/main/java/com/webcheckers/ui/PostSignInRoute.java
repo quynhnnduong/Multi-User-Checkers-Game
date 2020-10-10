@@ -41,11 +41,9 @@ public class PostSignInRoute implements Route {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
         this.playerLobby = playerLobby;
         this.gameCenter = gameCenter;
-        //
+
         LOG.config("PostSignInRoute is initialized.");
     }
-
-
 
     /**
      * @author Joel Clyne
@@ -63,16 +61,12 @@ public class PostSignInRoute implements Route {
     public Object handle(Request request, Response response) throws Exception {
         LOG.finer("PostSignInRoute is invoked.");
 
-        /** TODO Get the name, create and add a new Player to the Player Lobby? (i don't think a route can create a player
-         * Then after we redirect to home, put the players in the player lobby
-         * to the vm and insert them into signin.ftl under the condition that
-         * the state of the player/game is IsLoggedOn. Not sure. -Sasha
-         */
-
         // retrieve the game object
         final Session session = request.session();
+
         Map<String, Object> vm = new HashMap<>();
         //final PlayerLobby playerServices = session.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+
         //if there is a session here - someone has already logged in
         if (session.attribute(PLAYERLOBBY_KEY) != null){
 
@@ -82,7 +76,7 @@ public class PostSignInRoute implements Route {
 
             vm.put("title", "Welcome!");
 
-            //this adds the the name of the player to the current session - add the name to playerlobby later
+            // Save the player's name in the session
             session.attribute(PLAYER_NAME_ATTR, name);
 
             //adds the name to the playerlobby.
@@ -100,11 +94,6 @@ public class PostSignInRoute implements Route {
             vm.put(LOGGED_IN_ATTR, true);
             //the current player of the session is the current user
             vm.put("currentUser", playerLobby.getPlayer(session.attribute(PLAYER_NAME_ATTR)));
-
-
-            //they are logged in, unnecessary since if you've arrived on this post page, that means that you just signed in
-            //although I did keep the logged in attr up there so  it doesn't break
-            //vm.put("isSignedIn", playerLobby.getPlayer(session.attribute(PLAYER_NAME_ATTR)).getIsSignedIn());
 
         } else {
             //panic bcs that's not supposed to happen

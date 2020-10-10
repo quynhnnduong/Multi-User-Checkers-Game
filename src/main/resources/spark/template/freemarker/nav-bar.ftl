@@ -4,7 +4,7 @@
 
  <#if loggedIn>
     <a href="/">my home</a> |
-    <form id="signout" action="./" method="get">
+    <form id="signout" action="./signout" method="post">
       <a href="#" onclick="event.preventDefault(); signout.submit();">sign out [${currentUser.getName()}]</a>
     </form>
   <#else>

@@ -55,7 +55,7 @@ public class GetSignInRoute implements Route {
         catch (NullPointerException ignored) {}
 
         vm.put("title", "Sign in");
-        vm.put("message", Message.info("Sign in with your username.")); // Sasha added this while trying to track a bug
+        vm.put("message", Message.info("Sign in with your username."));
 
         // render the View
         return templateEngine.render(new ModelAndView(vm , "signIn.ftl"));
