@@ -75,7 +75,6 @@ define(function (require) {
       jQuery.ajax(makeAjaxOptionsWithActionData(actionURL, actionData, callback, callbackContext));
     }
   };
-
   //
   // Private functions
   //

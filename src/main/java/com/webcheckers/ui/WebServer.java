@@ -69,6 +69,8 @@ public class WebServer {
    */
   public static final String GAME_URL = "/game";
 
+  public static final String RESIGN_URL = "/resignGame";
+
   //
   // Attributes
   //
@@ -166,6 +168,10 @@ public class WebServer {
 
     //shows the game page
     get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
+
+    //handles the resign call
+    post(RESIGN_URL, new PostResignGame(templateEngine, playerLobby));
+
     //
     LOG.config("WebServer is initialized.");
   }

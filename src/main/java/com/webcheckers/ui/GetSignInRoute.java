@@ -44,9 +44,6 @@ public class GetSignInRoute implements Route {
     public Object handle(Request request, Response response) throws Exception {
         final Session session = request.session();
 
-
-
-
         LOG.finer("GetSignInRoute is invoked.");
         Map<String, Object> vm = new HashMap<>();
 
