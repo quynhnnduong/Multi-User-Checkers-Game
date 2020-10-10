@@ -69,6 +69,8 @@ public class WebServer {
    */
   public static final String GAME_URL = "/game";
 
+  public static final String SIGN_OUT = "/resignGame";
+
   //
   // Attributes
   //
