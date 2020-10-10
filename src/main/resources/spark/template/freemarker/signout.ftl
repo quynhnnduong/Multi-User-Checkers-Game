@@ -10,7 +10,7 @@
 <body>
 <div class="page">
     <!-- Provide a navigation bar -->
-    <#include "nav-bar.ftl" />
+    <!--#include "nav-bar.ftl" /-->
 
 
     <div class="body">

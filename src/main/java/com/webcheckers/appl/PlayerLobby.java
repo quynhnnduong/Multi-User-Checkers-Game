@@ -156,5 +156,20 @@ public class PlayerLobby {
         return name.matches("[A-Za-z0-9 ]+");
     }
 
+    /**
+     * Prints all the players in the player lobby.
+     * Purely for debugging purposes, we can remove it later!
+     * @return String
+     * @author Sasha Persaud
+     */
+    public String printPlayers(){
+        StringBuilder playerString = new StringBuilder();
+        for (Player p : players) {
+            playerString.append(p.getName());
+            playerString.append(" ");
+        }
+        return playerString.toString();
+    }
+
 }
 

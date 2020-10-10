@@ -38,6 +38,7 @@ public class PostSignOutRoute implements Route {
     public PostSignOutRoute(final TemplateEngine templateEngine, final GameCenter gameCenter, PlayerLobby playerLobby) {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
         this.playerLobby = playerLobby;
+        System.out.println("The Player Lobby at the time of the PostSignOut route invocation looks like: " + playerLobby.printPlayers());
         this.gameCenter = gameCenter;
 
         LOG.config("PostSignOutRoute is initialized.");
@@ -69,6 +70,6 @@ public class PostSignOutRoute implements Route {
 
 
         // render the View
-        return templateEngine.render(new ModelAndView(vm , "signIn.ftl"));
+        return templateEngine.render(new ModelAndView(vm , "signout.ftl"));
     }
 }
