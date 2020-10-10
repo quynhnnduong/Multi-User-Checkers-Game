@@ -111,7 +111,9 @@ public class PlayerLobby {
         return player.getOpponent();
     }
 
-
+    public int createGameId(Player currentPlayer, Player opponent){
+        return gameCenter.generateGameID(currentPlayer, opponent);
+    }
 
     /**
      * Get all of the players

@@ -86,6 +86,9 @@ public class GetGameRoute implements Route {
         // Logs a FINER invocation message
         LOG.finer("GetGameRoute is invoked.");
 
+        // Creates the HashMap to house all the freemarker components
+        Map<String, Object> vm = new HashMap<>();
+
         // Checks if opponent is not in an existing game
         if (opponent.getIsMidGame() && !opponent.getCallingPlayer()) {
 
@@ -107,7 +110,13 @@ public class GetGameRoute implements Route {
             // Inform PlayerLobby that currentPlayer and opponent are now playing
             playerLobby.setOpponentMatch(currentPlayer, opponent);
 
-            //TODO whenever we get to coding the w in state, set all these to not playing, and remove the opponents from each other
+            // Create a gameID for the current game using the names of the players
+            int gameID = playerLobby.createGameId(currentPlayer, opponent);
+
+            // Add it to the VM
+            vm.put("gameID", gameID);
+
+            //TODO whenever we get to coding the win state, set all these to not playing, and remove the opponents from each other
         }
 
         Player redPlayer;
@@ -131,8 +140,6 @@ public class GetGameRoute implements Route {
             whitePlayer = opponent;
         }
 
-        // Creates the HashMap to house all the freemarker components
-        Map<String, Object> vm = new HashMap<>();
 
         // Adds all freemarker components to the HashMap
         vm.put("title", "Game");

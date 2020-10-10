@@ -69,6 +69,11 @@ public class WebServer {
    */
   public static final String GAME_URL = "/game";
 
+  /**
+   * The URL pattern to request the validate move page
+   */
+  public static final String VALIDATE_URL = "/validateMove";
+
   //
   // Attributes
   //
@@ -166,7 +171,9 @@ public class WebServer {
 
     //shows the game page
     get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
-    //
+    //sends a move for validation submission
+    post(VALIDATE_URL, new PostValidateMoveRoute(templateEngine, playerLobby));
+
     LOG.config("WebServer is initialized.");
   }
 
