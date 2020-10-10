@@ -14,6 +14,7 @@
 
     <div class="body">
         <a href="/signin">Yes, please!</a>
+        <a href="/">No, thank you!</a>
     </div>
 
 </div>
