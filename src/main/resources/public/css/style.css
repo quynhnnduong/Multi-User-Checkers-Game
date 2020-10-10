@@ -135,3 +135,31 @@ button.game {
   width: 100px;
   margin: 10px;
 }
+
+/* Styling of inline buttons.
+   author: Sasha Persaud
+*/
+.inline-buttons button {
+  background-color: #9ee9f0; /* Green background */
+  border: 1px #9ee9f0; /* Green border */
+  color: white; /* White text */
+  padding: 10px 24px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  float: left; /* Float the buttons side by side */
+}
+
+.inline-buttons button:not(:last-child) {
+  border-right: none; /* Prevent double borders */
+}
+
+/* Clear floats (clearfix hack) */
+.inline-buttons:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Add a background color on hover */
+.inline-buttons button:hover {
+  background-color: #ffd1fa;
+}

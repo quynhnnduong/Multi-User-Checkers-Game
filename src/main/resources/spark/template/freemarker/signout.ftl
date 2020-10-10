@@ -10,11 +10,18 @@
 <body>
 <div class="page">
 
+    <!-- Ask the user if they truly want to sign out. -->
     <#include "message.ftl" />
 
-    <div class="body">
-        <a href="/signin">Yes, please!</a>
-        <a href="/">No, thank you!</a>
+    <!-- Confirmation and cancel buttons. -->
+    <div class="inline-buttons">
+        <form method="get" action="/signin">
+            <button>Yes, please!</button>
+        </form>
+
+        <form method="get" action="/">
+            <button>No, thank you!</button>
+        </form>
     </div>
 
 </div>
