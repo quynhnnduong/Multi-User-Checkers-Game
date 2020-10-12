@@ -36,6 +36,10 @@ public class PlayerLobby {
     }
 
 
+    public HashSet<Player> getPlayerLobby() {
+        return players;
+    }
+
     /**
      * Adds new player to the players map.
      * @param name name of player to add
