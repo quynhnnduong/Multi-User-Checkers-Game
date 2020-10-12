@@ -1,8 +1,7 @@
-package com.webcheckers.ui;
+package com.webcheckers;
 
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.model.Player;
 import com.webcheckers.util.Message;
 import spark.*;
 
@@ -10,9 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
-
-import static com.webcheckers.ui.GetHomeRoute.LEGIT_NAME;
-import static com.webcheckers.ui.GetHomeRoute.LEGIT_OPPONENT;
 
 /**
  * @author Joel Clyne (jmc4514)
@@ -112,7 +108,7 @@ public class PostSignInRoute implements Route {
             response.redirect(WebServer.HOME_URL);
         }
         //refresh the legit opponent bcs we're going to home.ftl
-        vm.put(LEGIT_OPPONENT, session.attribute(LEGIT_OPPONENT));
+        vm.put(GetHomeRoute.LEGIT_OPPONENT, session.attribute(GetHomeRoute.LEGIT_OPPONENT));
 
         // render the View
         return templateEngine.render(new ModelAndView(vm , "home.ftl"));

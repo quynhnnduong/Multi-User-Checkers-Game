@@ -1,9 +1,8 @@
-package com.webcheckers.ui;
+package com.webcheckers;
 
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.BoardView;
 import com.webcheckers.model.Player;
-import com.webcheckers.util.Message;
 import spark.*;
 
 import java.util.HashMap;
@@ -11,7 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import static com.webcheckers.ui.PostSignInRoute.PLAYER_NAME_ATTR;
+import static com.webcheckers.PostSignInRoute.PLAYER_NAME_ATTR;
 
 /**
  * This UI component represents the action of Players joining a checkers game. The

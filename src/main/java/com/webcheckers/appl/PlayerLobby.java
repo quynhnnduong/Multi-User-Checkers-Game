@@ -47,6 +47,7 @@ public class PlayerLobby {
             players.add(newPlayer);             // TODO: (Sasha) Information Expert: Should isNameValid be
                                                 // contained in the Player class, since it concerns Player data,
                                                 // not PlayerLobby data?
+            gameCenter.addPlayerToLobby();
             return true;
         }
         return false;
