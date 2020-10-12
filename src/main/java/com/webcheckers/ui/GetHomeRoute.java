@@ -157,9 +157,6 @@ public class GetHomeRoute implements Route {
         response.redirect(WebServer.GAME_URL + "?opponent=" + opponentName);
       }
 
-
-
-
     }
     vm.put(LEGIT_OPPONENT, legitOpponent);
 
