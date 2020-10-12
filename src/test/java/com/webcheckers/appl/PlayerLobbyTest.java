@@ -11,4 +11,17 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @Tag("Application-tier")
 public class PlayerLobbyTest {
+
+    /**
+     *Test the ability to make a new Game Center.
+     */
+    @Test
+    public void testMakePlayerLobby(){
+        final GameCenter gameCenter = new GameCenter();
+        final PlayerLobby CuT = new PlayerLobby(gameCenter);
+        //Analyze results
+        assertNotNull(CuT);
+    }
+
+
 }

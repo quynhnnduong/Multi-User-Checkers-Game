@@ -15,6 +15,7 @@ public class GameCenterTest {
     /**
      *Test the ability to make a new PlayerLobby.
      */
+    @Test
     public void testMakePlayerLobby(){
         final GameCenter CuT = new GameCenter();
         //invoke test

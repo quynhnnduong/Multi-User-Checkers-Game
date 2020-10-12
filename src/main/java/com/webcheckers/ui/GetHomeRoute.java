@@ -1,4 +1,4 @@
-package com.webcheckers;
+package com.webcheckers.ui;
 
 import java.util.HashMap;
 import java.util.Map;

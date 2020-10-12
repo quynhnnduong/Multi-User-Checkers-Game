@@ -23,7 +23,7 @@ public class GameCenter {
     //PlayerLobby Object
     private PlayerLobby playerLobby = newPlayerLobby();
 
-    int PlayerLobbySize = 0;
+    private int PlayerLobbySize = 0;
 
     public void addPlayerToLobby(){
         this.PlayerLobbySize++;
@@ -37,7 +37,7 @@ public class GameCenter {
      */
     public String getPlayersMessage() {
         if(PlayerLobbySize >= 1) {
-            return String.format(PLAYERS_ONLINE, playerLobby.getPlayerSize());
+            return String.format(PLAYERS_ONLINE, PlayerLobbySize);
         } else {
             return NO_PLAYERS;
         }

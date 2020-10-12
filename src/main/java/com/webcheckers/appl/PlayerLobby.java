@@ -104,6 +104,11 @@ public class PlayerLobby {
         player.startPlaying();
     }
 
+    /**
+     *
+     * @param player1
+     * @param player2
+     */
     public void setOpponentMatch(Player  player1, Player player2){
         player1.setOpponent(player2);
         player2.setOpponent(player1);
