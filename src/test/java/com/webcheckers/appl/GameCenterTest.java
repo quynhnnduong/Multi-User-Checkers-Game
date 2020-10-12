@@ -12,9 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @Tag("Application-tier")
 public class GameCenterTest {
-    public final String PLAYERS_ONLINE = ("%d Players are online. \n Join them!");
-    public final String NO_PLAYERS = ("No one is playing Web Checkers right now :(");
-
     /**
      *Test the ability to make a new PlayerLobby.
      */
@@ -33,7 +30,7 @@ public class GameCenterTest {
     @Test
     public void testGetPlayersMessage_0(){
         final GameCenter CuT = new GameCenter();
-        assertEquals(CuT.getPlayersMessage(), NO_PLAYERS);
+        assertEquals(CuT.getPlayersMessage(), CuT.NO_PLAYERS);
     }
 
     /**
@@ -45,7 +42,7 @@ public class GameCenterTest {
 
         CuT.addPlayerToLobby(); //simulate one player being added to lobby
 
-        assertEquals(CuT.getPlayersMessage(), String.format(PLAYERS_ONLINE, 1));
+        assertEquals(CuT.getPlayersMessage(), String.format(CuT.PLAYERS_ONLINE, 1));
     }
 
     /**
@@ -58,7 +55,7 @@ public class GameCenterTest {
         CuT.addPlayerToLobby(); //simulate two players being added to lobby
         CuT.addPlayerToLobby();
 
-        assertEquals(CuT.getPlayersMessage(), String.format(PLAYERS_ONLINE, 2));
+        assertEquals(CuT.getPlayersMessage(), String.format(CuT.PLAYERS_ONLINE, 2));
     }
 
     /**
@@ -72,7 +69,7 @@ public class GameCenterTest {
         CuT.addPlayerToLobby();
         CuT.addPlayerToLobby();
 
-        assertEquals(CuT.getPlayersMessage(), String.format(PLAYERS_ONLINE, 3));
+        assertEquals(CuT.getPlayersMessage(), String.format(CuT.PLAYERS_ONLINE, 3));
     }
 
 }
