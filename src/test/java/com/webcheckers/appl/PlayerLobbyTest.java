@@ -113,12 +113,13 @@ public class PlayerLobbyTest {
     @Test
     public void testStopPlayer(){
         // same with stopPlayer() as with startPlayer()
+        CuT.stopPlayer("Player1");
     }
 
 
     @Test
     public void testSetOpponentMatch(){
-        Player player1 = new Player("PLayer1");
+        Player player1 = new Player("Player1");
         Player player2 = new Player("Player2");
         CuT.setOpponentMatch(player1, player2);
         assertEquals(player2, player1.getOpponent());
@@ -126,11 +127,21 @@ public class PlayerLobbyTest {
 
     @Test
     public void testGetPlayerOpponent(){
-
+        Player player1 = new Player("Player1");
+        Player player2 = new Player("Player2");
+        CuT.setOpponentMatch(player1, player2);
+        assertEquals(player2, CuT.getPlayerOpponent(player1));
     }
 
 
     @Test
-    public void testIsNameValid(){}
+    public void testIsNameValid(){
+        // Not sure if only numerical values for a name is valid or not
+        assert(CuT.isNameValid("Player"));
+        assert(CuT.isNameValid("Player1"));
+        assert(CuT.isNameValid("Player 1"));
+        assert(CuT.isNameValid("1"));
+        assert(!CuT.isNameValid("Player1!"));
+    }
 
 }
