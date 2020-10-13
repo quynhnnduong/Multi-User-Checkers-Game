@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
+import static com.webcheckers.ui.PostSignInRoute.PLAYER_NAME_ATTR;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -41,6 +42,8 @@ public class GetGameRouteTest {
         when(request.session()).thenReturn(session);
         response = mock(Response.class);
         engine = mock(TemplateEngine.class);
+        playerLobby = mock(PlayerLobby.class);
+        gameCenter = mock(GameCenter.class);
 
         // create a unique CuT for each test
         CuT = new GetGameRoute(engine, playerLobby);
@@ -51,20 +54,22 @@ public class GetGameRouteTest {
     @Test
     public void new_game() {
         //create playerLobby and it's 2 players
-        gameCenter = new GameCenter();
-        playerLobby = new PlayerLobby(gameCenter);
+        //gameCenter = new GameCenter();
+        //playerLobby = new PlayerLobby(gameCenter);
         playerLobby.addPlayer("Player1");
-        Player player1 = playerLobby.getPlayer("Player1");
         playerLobby.addPlayer("Player2");
+        //Player player1 = new Player("Player1");
+
         //make them play a game against each other
         playerLobby.setOpponentMatch(playerLobby.getPlayer("Player1"), playerLobby.getPlayer("Player2"));
+
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
         // Arrange the test scenario: 2 users join a game
 
         //the current player is player 1
-        session.attribute("currentUser", player1);
-
+        //session.attribute(PLAYER_NAME_ATTR, "Player1");
+        when(session.attribute(PLAYER_NAME_ATTR)).thenReturn("Player1");
         //the opponent is player 2
         when(request.queryParams(eq("Player2"))).thenReturn(testHelper.toString());
         // Invoke the test
@@ -72,6 +77,7 @@ public class GetGameRouteTest {
             CuT.handle(request, response);
         } catch (Exception e){
             System.out.println("Route returned an exception during execution");
+            e.printStackTrace();
         }
 
         // Analyze the content passed into the render method
