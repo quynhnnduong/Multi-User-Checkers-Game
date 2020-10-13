@@ -24,16 +24,27 @@ public class PieceTest {
     public Piece singleWhite = new Piece(whitePiece);
 
 
-
     /** Tests the constructor of Space */
     @Test
-    public void piece_constructor() {
+    public void piece_constructor(){
+        // Ensures that the instance variables are initialized correctly
+        assertSame(singleRed.getType(), singleType);
+        assertSame(singleRed.getColor(), redPiece);
+    }
+
+    /** Tests the getColor() method of Piece */
+    @Test
+    public void getColorPiece() {
 
         // Ensures that the instance variables are initialized correctly
         assertEquals(redPiece, singleRed.getColor());
         assertEquals(whitePiece, singleWhite.getColor());
-        assertEquals(singleType, singleRed.getType());
+    }
 
+    /** Tests the getType() method of Piece */
+    @Test
+    public void getTypePiece(){
+        assertEquals(singleType, singleRed.getType());
     }
 
 
