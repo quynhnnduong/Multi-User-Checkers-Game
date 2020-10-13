@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -13,94 +14,84 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("Model-tier")
 public class PlayerTest {
 
+    /** Component under test (Player Class) */
+    private Player CuT;
+
     /** A placeholder string for creating a testable instance of Player */
     private final String NAME = "TestName";
+
+    /** This is run before every test to create a fresh CuT object for each test */
+    @BeforeEach
+    public void setup() { CuT = new Player(NAME); }
 
     /** Tests the constructor of Player */
     @Test
     public void player_constructor() {
-        final Player player = new Player(NAME);
 
         // Ensures that the instance variables have been initialized correctly
-        assertEquals(NAME, player.getName());
-        assertTrue(player.getIsSignedIn());
-        assertFalse(player.getIsMidGame());
-        assertFalse(player.getCallingPlayer());
+        assertEquals(NAME, CuT.getName());
+        assertTrue(CuT.getIsSignedIn());
+        assertFalse(CuT.getIsMidGame());
+        assertFalse(CuT.getCallingPlayer());
     }
 
     /** Tests the getName() method of Player */
     @Test
-    public void name_not_null() {
-        final Player player = new Player(NAME);
-
-        assertNotNull(player.getName());
-    }
+    public void name_not_null() { assertNotNull(CuT.getName()); }
 
     /** Tests the signIn() method of Player */
     @Test
     public void sign_in() {
-        final Player player = new Player(NAME);
-        player.signOut();
+        CuT.signOut();
 
-        assertFalse(player.getIsSignedIn());
-        player.signIn();
-        assertTrue(player.getIsSignedIn());
+        assertFalse(CuT.getIsSignedIn());
+        CuT.signIn();
+        assertTrue(CuT.getIsSignedIn());
     }
 
     /** Tests the signOut() method of Player */
     @Test
     public void sign_out() {
-        final Player player = new Player(NAME);
-
-        player.signOut();
-        assertFalse(player.getIsSignedIn());
+        CuT.signOut();
+        assertFalse(CuT.getIsSignedIn());
     }
 
     /** Tests the startPlaying() method of Player */
     @Test
     public void start_playing() {
-        final Player player = new Player(NAME);
-
-        player.startPlaying();
-        assertTrue(player.getIsMidGame());
+        CuT.startPlaying();
+        assertTrue(CuT.getIsMidGame());
     }
 
     /** Tests the stopPlaying() method of Player */
     @Test
     public void stop_playing() {
-        final Player player = new Player(NAME);
-
-        player.startPlaying();
-        player.stopPlaying();
-        assertFalse(player.getIsMidGame());
+        CuT.startPlaying();
+        CuT.stopPlaying();
+        assertFalse(CuT.getIsMidGame());
     }
 
     /** Tests the startCallingPlayer() method of Player */
     @Test
     public void start_calling_player() {
-        final Player player = new Player(NAME);
-
-        player.startCallingPlayer();
-        assertTrue(player.getCallingPlayer());
+        CuT.startCallingPlayer();
+        assertTrue(CuT.getCallingPlayer());
     }
 
     /** Tests the stopCallingPlayer() method of Player */
     @Test
     public void stop_calling_player() {
-        final Player player = new Player(NAME);
-
-        player.startCallingPlayer();
-        player.stopCallingPlayer();
-        assertFalse(player.getCallingPlayer());
+        CuT.startCallingPlayer();
+        CuT.stopCallingPlayer();
+        assertFalse(CuT.getCallingPlayer());
     }
 
     /** Tests the setOpponent() and getOpponent() methods of Player */
     @Test
     public void set_opponent() {
-        final Player player = new Player(NAME);
-        assertNull(player.getOpponent());
+        assertNull(CuT.getOpponent());
 
-        player.setOpponent(new Player(NAME));
-        assertNotNull(player.getOpponent());
+        CuT.setOpponent(new Player(NAME));
+        assertNotNull(CuT.getOpponent());
     }
 }
