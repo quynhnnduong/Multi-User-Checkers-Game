@@ -91,16 +91,25 @@ public class PlayerLobbyTest {
     }
 
     /**
-     *Test
+     *Test the ability to remove a player from the lobby.
      */
     @Test
-    public void testRemovePlayerFromLobby(){}
+    public void testRemovePlayerFromLobby(){
+        CuT.addPlayer("Player1");
+        CuT.addPlayer("Player2");
+        CuT.addPlayer("Player3");
+        Player player = CuT.getPlayer("Player3");
+        CuT.removePlayer(player);
+        assertEquals(2, CuT.getPlayerSize());
+    }
 
     /**
      *Test
      */
     @Test
-    public void testGetPlayerLobby(){}
+    public void testGetPlayerLobby(){
+
+    }
 
     /**
      *Test
