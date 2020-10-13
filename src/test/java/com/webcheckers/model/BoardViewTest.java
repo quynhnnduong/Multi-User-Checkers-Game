@@ -8,8 +8,6 @@ import static com.webcheckers.model.BoardView.BOARD_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BoardViewTest {
-
-    private ArrayList<Row> rowArrayList;
     /**
      * Test that the constructor works with no arg
      */
@@ -19,12 +17,13 @@ public class BoardViewTest {
     /**
      * Test that the constructor works with row[] arg
      */
-    public void bv_rowArr(){new BoardView(rowArrayList);}
+    @Test
+    public void bv_rowArr(){new BoardView(new ArrayList<Row>());}
 
     /**
      * Test that leading board spaces are the correct color
      */
-
+    @Test
     public void bv_initColors(){
         BoardView bv = new BoardView();
         bv.generateBoard();

@@ -67,10 +67,6 @@ public class GetGameRouteTest {
 
         //the opponent is player 2
         when(request.queryParams(eq("Player2"))).thenReturn(testHelper.toString());
-
-
-        //when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-
         // Invoke the test
         try {
             CuT.handle(request, response);
@@ -94,5 +90,8 @@ public class GetGameRouteTest {
         //check if player 2 is white
         testHelper.assertViewModelAttribute("whitePlayer", playerLobby.getPlayer("player2"));
     }
+
+
+
 
 }
