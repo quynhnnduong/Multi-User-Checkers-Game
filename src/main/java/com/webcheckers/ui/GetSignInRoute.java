@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public class GetSignInRoute implements Route {
     private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
     private final TemplateEngine templateEngine;
-    private final String LEGIT_NAME_KEY = "legitName";
+    public static final String LEGIT_NAME_KEY = "legitName";
 
 
     /**
