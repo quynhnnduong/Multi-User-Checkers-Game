@@ -103,20 +103,6 @@ public class PlayerLobbyTest {
         assertEquals(2, CuT.getPlayerSize());
     }
 
-
-    @Test
-    public void testStartPlayer(){
-        // this function creates a new player object, it doesn't affect an existing Player with the provided name
-        CuT.startPlayer("Player1");
-    }
-
-    @Test
-    public void testStopPlayer(){
-        // same with stopPlayer() as with startPlayer()
-        CuT.stopPlayer("Player1");
-    }
-
-
     @Test
     public void testSetOpponentMatch(){
         Player player1 = new Player("Player1");
