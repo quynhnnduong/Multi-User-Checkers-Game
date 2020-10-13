@@ -20,6 +20,9 @@ public class GetSignInRouteTest {
     private Session session;
     private Response response;
 
+    /**
+     * Setup new mock objects for each test.
+     */
     @BeforeEach
     public void setup() {
         request = mock(Request.class);
