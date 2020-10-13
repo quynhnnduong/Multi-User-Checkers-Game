@@ -77,6 +77,7 @@ public class PostSignInRoute implements Route {
             final String name = request.queryParams("text_field");
 
             vm.put("title", "Welcome!");
+            System.out.println("Title should be welcome");
 
             //this adds the the name of the player to the current session - add the name to playerlobby later
             session.attribute(PLAYER_NAME_ATTR, name);
@@ -105,6 +106,7 @@ public class PostSignInRoute implements Route {
         } else {
             //panic bcs that's not supposed to happen
             //redirect to the homepage
+            System.out.println("Uh oh...");
             response.redirect(WebServer.HOME_URL);
         }
         //refresh the legit opponent bcs we're going to home.ftl

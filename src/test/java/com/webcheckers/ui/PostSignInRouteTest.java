@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -37,15 +40,18 @@ public class PostSignInRouteTest {
      */
     @BeforeEach
     public void setup(){
+        // create mocks
         request = mock(Request.class);
         session = mock(Session.class);
-        when(request.session()).thenReturn(session); // Shubhang what's this?
+        when(request.session()).thenReturn(session);
         response = mock(Response.class);
         engine = mock(TemplateEngine.class);
-        playerLobby = mock(PlayerLobby.class);
 
+        // create friendlies
         gameCenter = new GameCenter();
+        playerLobby = new PlayerLobby(gameCenter);
 
+        // create a new CuT for each test
         CuT = new PostSignInRoute(engine, gameCenter, playerLobby);
     }
 
@@ -53,11 +59,16 @@ public class PostSignInRouteTest {
      * Test that CuT shows the SignIn view when the session is brand new.
      */
     @Test
-    public void PreSignIn() throws Exception {
+    public void PostSignInView() throws Exception {
+        // Set up the test
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        playerLobby.addPlayer("Player1");
+        session.attribute("playerlobby", playerLobby);
+        session.attribute("session_key", PostSignInRoute.PLAYERLOBBY_KEY);
 
-        // Invoke the test
+        // Invoke the test: a user signs in
+        System.out.println("Invoking test...");
         CuT.handle(request, response);
 
         // Analyze the results:
@@ -66,35 +77,16 @@ public class PostSignInRouteTest {
         testHelper.assertViewModelIsaMap();
 
         //   * model contains all necessary View-Model data
-        testHelper.assertViewModelAttribute("message", "Sign in with your username.");
-        testHelper.assertViewModelAttribute(GetHomeRoute.PLAYER_MSG_ATTR, gameCenter.NO_PLAYERS);
+        testHelper.assertViewModelAttribute("title", "Welcome!");
         testHelper.assertViewModelAttribute(GetHomeRoute.PLAYER_NAME_ATTR, playerLobby.getPlayer(""));
-
         //   * test view name
-        testHelper.assertViewName("signIn.ftl");
+        testHelper.assertViewName("home.ftl");
 
-        //   * verify the player lobby object
-        verify(session).attribute(eq(GetHomeRoute.PLAYERLOBBY_KEY), any(PlayerLobby.class));
+        //   * verify the session
+        verify(session).attribute(eq(PostSignInRoute.PLAYERLOBBY_KEY));
+
     }
 
 
-//    /**
-//     * Test that CuT redirects to the Game view when a @Linkplain(PlayerServices) object exists.
-//     */
-//    @Test
-//    public void postSignIn() {
-//        final TemplateEngineTester testHelper = new TemplateEngineTester();
-//        when(session.attribute(GetHomeRoute.PLAYERLOBBY_KEY)).thenReturn(gameCenter.newPlayerLobby());
-//        // Invoke the test
-//        try {
-//            CuT.handle(request, response);
-//            fail("Redirects invoke halt exceptions.");
-//        } catch (HaltException e) {
-//            // expected
-//        }
-//
-//        // Analyze the results:
-//        //   * redirect to the Game view
-//        verify(response).redirect(WebServer.GAME_URL);
-//    }
+
 }
