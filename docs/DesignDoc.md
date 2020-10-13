@@ -9,16 +9,20 @@ geometry: margin=1in
 > and appear in the generated PDF in italics._
 
 ## Team Information
-* Team name: TEAMNAME
+* Team name: s2a-Momo
 * Team members
-  * MEMBER1
-  * MEMBER2
-  * MEMBER3
-  * MEMBER4
+  * Shubhang Mehrotra (sm9943)
+  * Joel Clyne (jmc4514)
+  * Sasha Persaud (srp4581)
+  * Quynh Duong (quynhnnduong)
+  * Dmitry Selin (des3358)
 
 ## Executive Summary
 
-This is a summary of the project.
+The Online WebCheckers project is a Web-based application which aims to provide its users with the functionality to play 
+checkers online and in real-time, against any other online player. 
+To achieve the functionality, the system has been designed on Spark Framework with a FreeMarker Template. 
+The bedrock of the application is formed of Java, Javascript, HTML and CSS 
 
 ### Purpose
 > _Provide a very brief statement about the project and the most
