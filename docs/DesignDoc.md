@@ -118,26 +118,33 @@ with the WebCheckers application.
 > _Provide a summary of the application's user interface.  Describe, from
 > the user's perspective, the flow of the pages in the web application._
 
+The user will begin their checkers experience on the Home page. They'll see "Welcome!" and a sign in button.
+They will click the button and go to the Sign in page which has a text box and a submit button to enter their name.
+If the user enters an invalid name, they'll stay on the sign in page and be prompted to enter a new name. 
 
+Once the user enters and submits a valid name, they will go to back to Home page which will be updated now that they're 
+logged into the system. There will be a navigation bar with the tabs "myHome" and "sign out". If the user selects the 
+sign out tab, they'll be directed to a page that'll ask them to confirm their choice. If they choose to sign out, 
+they'll be directed back to the sign in page. If instead they choose to stay signed in, they'll return to their "myHome"
+page. 
+
+On the myHome page, they will now see a list of all the players in the lobby (except themselves). Next to each
+user's name, there is a button to start a game with that user. If the user chooses to initiate a chess game with 
+another currently logged in player, they will click the "Start a Game" button near their desired opponent's name. The 
+selected opponent will go to the GetGameRoute when their browser detects that someone chose to play they in a game. If 
+opponent is not already in a game, both users will be directed to a view of the game. This view includes a chess board 
+with pieces pre-placed on the board. There will be an Info Panel at the top left that will highlight the player whose 
+turn it is, and a Control Panel that will allow the players to undo a move, submit their move, or resign the game.
+
+From here, a standard game of chess will be played until one player wins or resigns. After the game ends, the users will 
+be returned to their respective myHome tabs. They'll be able to repeat the process and either choose a new opponent 
+or sign out.
 
 ### UI Tier
 > _Provide a summary of the Server-side UI tier of your architecture.
 > Describe the types of components in the tier and describe their
 > responsibilities.  This should be a narrative description, i.e. it has
 > a flow or "story line" that the reader can follow._
-
-The user will begin their checkers experience on the GetHomeRoute. They will click the button and go to
-GetSignInRoute which has a text box and a submit button to enter their name. Once the user enters and submits
-a valid name, they will go to the postSignInRoute where they will now be logged into the system. Then, the user
-will click the myHome link to return to the GetHomeRoute where they will now see a list of all the players in the lobby
-except themselves, and other players will be able to see that user.
-If the user chooses to initiate a chess game with another currently logged in player, they will click the name of their 
-desired opponent and proceed to the GetGameRoute. The selected opponent will go to the GetGameRoute when their browser 
-detects that someone chose to play they in a game. Once both players are in the GetGameRoute, they will play a game of 
-checkers going through (INSERT ROUTES HERE) until someone wins - where they will go to the (INSERT ENDGAME ROUTE HERE). 
-After both players are finished, they will be returned to the GetHomeRoute where they can pick another user to play 
-against. If a player is finished, they can click on the signOut link to sign out and go to the (INSERT SIGN OUT ROUTE 
-HERE).
 
 > _At appropriate places as part of this narrative provide one or more
 > static models (UML class structure or object diagrams) with some
