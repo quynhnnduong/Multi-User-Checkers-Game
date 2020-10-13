@@ -28,12 +28,16 @@ The bedrock of the application is formed of Java, Javascript, HTML and CSS
 > _Provide a very brief statement about the project and the most
 > important user group and user goals._
 
+This projects aims to bring a fun checkers experience to people who want to play the classic game over the internet 
+
 ### Glossary and Acronyms
 > _Provide a table of terms and acronyms._
 
 | Term | Definition |
 |------|------------|
 | VO | Value Object |
+| PR | Player |
+| OP | Opponent |
 
 
 ## Requirements
@@ -44,15 +48,29 @@ This section describes the features of the application.
 > story.  Focus on top-level features from the Vision document and
 > maybe Epics and critical Stories._
 
+Users can sign in with their name and search for other players.
+Play a complete game of checkers, displaying everything like a physical game.
+
 ### Definition of MVP
 > _Provide a simple description of the Minimum Viable Product._
 
+* Users can sign in with a unique name
+* People will play checkers according to the american rules
+* The enitre chess board will look like a physical game of chess
+
 ### MVP Features
 > _Provide a list of top-level Epics and/or Stories of the MVP._
+* Connection
+* Sign-In
+* Possible Move
+* Display
+
 
 ### Roadmap of Enhancements
 > _Provide a list of top-level features in the order you plan to consider them._
 
+* Replay mode to save replays to txt files, and read them later for viewing
+* AI Opponent with 2 selectable difficulty levels for solo players
 
 ## Application Domain
 
@@ -103,6 +121,18 @@ with the WebCheckers application.
 > responsibilities.  This should be a narrative description, i.e. it has
 > a flow or "story line" that the reader can follow._
 
+The user will begin their checkers experience on the GetHomeRoute. They will click the button and go to
+GetSignInRoute which has a text box and submit button to enter their name. Once the user enters and submits
+a valid name, they will go to the postSignInRoute where they will now be logged into the system. Then, the user
+will click the myHome link to return to the GetHomeRoute where they will now see a list of all the players in the lobby
+except themselves, and other players will be able to see that user.
+If the user chooses to initiate a chess game with another currently logged in player, they will click the name of their 
+desired opponent and proceed to the GetGameRoute. The selected opponent will go to the GetGameRoute when their browser 
+detects that someone chose to play they in a game. Once both players are in the GetGameRoute, the will play a game of 
+chess going through (INSERT ROUTES HERE) until someone wins where they will go to the (INSERT ENDGAME ROUTE HERE). After 
+both players are finished, they will be returned to the GetHomeRoute where they can plck another user to play against.
+If the player is finished, they can click on the signOut link to sign out and go to the (INSERT SIGN OUT ROUTE HERE).
+
 > _At appropriate places as part of this narrative provide one or more
 > static models (UML class structure or object diagrams) with some
 > details such as critical attributes and methods._
@@ -126,6 +156,10 @@ with the WebCheckers application.
 > section will follow the same instructions that are given for the UI
 > Tier above._
 
+The application tier consists of the PlayerLobby and GameCenter. The PlayerLobby manages player sign in and 
+the status of all players (in game , waiting for game) including the amount of total concurrently logged in players.
+It can add and remove players with sign in and sign out respectively. It also records which players are playing 
+against each other.  
 
 ### Model Tier
 > _Provide a summary of the Application tier of your architecture. This
