@@ -22,13 +22,13 @@ geometry: margin=1in
 The Online WebCheckers project is a Web-based application which aims to provide its users with the functionality to play 
 checkers online and in real-time, against any other online player. 
 To achieve the functionality, the system has been designed on Spark Framework with a FreeMarker Template. 
-The bedrock of the application is formed of Java, Javascript, HTML and CSS 
+The bedrock of the application is formed of Java, Javascript, HTML and CSS.
 
 ### Purpose
-> _Provide a very brief statement about the project and the most
-> important user group and user goals._
 
-This projects aims to bring a fun checkers experience to people who want to play the classic game over the internet 
+This projects aims to deliver a fun and engaging experience to a broad range of users who wish to play an online version
+of the classic checkers game. This project was commissioned by the "WebCheckers Startup", that aims to provide users the
+ability to sign in, play a game of checkers, and sign out at will.
 
 ### Glossary and Acronyms
 > _Provide a table of terms and acronyms._
@@ -44,44 +44,53 @@ This projects aims to bring a fun checkers experience to people who want to play
 
 This section describes the features of the application.
 
-> _In this section you do not need to be exhaustive and list every
-> story.  Focus on top-level features from the Vision document and
-> maybe Epics and critical Stories._
-
-Users can sign in with their name and search for other players.
-Play a complete game of checkers, displaying everything like a physical game.
+Users must be able to sign in to the website with a username of their choice. After signing in, users must be able to
+choose an opponent for a checkers game. The program must connect the two players together and set up a WebCheckers
+game in accordance to the American Rules. The application must display all the components and information of the 
+checkers board, just as if it was viewable in real-life. The players must be able to resign from the game at any point. 
+If no player resigns, the game continues until the end until a winner is determined. Some additional modifications that 
+are also to be made are: AI Opponent and Replay Mode. Instead of selecting a human opponent, a player would have the 
+ability to face an AI with a difficulty setting. Additionally, players would be able to save their previous games and
+play them back through a Replay Mode from the home screen.
 
 ### Definition of MVP
-> _Provide a simple description of the Minimum Viable Product._
 
-* Users can sign in with a unique name
-* People will play checkers according to the american rules
-* The enitre chess board will look like a physical game of chess
+* Users can sign in with a unique name of their choice.
+* Two users can play a game of Checkers according to the American Rules.
+* Users can sign-out/resign at any point, which would end the game.
 
 ### MVP Features
-> _Provide a list of top-level Epics and/or Stories of the MVP._
-* Connection
-* Sign-In
-* Possible Move
-* Display
+
+* Connection - Server/Client logic
+* Display - Graphical Display of the state of the game
+* Possible Moves - Checkers game logic
+* AI Opponent - Artificial intelligence opponent creation
+* Replay Mode - Save and replay previously played checkers games
 
 
 ### Roadmap of Enhancements
-> _Provide a list of top-level features in the order you plan to consider them._
 
-* Replay mode to save replays to txt files, and read them later for viewing
-* AI Opponent with 2 selectable difficulty levels for solo players
+* Sign-In - Users are given the ability to sign in to the application with a username of their choice.
+* Start a Game - Users are able to start a checkers game.
+* Connection - Major Server/Client communication is defined.
+* Game Logic - Rules and processes for the checkers game are defined.
+* Display - Basic graphical/visual components are created to display information regarding the game.
+* AI Component - All components for a fully-functioning AI checkers opponent are created.
+* Replay Mode - Allows users to save and replay previously played games
 
 ## Application Domain
 
 This section describes the application domain.
 
-![The WebCheckers Domain Model](domain-model-placeholder.png)
+![The WebCheckers Domain Model](WebCheckers-Domain-Model.png)
 
-> _Provide a high-level overview of the domain for this application. You
-> can discuss the more important domain entities and their relationship
-> to each other._
-
+The Player (user) is represented on the domain model as an entity that plays the checkers game and takes turns making 
+moves that could either be a simple, single-jump, or multiple-jump move. Each move is performed by a Piece that is on 
+the checkers board via a checkers square (or Space). Each checkers game contains one board with 64 checker squares and 
+24 Pieces. The Checkers Game domain entity keeps track of the current state of the game (red won, white won, ongoing). 
+Additionally, the Checkers Game can save the game (once finished), to be replayed back. An AI Opponent has all the same 
+functions as a human player (with the exception being autonomy), therefore, the AI Opponent also interacts withe 
+Checkers Game in a similar way as a human would. AI Opponents range in difficulty (Easy, Medium, Hard).
 
 ## Architecture and Design
 
@@ -93,16 +102,11 @@ The following Tiers/Layers model shows a high-level view of the webapp's archite
 
 ![The Tiers & Layers of the Architecture](architecture-tiers-and-layers.png)
 
-As a web application, the user interacts with the system using a
-browser.  The client-side of the UI is composed of HTML pages with
-some minimal CSS for styling the page.  There is also some JavaScript
-that has been provided to the team by the architect.
-
-The server-side tiers include the UI Tier that is composed of UI Controllers and Views.
-Controllers are built using the Spark framework and View are built using the FreeMarker framework.  The Application and Model tiers are built using plain-old Java objects (POJOs).
-
-Details of the components within these tiers are supplied below.
-
+As a web application, the user interacts with the system using a browser. The client-side of the UI is composed of HTML 
+pages with some minimal CSS for styling the page.  There is also some JavaScript that has been provided to the team by 
+the architect. The server-side tiers include the UI Tier that is composed of UI Controllers and Views. Controllers are 
+built using the Spark framework and View are built using the FreeMarker framework.  The Application and Model tiers are 
+built using plain-old Java objects (POJOs). Details of the components within these tiers are supplied below.
 
 ### Overview of User Interface
 
@@ -115,6 +119,7 @@ with the WebCheckers application.
 > the user's perspective, the flow of the pages in the web application._
 
 
+
 ### UI Tier
 > _Provide a summary of the Server-side UI tier of your architecture.
 > Describe the types of components in the tier and describe their
@@ -122,16 +127,17 @@ with the WebCheckers application.
 > a flow or "story line" that the reader can follow._
 
 The user will begin their checkers experience on the GetHomeRoute. They will click the button and go to
-GetSignInRoute which has a text box and submit button to enter their name. Once the user enters and submits
+GetSignInRoute which has a text box and a submit button to enter their name. Once the user enters and submits
 a valid name, they will go to the postSignInRoute where they will now be logged into the system. Then, the user
 will click the myHome link to return to the GetHomeRoute where they will now see a list of all the players in the lobby
 except themselves, and other players will be able to see that user.
 If the user chooses to initiate a chess game with another currently logged in player, they will click the name of their 
 desired opponent and proceed to the GetGameRoute. The selected opponent will go to the GetGameRoute when their browser 
-detects that someone chose to play they in a game. Once both players are in the GetGameRoute, the will play a game of 
-chess going through (INSERT ROUTES HERE) until someone wins where they will go to the (INSERT ENDGAME ROUTE HERE). After 
-both players are finished, they will be returned to the GetHomeRoute where they can plck another user to play against.
-If the player is finished, they can click on the signOut link to sign out and go to the (INSERT SIGN OUT ROUTE HERE).
+detects that someone chose to play they in a game. Once both players are in the GetGameRoute, they will play a game of 
+checkers going through (INSERT ROUTES HERE) until someone wins - where they will go to the (INSERT ENDGAME ROUTE HERE). 
+After both players are finished, they will be returned to the GetHomeRoute where they can pick another user to play 
+against. If a player is finished, they can click on the signOut link to sign out and go to the (INSERT SIGN OUT ROUTE 
+HERE).
 
 > _At appropriate places as part of this narrative provide one or more
 > static models (UML class structure or object diagrams) with some
@@ -177,8 +183,6 @@ against each other.
 > suggested design improvements to address those hot spots._
 
 ## Testing
-> _This section will provide information about the testing performed
-> and the results of the testing._
 
 ### Acceptance Testing
 > _Report on the number of user stories that have passed all their
