@@ -35,11 +35,6 @@ public class PlayerLobby {
         this.gameCenter = gameCenter;
     }
 
-
-    public HashSet<Player> getPlayerLobby() {
-        return players;
-    }
-
     /**
      * Adds new player to the players map.
      * @param name name of player to add
@@ -104,6 +99,9 @@ public class PlayerLobby {
      * turns a player from not playing to playing
      */
     public void startPlayer(String name){
+        // TODO search for the player with this name in the lobby instead of making a new one?
+        // This has nothing to do with the PlayerLobby currently (unless there's a special reason this function
+        // needs to be here?)
         Player player = getPlayer(name);
         player.startPlaying();
     }
@@ -113,7 +111,7 @@ public class PlayerLobby {
      * @param player1
      * @param player2
      */
-    public void setOpponentMatch(Player  player1, Player player2){
+    public void setOpponentMatch(Player player1, Player player2){
         player1.setOpponent(player2);
         player2.setOpponent(player1);
     }

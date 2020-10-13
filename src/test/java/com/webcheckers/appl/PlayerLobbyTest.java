@@ -46,8 +46,8 @@ public class PlayerLobbyTest {
      *Test the ability to return the PlayerLobby.
      */
     @Test
-    public void testGetPlayerLobbySet(){
-        assert(CuT.getPlayerLobby().isEmpty());
+    public void testGetPlayerLobby(){
+        assert(CuT.getPlayers().isEmpty());
     }
 
     /**
@@ -56,7 +56,7 @@ public class PlayerLobbyTest {
     @Test
     public void testAddPlayerToLobby(){
         CuT.addPlayer("Player1");
-        assert(!CuT.getPlayerLobby().isEmpty());
+        assert(!CuT.getPlayers().isEmpty());
     }
 
     /**
@@ -103,41 +103,33 @@ public class PlayerLobbyTest {
         assertEquals(2, CuT.getPlayerSize());
     }
 
-    /**
-     *Test
-     */
+
     @Test
-    public void testGetPlayerLobby(){
+    public void testStartPlayer(){
+        // this function creates a new player object, it doesn't affect an existing Player with the provided name
+        CuT.startPlayer("Player1");
+    }
+
+    @Test
+    public void testStopPlayer(){
+        // same with stopPlayer() as with startPlayer()
+    }
+
+
+    @Test
+    public void testSetOpponentMatch(){
+        Player player1 = new Player("PLayer1");
+        Player player2 = new Player("Player2");
+        CuT.setOpponentMatch(player1, player2);
+        assertEquals(player2, player1.getOpponent());
+    }
+
+    @Test
+    public void testGetPlayerOpponent(){
 
     }
 
-    /**
-     *Test
-     */
-    @Test
-    public void testStartPlayer(){}
 
-    /**
-     *Test
-     */
-    @Test
-    public void testStopPlayer(){}
-
-    /**
-     *Test
-     */
-    @Test
-    public void testSetOpponentMatch(){}
-
-    /**
-     *Test
-     */
-    @Test
-    public void testGetPlayerOpponent(){}
-
-    /**
-     *Test
-     */
     @Test
     public void testIsNameValid(){}
 
