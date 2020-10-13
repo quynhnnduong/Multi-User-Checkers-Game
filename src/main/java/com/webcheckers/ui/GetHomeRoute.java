@@ -20,9 +20,9 @@ import com.webcheckers.util.Message;
 public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
-  private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
+  public static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
   //tells whether to show the no log in, or log in screen
-  private static final String LOGGED_IN_ATTR = "loggedIn";
+  public static final String LOGGED_IN_ATTR = "loggedIn";
   //the object for displaying the player name (not sure why its not being used)
   public static final String PLAYER_NAME_ATTR = "playerName";
   //the object to display the current online players on the home page.
@@ -88,8 +88,6 @@ public class GetHomeRoute implements Route {
     // add something with httpSession.attribute(key, value)
     // retrieve something with httpSession.attribute(key)
     final Session httpSession = request.session();
-
-
 
     LOG.finer("GetHomeRoute is invoked.");
 
