@@ -3,67 +3,58 @@ package com.webcheckers.model;
 /**
  * Model class: Player Object
  *
- * @author Shubhang Mehrotra (sm9943), Joel Clyne (jmc4514), Sasha Persaud (srp4581), Quynh Duong (qnd5128)
+ * @author Shubhang Mehrotra (sm9943), Joel Clyne (jmc4514),
+ * Sasha Persaud (srp4581), Quynh Duong (qnd5128), Dmitry Selin (des3358)
  */
 public class Player {
-    private String name;
-    private boolean isSignedIn; // TODO: (Sasha) We may not need this; currentUser in the vm map should do the job
-    private boolean isCalledForGame;
-    private boolean isMidGame;
-    private Player opponent;
 
-    public Player(String name){
+    private final String name;
+
+    private boolean signedIn;
+
+    private boolean calledForGame;
+
+    private boolean midGame;
+
+    private Player opponent = null;
+
+    public Player(String name) {
         this.name = name;
-        this.isSignedIn = true;
-        this.isMidGame = false;
-        this.isCalledForGame = false;
+        signedIn = true;
+        midGame = false;
+        calledForGame = false;
     }
 
-    public String getName(){
-        return name;
-    }
+    public String getName(){ return name; }
 
-    public boolean getIsSignedIn() {
-        return isSignedIn;
-    }
+    public boolean isSignedIn() { return signedIn; }
 
-    public void signIn() {
-        isSignedIn = true;
-    }
+    public void signIn() { signedIn = true; }
 
-    public void signOut() {
-        isSignedIn = false;
-    }
+    public void signOut() { signedIn = false; }
 
-    public void startPlaying(){
-        isMidGame = true;
-    }
+    public void joinGame(){ midGame = true; }
 
-    public void stopPlaying(){
-        isMidGame = false;
-    }
+    public void exitGame(){ midGame = false; }
 
-    public boolean getIsMidGame(){
-        return isMidGame;
-    }
+    public boolean isMidGame(){ return midGame; }
 
-    public void startCallingPlayer(){
-        this.isCalledForGame = true;
-    }
+    public void call(){ calledForGame = true; }
 
-    public void stopCallingPlayer(){
-        this.isCalledForGame = false;
-    }
+    public void stopCalling(){ calledForGame = false; }
 
-    public boolean getCallingPlayer(){
-        return isCalledForGame;
-    }
+    public boolean isCalledForGame(){ return calledForGame; }
 
-    public void setOpponent(Player opponent){
-        this.opponent = opponent;
-    }
+    public void setOpponent(Player opponent){ this.opponent = opponent; }
 
-    public Player getOpponent(){
-        return opponent;
+    public Player getOpponent(){ return opponent; }
+
+    /**
+     * Checks if a string contains at least one alphanumeric character or a space
+     *
+     * @return boolean
+     */
+    public boolean isNameValid(){
+        return name.matches("[A-Za-z0-9 ]+");
     }
 }
