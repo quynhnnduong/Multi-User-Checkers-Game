@@ -38,6 +38,15 @@ public class GetGameRoute implements Route {
     //TODO Add  functionality and documentation to map
     private final HashMap<String, Object> map = null;
 
+    /** Attribute to denote the red player in the session */
+    public static final String RED_ATTR = "redPlayer";
+
+    /** Attribute to denote the white player in the session*/
+    public static final String WHITE_ATTR = "whitePlayer";
+
+    /** Attribute to denote the board in the session*/
+    public static final String BOARD_ATTR = "board";
+
     /** An enumeration of the mode selected by the user to enter into */
     enum viewMode {
         PLAY,
@@ -121,7 +130,8 @@ public class GetGameRoute implements Route {
             // Add it to the VM
             vm.put("gameID", gameID);
 
-            //TODO whenever we get to coding the win state, set all these to not playing, and remove the opponents from each other
+            //TODO whenever we get to coding the win state, set all these to not playing, and remove the opponents from each other,
+            //TODO also remove the red and white players from the current session
         }
 
         Player redPlayer;
@@ -145,6 +155,14 @@ public class GetGameRoute implements Route {
             whitePlayer = opponent;
         }
 
+        //adds Red and White players to the session
+        session.attribute(RED_ATTR, redPlayer);
+        session.attribute(WHITE_ATTR, whitePlayer);
+
+        //adds the board to the session
+        session.attribute(BOARD_ATTR, boardView);
+
+        //sets the current color for t
 
         // Adds all freemarker components to the HashMap
         vm.put("title", "Game");

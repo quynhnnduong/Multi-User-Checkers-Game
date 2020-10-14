@@ -74,6 +74,10 @@ public class WebServer {
    */
   public static final String VALIDATE_URL = "/validateMove";
 
+  /**
+   * The URL pattern to request teh submit turn page
+   */
+  public static final String SUBMIT_URL = "/submitTurn";
   //
   // Attributes
   //
@@ -173,6 +177,9 @@ public class WebServer {
     get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
     //sends a move for validation submission
     post(VALIDATE_URL, new PostValidateMoveRoute(templateEngine, playerLobby));
+
+    //Enables the user to submit their turn
+    post(SUBMIT_URL, new PostSubmitTurnRoute(templateEngine));
 
     LOG.config("WebServer is initialized.");
   }
