@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.model.Player;
 import spark.TemplateEngine;
 
 

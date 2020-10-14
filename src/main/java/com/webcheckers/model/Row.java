@@ -80,4 +80,8 @@ public class Row implements Iterable<Space> {
 
         return row;
     }
+
+    public ArrayList<Space> getSpaces(){
+        return row;
+    }
 }

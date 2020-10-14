@@ -95,4 +95,8 @@ public class BoardView implements Iterable<Row>{
 
         return flippedBoard;
     }
+
+    public ArrayList<Row> getRows(){
+        return board;
+    }
 }
