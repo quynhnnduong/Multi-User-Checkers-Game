@@ -57,8 +57,11 @@ public class GetGameRouteTest {
         //gameCenter = new GameCenter();
         //playerLobby = new PlayerLobby(gameCenter);
         playerLobby.addPlayer("Player1");
+        playerLobby.startPlayer("Player1");
         playerLobby.addPlayer("Player2");
+        playerLobby.startPlayer("Player2");
         //Player player1 = new Player("Player1");
+
 
         //make them play a game against each other
         playerLobby.setOpponentMatch(playerLobby.getPlayer("Player1"), playerLobby.getPlayer("Player2"));
@@ -71,7 +74,10 @@ public class GetGameRouteTest {
         //session.attribute(PLAYER_NAME_ATTR, "Player1");
         when(session.attribute(PLAYER_NAME_ATTR)).thenReturn("Player1");
         //the opponent is player 2
-        when(request.queryParams(eq("Player2"))).thenReturn(testHelper.toString());
+        when(request.queryParams("opponent")).thenReturn("Player2");
+        Player opponent = new Player("Player2");
+        opponent.startPlaying();
+        opponent.startCallingPlayer();
         // Invoke the test
         try {
             CuT.handle(request, response);
