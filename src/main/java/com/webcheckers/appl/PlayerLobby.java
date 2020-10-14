@@ -34,7 +34,8 @@ public class PlayerLobby {
      * @return boolean
      */
     public boolean addPlayer(Player player) {
-
+        System.out.println(player.isNameValid());
+        System.out.println(players.containsKey(player.getName()));
         if (player.isNameValid() && !players.containsKey(player.getName())) {
             players.put(player.getName(), player);
             return true;
