@@ -30,9 +30,9 @@ public class PlayerTest {
 
         // Ensures that the instance variables have been initialized correctly
         assertEquals(NAME, CuT.getName());
-        assertTrue(CuT.getIsSignedIn());
-        assertFalse(CuT.getIsMidGame());
-        assertFalse(CuT.getCallingPlayer());
+        assertTrue(CuT.isSignedIn());
+        assertFalse(CuT.isMidGame());
+        assertFalse(CuT.isCalledForGame());
     }
 
     /** Tests the getName() method of Player */
@@ -44,46 +44,46 @@ public class PlayerTest {
     public void sign_in() {
         CuT.signOut();
 
-        assertFalse(CuT.getIsSignedIn());
+        assertFalse(CuT.isSignedIn());
         CuT.signIn();
-        assertTrue(CuT.getIsSignedIn());
+        assertTrue(CuT.isSignedIn());
     }
 
     /** Tests the signOut() method of Player */
     @Test
     public void sign_out() {
         CuT.signOut();
-        assertFalse(CuT.getIsSignedIn());
+        assertFalse(CuT.isSignedIn());
     }
 
     /** Tests the startPlaying() method of Player */
     @Test
     public void start_playing() {
-        CuT.startPlaying();
-        assertTrue(CuT.getIsMidGame());
+        CuT.joinGame();
+        assertTrue(CuT.isMidGame());
     }
 
     /** Tests the stopPlaying() method of Player */
     @Test
     public void stop_playing() {
-        CuT.startPlaying();
-        CuT.stopPlaying();
-        assertFalse(CuT.getIsMidGame());
+        CuT.joinGame();
+        CuT.exitGame();
+        assertFalse(CuT.isMidGame());
     }
 
     /** Tests the startCallingPlayer() method of Player */
     @Test
     public void start_calling_player() {
-        CuT.startCallingPlayer();
-        assertTrue(CuT.getCallingPlayer());
+        CuT.call();
+        assertTrue(CuT.isCalledForGame());
     }
 
     /** Tests the stopCallingPlayer() method of Player */
     @Test
     public void stop_calling_player() {
-        CuT.startCallingPlayer();
-        CuT.stopCallingPlayer();
-        assertFalse(CuT.getCallingPlayer());
+        CuT.call();
+        CuT.stopCalling();
+        assertFalse(CuT.isCalledForGame());
     }
 
     /** Tests the setOpponent() and getOpponent() methods of Player */

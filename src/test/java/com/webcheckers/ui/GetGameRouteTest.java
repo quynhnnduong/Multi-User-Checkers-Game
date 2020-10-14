@@ -8,9 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
-import static com.webcheckers.ui.PostSignInRoute.PLAYER_NAME_ATTR;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -31,6 +29,8 @@ public class GetGameRouteTest {
     private Session session;
     private TemplateEngine engine;
     private PlayerLobby playerLobby;
+    private Player player1;
+    private Player player2;
 
     /**
      * Setup new mock objects for each test.
@@ -44,6 +44,8 @@ public class GetGameRouteTest {
         engine = mock(TemplateEngine.class);
         playerLobby = mock(PlayerLobby.class);
         gameCenter = mock(GameCenter.class);
+        player1 = mock(Player.class);
+        player1 = mock(Player.class);
 
         // create a unique CuT for each test
         CuT = new GetGameRoute(engine, playerLobby);
@@ -56,10 +58,10 @@ public class GetGameRouteTest {
         //create playerLobby and it's 2 players
         //gameCenter = new GameCenter();
         //playerLobby = new PlayerLobby(gameCenter);
-        playerLobby.addPlayer("Player1");
-        playerLobby.startPlayer("Player1");
-        playerLobby.addPlayer("Player2");
-        playerLobby.startPlayer("Player2");
+        playerLobby.addPlayer(player1);
+        player1.joinGame();
+        playerLobby.addPlayer(player2);
+        player2.joinGame();
         //Player player1 = new Player("Player1");
 
 
@@ -72,12 +74,12 @@ public class GetGameRouteTest {
 
         //the current player is player 1
         //session.attribute(PLAYER_NAME_ATTR, "Player1");
-        when(session.attribute(PLAYER_NAME_ATTR)).thenReturn("Player1");
+        when(session.attribute(GetHomeRoute.PLAYER_ATTR)).thenReturn("Player1");
         //the opponent is player 2
         when(request.queryParams("opponent")).thenReturn("Player2");
         Player opponent = new Player("Player2");
-        opponent.startPlaying();
-        opponent.startCallingPlayer();
+        opponent.joinGame();
+        opponent.call();
         // Invoke the test
         try {
             CuT.handle(request, response);

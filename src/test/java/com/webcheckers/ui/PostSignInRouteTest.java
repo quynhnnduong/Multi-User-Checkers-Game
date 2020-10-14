@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,7 @@ public class PostSignInRouteTest {
     private Session session;
     private TemplateEngine engine;
     private PlayerLobby playerLobby;
+    private Player player;
 
     /**
      * Setup new mock objects for each test.
@@ -51,6 +53,8 @@ public class PostSignInRouteTest {
         gameCenter = new GameCenter();
         playerLobby = new PlayerLobby(gameCenter);
 
+        player = mock(Player.class);
+
         // create a new CuT for each test
         CuT = new PostSignInRoute(engine, gameCenter, playerLobby);
     }
@@ -63,7 +67,7 @@ public class PostSignInRouteTest {
         // Set up the test
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-        playerLobby.addPlayer("Player1");
+        playerLobby.addPlayer(player);
         session.attribute("playerlobby", playerLobby);
         session.attribute("session_key", PostSignInRoute.PLAYERLOBBY_KEY);
 
@@ -78,7 +82,7 @@ public class PostSignInRouteTest {
 
         //   * model contains all necessary View-Model data
         testHelper.assertViewModelAttribute("title", "Welcome!");
-        testHelper.assertViewModelAttribute(GetHomeRoute.PLAYER_NAME_ATTR, playerLobby.getPlayer(""));
+        testHelper.assertViewModelAttribute(GetHomeRoute.PLAYER_ATTR, playerLobby.getPlayer(""));
         //   * test view name
         testHelper.assertViewName("home.ftl");
 

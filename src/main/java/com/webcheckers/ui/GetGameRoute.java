@@ -10,7 +10,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import static com.webcheckers.ui.PostSignInRoute.PLAYER_NAME_ATTR;
+import static com.webcheckers.ui.PostSignInRoute.PLAYER_ATTR;
+import static spark.Spark.halt;
 
 /**
  * This UI component represents the action of Players joining a checkers game. The
@@ -77,16 +78,21 @@ public class GetGameRoute implements Route {
         final Session session = request.session();
 
         // Gets the current player
-        Player currentPlayer = playerLobby.getPlayer(session.attribute(PLAYER_NAME_ATTR));
+        Player currentPlayer = session.attribute(PLAYER_ATTR);
 
         // Gets the opponent from the URL and makes them the WHITE player
         Player opponent = playerLobby.getPlayer(request.queryParams("opponent"));
+
+        if (opponent == null) {
+            response.redirect(WebServer.HOME_URL);
+            return halt();
+        }
 
         // Logs a FINER invocation message
         LOG.finer("GetGameRoute is invoked.");
 
         // Checks if opponent is not in an existing game
-        if (opponent.getIsMidGame() && !opponent.getCallingPlayer()) {
+        if (opponent.isMidGame() && !opponent.isCalledForGame()) {
 
             // Redirect and inform currentPlayer that their opponent is playing in a different game
             session.attribute(GetHomeRoute.LEGIT_OPPONENT, false);
@@ -98,10 +104,10 @@ public class GetGameRoute implements Route {
             session.attribute(GetHomeRoute.MID_GAME_KEY, true);
 
             // Set currentPlayer and opponent's states to PLAYING in playerLobby
-            playerLobby.startPlayer(currentPlayer.getName());
+            currentPlayer.joinGame();
 
             // Start calling opponent to the game
-            opponent.startCallingPlayer();
+            opponent.call();
 
             // Inform PlayerLobby that currentPlayer and opponent are now playing
             playerLobby.setOpponentMatch(currentPlayer, opponent);
@@ -113,7 +119,7 @@ public class GetGameRoute implements Route {
         Player whitePlayer;
 
         // Check if currentPlayer was called into a game by opponent
-        if (currentPlayer.getIsMidGame()){
+        if (currentPlayer.isMidGame()){
 
             // Opponent becomes the red Player since opponent started the game
             redPlayer = opponent;
@@ -122,8 +128,8 @@ public class GetGameRoute implements Route {
         else {
 
             // Both Players get put into the MID_GAME state
-            playerLobby.startPlayer(opponent.getName());
-            opponent.stopCallingPlayer();
+            opponent.joinGame();
+            opponent.stopCalling();
 
             // CurrentPlayer called opponent, and therefore becomes the red Player
             redPlayer = currentPlayer;

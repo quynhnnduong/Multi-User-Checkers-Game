@@ -21,10 +21,13 @@ public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
   public static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
+
   //tells whether to show the no log in, or log in screen
-  public static final String LOGGED_IN_ATTR = "loggedIn";
+  private static final String LOGGED_IN_ATTR = "loggedIn";
+
   //the object for displaying the player name (not sure why its not being used)
-  public static final String PLAYER_NAME_ATTR = "playerName";
+  public static final String PLAYER_ATTR = "player";
+
   //the object to display the current online players on the home page.
   public static final String PLAYER_MSG_ATTR = "playersMessage";
 
@@ -52,7 +55,8 @@ public class GetHomeRoute implements Route {
   //this is the replacement for game center, and there will be one playerlobby created in Application that will be passed into
   //all the routes
   private PlayerLobby playerLobby;
-  private static final String PLAYER_LOBBY_MSG = " player(s) in lobby";
+  public static final String PLAYER_LOBBY_MSG = " player(s) in lobby";
+  public static final String NO_PLAYERS_MSG = "There are no other players available to play at this time.";
 
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
@@ -63,14 +67,8 @@ public class GetHomeRoute implements Route {
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
     this.gameCenter = gameCenter;
     this.playerLobby = playerLobby;
-    //
     LOG.config("GetHomeRoute is initialized.");
   }
-
-
-  //Temporary Player Name - not needed anymore since we can just get or players from the player lobby
-  Player player = new Player("John Cena"); // Sasha commented this out to figure out how to get a player from the
-  //                      player lobby
 
   /**
    * Render the WebCheckers Home page.
@@ -108,54 +106,45 @@ public class GetHomeRoute implements Route {
     boolean legitOpponent;
 
     // if this is a brand new browser session (a new challenger approaches)
-    if (httpSession.attribute(PLAYERLOBBY_KEY) == null) {
+    if (httpSession.attribute(PLAYERLOBBY_KEY) == null || httpSession.attribute(PLAYER_ATTR) == null) {
 
       // get the object that will provide client-specific services for this player
       //say that this player lobby object belongs to the current session - this is the key connecting the current session to the
       //one playerlobby that all the sessions will share
       httpSession.attribute(PLAYERLOBBY_KEY, playerLobby);
 
-      //this is a key that will toggle telling someone if the last opponent they selected is valid
-      httpSession.attribute(LEGIT_OPPONENT, true);
-
-      //this is a key that will toggle telling someone if the last name they put in getSignIn is valid
-      httpSession.attribute(LEGIT_NAME, true);
-
       // show the not signed in page
       vm.put(LOGGED_IN_ATTR, false);
-      vm.put(PLAYER_MSG_ATTR, gameCenter.getPlayersMessage());
 
       legitOpponent = true;
-
-
-    } else {
+    }
+    else {
       //home.ftl has all the magic which displays the stuff, it gets the name from PostSignInRoute
 
       //tells the playerlobby to get the player with the name of this session's player
-      Player currentPlayer = playerLobby.getPlayer(httpSession.attribute(PLAYER_NAME_ATTR));
+      Player currentPlayer = httpSession.attribute(PLAYER_ATTR);
       vm.put("currentUser", currentPlayer);
 
       //check if the last person they fought against was valid to choose whether or not to display the message
       legitOpponent = httpSession.attribute(LEGIT_OPPONENT);
 
-
       //gets the players hashset to display all the players
       vm.put("playerList", playerLobby.getPlayers());
       vm.put(LOGGED_IN_ATTR, true);
-      // TODO: Put an if statement to check the
-      vm.put(PLAYER_MSG_ATTR, playerLobby.getPlayerSize() + PLAYER_LOBBY_MSG);
+      vm.put(PLAYER_MSG_ATTR, playerLobby.getLobbyMessage());
 
       //check if the current player has been called to a game
-      if (playerLobby.getPlayer(httpSession.attribute(PLAYER_NAME_ATTR)).getCallingPlayer()){
+      if (currentPlayer.isCalledForGame()) {
+
         //get the name of the current player's opponent from player lobby
-        //Player opponent = new Player("dds");
-        Player opponent = playerLobby.getPlayerOpponent(playerLobby.getPlayer(httpSession.attribute(PLAYER_NAME_ATTR)));
+        Player opponent = currentPlayer.getOpponent();
         String opponentName = opponent.getName();
+
         //append it onto the game url so its a bootleg query param
         response.redirect(WebServer.GAME_URL + "?opponent=" + opponentName);
       }
+  }
 
-    }
     vm.put(LEGIT_OPPONENT, legitOpponent);
 
     //Anything below here is to reset when the page is reloaded
@@ -165,8 +154,6 @@ public class GetHomeRoute implements Route {
 
     //this is a key that will toggle telling someone if the last opponent they selected is valid
     httpSession.attribute(LEGIT_OPPONENT, true);
-
-
 
       // render the View
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));

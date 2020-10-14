@@ -15,8 +15,7 @@ import java.util.logging.Logger;
 public class GetSignInRoute implements Route {
     private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
     private final TemplateEngine templateEngine;
-    public static final String LEGIT_NAME_KEY = "legitName";
-
+    private final String LEGIT_NAME = "legitName";
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
@@ -49,13 +48,13 @@ public class GetSignInRoute implements Route {
 
         // the key to tell someone if their last name for signin was taken by someone else (or there was none)
         try {
-            boolean legitName = session.attribute(GetHomeRoute.LEGIT_NAME);
-            vm.put(LEGIT_NAME_KEY, legitName);
+            boolean legitName = session.attribute(LEGIT_NAME);
+            vm.put(LEGIT_NAME, legitName);
         }
         catch (NullPointerException ignored) {}
 
-        vm.put("title", "Sign in");
-        vm.put("message", Message.info("Sign in with your username.")); // Sasha added this while trying to track a bug
+        vm.put("title", "Sign In");
+        vm.put("message", Message.info("Sign in with your username."));
 
         // render the View
         return templateEngine.render(new ModelAndView(vm , "signIn.ftl"));

@@ -55,8 +55,8 @@ public class PlayerLobbyTest {
      */
     @Test
     public void testAddPlayerToLobby(){
-        CuT.addPlayer("Player1");
-        assert(!CuT.getPlayers().isEmpty());
+        CuT.addPlayer(player);
+        assertNotNull(CuT.getPlayers());
     }
 
     /**
@@ -64,8 +64,8 @@ public class PlayerLobbyTest {
      */
     @Test
     public void testGetPlayerFromLobby(){
-        CuT.addPlayer("Player1");
-        assertEquals("Player1", CuT.getPlayer("Player1").getName());
+        CuT.addPlayer(player);
+        assertEquals(player, CuT.getPlayer(player.getName()));
     }
 
     /**
@@ -73,21 +73,21 @@ public class PlayerLobbyTest {
      */
     @Test
     public void testGetPlayerLobbySize0(){
-        assertEquals(0, CuT.getPlayerSize());
+        assertEquals(0, CuT.getNumOfPlayers());
     }
 
     @Test
     public void testGetPlayerLobbySize1(){
-        CuT.addPlayer("Player1");
-        assertEquals(1, CuT.getPlayerSize());
+        CuT.addPlayer(player);
+        assertEquals(1, CuT.getNumOfPlayers());
     }
 
     @Test
     public void testGetPlayerLobbySize3(){
-        CuT.addPlayer("Player1");
-        CuT.addPlayer("Player2");
-        CuT.addPlayer("Player3");
-        assertEquals(3, CuT.getPlayerSize());
+        CuT.addPlayer(player);
+        CuT.addPlayer(player);
+        CuT.addPlayer(player);
+        assertEquals(3, CuT.getNumOfPlayers());
     }
 
     /**
@@ -95,12 +95,12 @@ public class PlayerLobbyTest {
      */
     @Test
     public void testRemovePlayerFromLobby(){
-        CuT.addPlayer("Player1");
-        CuT.addPlayer("Player2");
-        CuT.addPlayer("Player3");
+        CuT.addPlayer(player);
+        CuT.addPlayer(player);
+        CuT.addPlayer(player);
         Player player = CuT.getPlayer("Player3");
         CuT.removePlayer(player);
-        assertEquals(2, CuT.getPlayerSize());
+        assertEquals(2, CuT.getNumOfPlayers());
     }
 
     @Test
@@ -110,24 +110,4 @@ public class PlayerLobbyTest {
         CuT.setOpponentMatch(player1, player2);
         assertEquals(player2, player1.getOpponent());
     }
-
-    @Test
-    public void testGetPlayerOpponent(){
-        Player player1 = new Player("Player1");
-        Player player2 = new Player("Player2");
-        CuT.setOpponentMatch(player1, player2);
-        assertEquals(player2, CuT.getPlayerOpponent(player1));
-    }
-
-
-    @Test
-    public void testIsNameValid(){
-        // Not sure if only numerical values for a name is valid or not
-        assert(CuT.isNameValid("Player"));
-        assert(CuT.isNameValid("Player1"));
-        assert(CuT.isNameValid("Player 1"));
-        assert(CuT.isNameValid("1"));
-        assert(!CuT.isNameValid("Player1!"));
-    }
-
 }
