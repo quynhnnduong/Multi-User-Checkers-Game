@@ -38,7 +38,6 @@ public class PostSignInRoute implements Route {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
         this.playerLobby = playerLobby;
         this.gameCenter = gameCenter;
-
         LOG.config("PostSignInRoute is initialized.");
     }
 
@@ -90,7 +89,6 @@ public class PostSignInRoute implements Route {
             vm.put("playersMessage", playerLobby.getLobbyMessage());
             vm.put("playerList", playerLobby.getPlayers());
             vm.put(LOGGED_IN_ATTR, true);
-
             vm.put("currentUser", currentPlayer);
             response.redirect(WebServer.HOME_URL);
         }

@@ -54,7 +54,6 @@ public class GetSignInRoute implements Route {
         catch (NullPointerException ignored) {}
 
         vm.put("title", "Sign In");
-
         vm.put("message", Message.info("Sign in with your username."));
 
         // render the View
