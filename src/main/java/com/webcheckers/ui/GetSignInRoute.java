@@ -53,11 +53,8 @@ public class GetSignInRoute implements Route {
         }
         catch (NullPointerException ignored) {}
 
-<<<<<<< HEAD
-        vm.put("title", "Sign in");
-=======
         vm.put("title", "Sign In");
->>>>>>> 000508ded176bb85e82825dcc5ad9e5e45ecfaa5
+
         vm.put("message", Message.info("Sign in with your username."));
 
         // render the View

@@ -38,10 +38,7 @@ public class PostSignInRoute implements Route {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
         this.playerLobby = playerLobby;
         this.gameCenter = gameCenter;
-<<<<<<< HEAD
 
-=======
->>>>>>> 000508ded176bb85e82825dcc5ad9e5e45ecfaa5
         LOG.config("PostSignInRoute is initialized.");
     }
 
@@ -65,10 +62,6 @@ public class PostSignInRoute implements Route {
         final Session session = request.session();
 
         Map<String, Object> vm = new HashMap<>();
-<<<<<<< HEAD
-        //final PlayerLobby playerServices = session.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
-=======
->>>>>>> 000508ded176bb85e82825dcc5ad9e5e45ecfaa5
 
         //if there is a session here - someone has already logged in
         if (session.attribute(PLAYERLOBBY_KEY) != null) {
@@ -76,14 +69,7 @@ public class PostSignInRoute implements Route {
             //get the name from the text box
             final String name = request.queryParams("text_field");
 
-<<<<<<< HEAD
-            vm.put("title", "Welcome!");
-
-            // Save the player's name in the session
-            session.attribute(PLAYER_NAME_ATTR, name);
-=======
             Player currentPlayer = new Player(name);
->>>>>>> 000508ded176bb85e82825dcc5ad9e5e45ecfaa5
 
             //adds the name to the playerlobby.
             if (!playerLobby.addPlayer(currentPlayer)) {
@@ -104,17 +90,11 @@ public class PostSignInRoute implements Route {
             vm.put("playersMessage", playerLobby.getLobbyMessage());
             vm.put("playerList", playerLobby.getPlayers());
             vm.put(LOGGED_IN_ATTR, true);
-<<<<<<< HEAD
-            //the current player of the session is the current user
-            vm.put("currentUser", playerLobby.getPlayer(session.attribute(PLAYER_NAME_ATTR)));
 
-        } else {
-=======
             vm.put("currentUser", currentPlayer);
             response.redirect(WebServer.HOME_URL);
         }
         else {
->>>>>>> 000508ded176bb85e82825dcc5ad9e5e45ecfaa5
             //panic bcs that's not supposed to happen
             //redirect to the homepage
             response.redirect(WebServer.HOME_URL);

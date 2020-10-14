@@ -77,58 +77,6 @@ public class PlayerLobby {
 
         return GetHomeRoute.NO_PLAYERS_MSG;
     }
-<<<<<<< HEAD
-     */
 
-    /**
-     * Get all of the players name
-     * @return set of players name
-
-    public ArrayList<String> getAllPlayersName(){
-        ArrayList playerNames = new ArrayList<String>();
-        for (Player player : players){
-            playerNames.add(player.getName());
-        }
-        return playerNames;
-    }
-     */
-
-    /**
-     * Get all of the players
-     * @return set of players map
-
-    public Map<String, Player> getPlayersMap() {
-        return players;
-    }
-     */
-
-
-
-    /**
-     * Checks if a string contains at least one alphanumeric character or a space
-     * @param name string to check
-     * @return boolean
-     */
-    public boolean isNameValid(String name){
-        return name.matches("[A-Za-z0-9 ]+");
-    }
-
-    /**
-     * Prints all the players in the player lobby.
-     * Purely for debugging purposes, we can remove it later!
-     * @return String
-     * @author Sasha Persaud
-     */
-    public String printPlayers(){
-        StringBuilder playerString = new StringBuilder();
-        for (Player p : players) {
-            playerString.append(p.getName());
-            playerString.append(" ");
-        }
-        return playerString.toString();
-    }
-
-=======
->>>>>>> 000508ded176bb85e82825dcc5ad9e5e45ecfaa5
 }
 
