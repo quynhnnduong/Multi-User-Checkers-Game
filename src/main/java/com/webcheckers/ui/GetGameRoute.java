@@ -33,7 +33,7 @@ public class GetGameRoute implements Route {
     private final PlayerLobby playerLobby;
 
     /** A model-tier component that houses and represents the checkers game */
-    private BoardView boardView;
+    private final BoardView boardView;
 
     //TODO Add  functionality and documentation to map
     private final HashMap<String, Object> map = null;
