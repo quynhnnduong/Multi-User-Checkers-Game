@@ -11,6 +11,7 @@ import java.util.*;
  * @author Quynh Duong, Sasha Persaud
  */
 public class PlayerLobby {
+
     /**
      * Creates a HashMap for players log in
      */
@@ -69,6 +70,22 @@ public class PlayerLobby {
         player2.setOpponent(player1);
     }
 
+    public Player getPlayerOpponent(Player player){
+        return player.getOpponent();
+    }
+
+    public int createGameId(Player currentPlayer, Player opponent){
+        return gameCenter.generateGameID(currentPlayer, opponent);
+    }
+
+    /**
+     * Get all of the players
+     * @return set of players
+
+    public Collection<Player> getAllPlayers() {
+        return players.values();
+    }
+     */
     public String getLobbyMessage() {
         int numOfPlayers = getNumOfPlayers();
 
