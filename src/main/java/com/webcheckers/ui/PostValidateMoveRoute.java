@@ -94,8 +94,8 @@ public class PostValidateMoveRoute implements Route {
         vm.put("board", (currentPlayer == redPlayer ? boardView : boardView.getFlippedBoard()));
 
 
-        // render the View
-        return templateEngine.render(new ModelAndView(vm , "game.ftl"));
+        // return the move as a JSON string
+        return moveJSON;
         //return templateEngine.render(new ModelAndView(vm , "message.ftl"));
     }
 }
