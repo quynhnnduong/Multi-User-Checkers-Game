@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Player;
 import com.webcheckers.util.Message;
 import spark.*;
 
@@ -11,6 +12,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import static com.webcheckers.ui.GetHomeRoute.LEGIT_OPPONENT;
+import static com.webcheckers.ui.PostSignInRoute.PLAYER_ATTR;
 
 /**
  * @author Sasha Persaud (srp4581)
@@ -38,7 +40,6 @@ public class PostSignOutRoute implements Route {
     public PostSignOutRoute(final TemplateEngine templateEngine, final GameCenter gameCenter, PlayerLobby playerLobby) {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
         this.playerLobby = playerLobby;
-        System.out.println("The Player Lobby at the time of the PostSignOut route invocation looks like: " + playerLobby.printPlayers());
         this.gameCenter = gameCenter;
 
         LOG.config("PostSignOutRoute is initialized.");
@@ -59,15 +60,16 @@ public class PostSignOutRoute implements Route {
         // Retrieve the current game object.
         final Session session = request.session();
 
+        // Get the current user
+        Player currentPlayer = session.attribute(PLAYER_ATTR);
+
         // Create the view-model map and add values that will be displayed in the sign in page.
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Sign Out");
         vm.put("message", Message.info("Are you sure you want to sign out?"));
 
         // Clean up the current player's presence in the game.
-        // Remove from Player Lobby.
-        // Update count if Player Lobby doesn't do this automatically.
-
+        playerLobby.removePlayer(currentPlayer.getName());
 
         // render the View
         return templateEngine.render(new ModelAndView(vm , "signout.ftl"));

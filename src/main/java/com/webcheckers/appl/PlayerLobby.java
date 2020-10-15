@@ -34,8 +34,6 @@ public class PlayerLobby {
      * @return boolean
      */
     public boolean addPlayer(Player player) {
-        System.out.println(player.isNameValid());
-        System.out.println(players.containsKey(player.getName()));
         if (player.isNameValid() && !players.containsKey(player.getName())) {
             players.put(player.getName(), player);
             return true;
@@ -59,9 +57,9 @@ public class PlayerLobby {
 
     /**
      * Removes player from the players map.
-     * @param player player to remove
+     * @param playerName name player to remove
      */
-    public void removePlayer(Player player){ players.remove(player); }
+    public void removePlayer(String playerName){ players.remove(playerName); }
 
     public ArrayList<Player> getPlayers() { return new ArrayList<>(players.values()); }
 
