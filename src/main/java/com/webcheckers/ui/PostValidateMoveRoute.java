@@ -60,6 +60,7 @@ public class PostValidateMoveRoute implements Route {
         //for now, assume all moves are valid
         Message message;
         if (isValidMove){
+            //the turn is valid, so we go to the get game route
             message = Message.info(messageText);
         } else {
             // create a message with an error
@@ -73,8 +74,6 @@ public class PostValidateMoveRoute implements Route {
 
         //Get the board
         BoardView boardView = session.attribute(BOARD_ATTR);
-
-        //TODO Enable the submit turn button
 
         //add messages to the view model
         vm.put("message", message);
