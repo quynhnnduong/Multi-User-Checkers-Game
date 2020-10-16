@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import static com.webcheckers.ui.UIProtocol.LEGIT_NAME;
+
 /**
  * The UI Controller to GET the Sign In page.
  * @author Shubhang Mehrotra, Dmitry Selin
@@ -15,7 +17,6 @@ import java.util.logging.Logger;
 public class GetSignInRoute implements Route {
     private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
     private final TemplateEngine templateEngine;
-    private final String LEGIT_NAME = "legitName";
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
@@ -40,7 +41,7 @@ public class GetSignInRoute implements Route {
      *   the rendered HTML for the Sign In page
      */
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
         final Session session = request.session();
 
         LOG.finer("GetSignInRoute is invoked.");

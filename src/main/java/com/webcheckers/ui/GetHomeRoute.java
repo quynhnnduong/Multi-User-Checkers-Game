@@ -8,9 +8,10 @@ import java.util.logging.Logger;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
+import com.webcheckers.util.Message;
 import spark.*;
 
-import com.webcheckers.util.Message;
+import static com.webcheckers.ui.UIProtocol.*;
 
 /**
  * The UI Controller to GET the Home page.
@@ -18,45 +19,16 @@ import com.webcheckers.util.Message;
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
 public class GetHomeRoute implements Route {
+
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
-  public static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
-
-  //tells whether to show the no log in, or log in screen
-  private static final String LOGGED_IN_ATTR = "loggedIn";
-
-  //the object for displaying the player name (not sure why its not being used)
-  public static final String PLAYER_ATTR = "player";
-
-  //the object to display the current online players on the home page.
-  public static final String PLAYER_MSG_ATTR = "playersMessage";
-
-
-
-  //stolen from webcheckers - keeps records of all the games (probably don't need this since player lobby is a combination
-  //of gamecenter and player services, in order to remove this, you have to go all the way from application where its made, and
-  //remove it later, but since we don't have much time and the website doesn't crash don't worry about it)
   private final GameCenter gameCenter;
+
+  private final PlayerLobby playerLobby;
 
   private final TemplateEngine templateEngine;
 
-  //Key in the session attribute map for the player who started the session stating that this player has interracted with the player lobby
-  public static final String PLAYERLOBBY_KEY = "playerLobby";
-
-  //the key to determine if a player has entered a name that someone else has
-  public static final String LEGIT_NAME = "legitName";
-
-  //the key to determine if a player picked someone previously who wasn't already playing a game (or they didn't pick anyone)
-  public static final String LEGIT_OPPONENT = "legitOpponent";
-
-  //the key to determine if a player is currently playing a game
-  public static final String MID_GAME_KEY = "midGame";
-
-  //this is the replacement for game center, and there will be one playerlobby created in Application that will be passed into
-  //all the routes
-  private PlayerLobby playerLobby;
-  public static final String PLAYER_LOBBY_MSG = " player(s) in lobby";
-  public static final String NO_PLAYERS_MSG = "There are no other players available to play at this time.";
+  public static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
 
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.

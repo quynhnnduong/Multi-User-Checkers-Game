@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import static com.webcheckers.ui.PostSignInRoute.PLAYER_ATTR;
+import static com.webcheckers.ui.UIProtocol.*;
 import static spark.Spark.halt;
 
 /**
@@ -37,15 +37,6 @@ public class GetGameRoute implements Route {
 
     //TODO Add  functionality and documentation to map
     private final HashMap<String, Object> map = null;
-
-    /** Attribute to denote the red player in the session */
-    public static final String RED_ATTR = "redPlayer";
-
-    /** Attribute to denote the white player in the session*/
-    public static final String WHITE_ATTR = "whitePlayer";
-
-    /** Attribute to denote the board in the session*/
-    public static final String BOARD_ATTR = "board";
 
     /** An enumeration of the mode selected by the user to enter into */
     enum viewMode {
@@ -107,13 +98,13 @@ public class GetGameRoute implements Route {
         if (opponent.isMidGame() && !opponent.isCalledForGame()) {
 
             // Redirect and inform currentPlayer that their opponent is playing in a different game
-            session.attribute(GetHomeRoute.LEGIT_OPPONENT, false);
+            session.attribute(LEGIT_OPPONENT, false);
             //response.redirect(WebServer.HOME_URL);
         }
         else {
 
             // Sets the currentPlayer's state to be MID_GAME
-            session.attribute(GetHomeRoute.MID_GAME_KEY, true);
+            session.attribute(MID_GAME_KEY, true);
 
             // Set currentPlayer and opponent's states to PLAYING in playerLobby
             currentPlayer.joinGame();

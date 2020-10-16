@@ -18,7 +18,7 @@
         </#if>
 
         <form id="username" action="./signin" method="POST">
-            <input name="text_field" required pattern="[A-Za-z0-9 ]">
+            <input name="text_field" required pattern="[A-Za-z0-9]+">
             <button type="submit">Sign-In</button>
         </form>
 

@@ -23,6 +23,10 @@ public class PlayerLobby {
      */
     private final GameCenter gameCenter;
 
+    public static final String PLAYER_LOBBY_MSG = " player(s) in lobby";
+
+    public static final String NO_PLAYERS_MSG = "There are no other players available to play at this time.";
+
     /**
      * New PlayerLobby set up
      */
@@ -90,9 +94,9 @@ public class PlayerLobby {
         int numOfPlayers = getNumOfPlayers();
 
         if (numOfPlayers > 1)
-            return (--numOfPlayers + GetHomeRoute.PLAYER_LOBBY_MSG);
+            return (--numOfPlayers + PLAYER_LOBBY_MSG);
 
-        return GetHomeRoute.NO_PLAYERS_MSG;
+        return NO_PLAYERS_MSG;
     }
 }
 

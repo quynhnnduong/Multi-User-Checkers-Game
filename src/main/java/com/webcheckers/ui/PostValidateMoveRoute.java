@@ -12,8 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import static com.webcheckers.ui.GetGameRoute.*;
-import static com.webcheckers.ui.GetHomeRoute.PLAYER_ATTR;
+import static com.webcheckers.ui.UIProtocol.*;
 
 /**
  * This class handles the /validateMove route

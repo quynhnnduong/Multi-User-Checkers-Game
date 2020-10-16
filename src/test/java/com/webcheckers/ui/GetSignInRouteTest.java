@@ -54,7 +54,7 @@ public class GetSignInRouteTest {
         testHelper.assertViewModelExists();
         testHelper.assertViewModelIsaMap();
         //   * model contains all necessary View-Model data
-        testHelper.assertViewModelAttribute(GetHomeRoute.LEGIT_NAME,null);
+        testHelper.assertViewModelAttribute(UIProtocol.LEGIT_NAME,null);
         //   * test view name
         testHelper.assertViewName("signIn.ftl");
     }

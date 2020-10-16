@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import static com.webcheckers.ui.GetHomeRoute.LEGIT_OPPONENT;
+import static com.webcheckers.ui.UIProtocol.*;
 import static spark.Spark.halt;
 
 /**
@@ -23,9 +23,7 @@ public class PostSignInRoute implements Route {
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
     private final GameCenter gameCenter;
-    public static final String PLAYER_ATTR = "player";
-    public static final String PLAYERLOBBY_KEY = "playerLobby";
-    private static final String LOGGED_IN_ATTR = "loggedIn";
+
     private static final Message INVALID_NAME_MSG = Message.info("Invalid Name. Please try again.");
 
     /**
@@ -75,7 +73,7 @@ public class PostSignInRoute implements Route {
                 vm.put("message", INVALID_NAME_MSG);
 
                 //this flag shows the message that the last name they put was taken by someone else
-                session.attribute(GetHomeRoute.LEGIT_NAME, false);
+                session.attribute(LEGIT_NAME, false);
 
                 response.redirect(WebServer.SIGNIN_URL);
                 return halt();
