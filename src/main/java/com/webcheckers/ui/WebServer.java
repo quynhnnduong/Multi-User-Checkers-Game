@@ -80,6 +80,8 @@ public class WebServer {
   public static final String SUBMIT_URL = "/submitTurn";
 
   public static final String CHECK_URL = "/checkTurn";
+
+  public static final String RESIGN_URL = "/resign";
   //
   // Attributes
   //
@@ -185,6 +187,9 @@ public class WebServer {
 
     //Waiting player checks when their turn is
     post(CHECK_URL, new PostCheckTurnRoute(templateEngine));
+
+    //Resign button is pressed
+    post(RESIGN_URL, new PostResignGame(templateEngine));
 
     LOG.config("WebServer is initialized.");
   }
