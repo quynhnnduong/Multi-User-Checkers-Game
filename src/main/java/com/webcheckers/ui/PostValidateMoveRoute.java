@@ -79,14 +79,14 @@ public class PostValidateMoveRoute implements Route {
         vm.put("message", message);
 
         //add other parts to the view model
-        vm.put("title", "Game");
-        vm.put("currentUser", currentPlayer);
-        vm.put("loggedIn", true);
-        vm.put("viewMode", GetGameRoute.viewMode.PLAY);
-        vm.put("modeOptionsAsJSON", map);
-        vm.put("redPlayer", redPlayer);
-        vm.put("whitePlayer", whitePlayer);
-        vm.put("activeColor", GetGameRoute.activeColor.RED);
+        //vm.put("title", "Game");
+        //vm.put("currentUser", currentPlayer);
+        //vm.put("loggedIn", true);
+        //vm.put("viewMode", GetGameRoute.viewMode.PLAY);
+        //vm.put("modeOptionsAsJSON", map);
+        //vm.put("redPlayer", redPlayer);
+        //vm.put("whitePlayer", whitePlayer);
+        //vm.put("activeColor", GetGameRoute.activeColor.RED);
 
         // The BoardView depends on the currentPlayer
         // If the Player has white Pieces, flip the board to have the white Pieces at the bottom of the board

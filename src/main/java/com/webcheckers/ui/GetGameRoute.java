@@ -137,30 +137,53 @@ public class GetGameRoute implements Route {
         Player redPlayer;
         Player whitePlayer;
 
+        if (session.attribute("activeColor") != null){
+
+            //not a new player, someone coming back from the last turn
+
+            //change their active color
+            if (session.attribute("activeColor") == activeColor.RED){
+                session.attribute("activeColor", activeColor.WHITE);
+            } else {
+                session.attribute("activeColor", activeColor.RED);
+            }
+
+            //get players from session
+            redPlayer = session.attribute(RED_ATTR);
+            whitePlayer = session.attribute(WHITE_ATTR);
+
+        } else {
+
+            //its a new player to the game
+
+            if (currentPlayer.isMidGame()){
+
+                // Opponent becomes the red Player since opponent started the game
+                redPlayer = opponent;
+                whitePlayer = currentPlayer;
+            }
+            else {
+
+                // Both Players get put into the MID_GAME state
+                opponent.joinGame();
+                opponent.stopCalling();
+
+                // CurrentPlayer called opponent, and therefore becomes the red Player
+                redPlayer = currentPlayer;
+                whitePlayer = opponent;
+            }
+
+            //adds Red and White players to the session
+            session.attribute(RED_ATTR, redPlayer);
+            session.attribute(WHITE_ATTR, whitePlayer);
+
+            //adds the board to the session
+            session.attribute(BOARD_ATTR, boardView);
+            session.attribute("activeColor", activeColor.RED);
+        }
         // Check if currentPlayer was called into a game by opponent
-        if (currentPlayer.isMidGame()){
 
-            // Opponent becomes the red Player since opponent started the game
-            redPlayer = opponent;
-            whitePlayer = currentPlayer;
-        }
-        else {
 
-            // Both Players get put into the MID_GAME state
-            opponent.joinGame();
-            opponent.stopCalling();
-
-            // CurrentPlayer called opponent, and therefore becomes the red Player
-            redPlayer = currentPlayer;
-            whitePlayer = opponent;
-        }
-
-        //adds Red and White players to the session
-        session.attribute(RED_ATTR, redPlayer);
-        session.attribute(WHITE_ATTR, whitePlayer);
-
-        //adds the board to the session
-        session.attribute(BOARD_ATTR, boardView);
 
         //sets the current color for t
 
@@ -172,7 +195,7 @@ public class GetGameRoute implements Route {
         vm.put("modeOptionsAsJSON", map);
         vm.put("redPlayer", redPlayer);
         vm.put("whitePlayer", whitePlayer);
-        vm.put("activeColor", activeColor.RED);
+        vm.put("activeColor", session.attribute("activeColor"));
 
         // The BoardView depends on the currentPlayer
         // If the Player has white Pieces, flip the board to have the white Pieces at the bottom of the board
