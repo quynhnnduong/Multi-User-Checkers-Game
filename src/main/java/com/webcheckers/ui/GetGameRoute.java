@@ -92,6 +92,10 @@ public class GetGameRoute implements Route {
         // Gets the opponent from the URL and makes them the WHITE player
         Player opponent = playerLobby.getPlayer(request.queryParams("opponent"));
 
+        if (opponent == null){
+            opponent = currentPlayer.getOpponent();
+        }
+
         //TODO this is the part which makes the white player return home after switching the turns,
         //TODO we need this to prevent a server error, so find another check that doesn't break this
         if (opponent == null) {
