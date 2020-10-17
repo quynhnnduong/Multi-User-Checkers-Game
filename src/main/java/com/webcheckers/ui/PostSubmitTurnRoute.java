@@ -26,7 +26,7 @@ public class PostSubmitTurnRoute implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
         final Session session = request.session();
-        //TODO: Add a way to validate a turn, possibly using boardView
+        //TODO: Add a way to validate a turn, possibly using boardVie w
 
         //for now assume its valid
 
