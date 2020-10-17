@@ -18,6 +18,8 @@ public class Player {
 
     private Player opponent = null;
 
+    private boolean isTurn = false;
+
     public Player(String name) {
         this.name = name;
         signedIn = true;
@@ -48,6 +50,23 @@ public class Player {
     public void setOpponent(Player opponent){ this.opponent = opponent; }
 
     public Player getOpponent(){ return opponent; }
+
+    public boolean isTurn() {
+        return isTurn;
+    }
+
+    public void startTurn(){
+        isTurn = true;
+    }
+
+    public void stopTurn(){
+        isTurn = false;
+    }
+
+    public boolean getTurn(){
+        return isTurn;
+    }
+
 
     /**
      * Checks if a string contains at least one alphanumeric character or a space

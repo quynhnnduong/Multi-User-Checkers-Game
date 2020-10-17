@@ -1,6 +1,7 @@
 package com.webcheckers.appl;
 
 import com.webcheckers.model.Player;
+import com.webcheckers.ui.GetGameRoute;
 
 public class Game {
     private Player redPlayer;
@@ -24,4 +25,6 @@ public class Game {
     public int getId(){
         return id;
     }
+
+
 }

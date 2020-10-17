@@ -10,6 +10,8 @@ import spark.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.webcheckers.ui.GetGameRoute.RED_ATTR;
+import static com.webcheckers.ui.GetGameRoute.WHITE_ATTR;
 import static com.webcheckers.ui.PostSignInRoute.PLAYER_ATTR;
 
 /**
@@ -49,11 +51,29 @@ public class PostSubmitTurnRoute implements Route {
             vm.put("message", message);
 
             //get the opponents name
-
-            Player currentPlayer =  session.attribute(PLAYER_ATTR);
-            String opponentName = currentPlayer.getOpponent().getName();
-            vm.put("activeColor", GetGameRoute.activeColor.WHITE);
+            /**
+             * Not useful here, will probably remove
+            //Player currentPlayer =  session.attribute(PLAYER_ATTR);
+            //String opponentName = currentPlayer.getOpponent().getName();
+            //vm.put("activeColor", GetGameRoute.activeColor.WHITE);
             //response.redirect(WebServer.GAME_URL + "?opponent=" + opponentName);
+             */
+
+            //change who is playing
+            Player redPlayer = session.attribute(RED_ATTR);
+            Player whitePlayer = session.attribute(WHITE_ATTR);
+
+            // if it not the opponent's turn switch whoever's going
+            if (redPlayer.isTurn()){
+                redPlayer.stopTurn();
+                whitePlayer.startTurn();
+            } else {
+                whitePlayer.stopTurn();
+                redPlayer.startTurn();
+            }
+
+
+
 
         } else {
             // create a message with an error
