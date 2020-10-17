@@ -78,6 +78,8 @@ public class WebServer {
    * The URL pattern to request teh submit turn page
    */
   public static final String SUBMIT_URL = "/submitTurn";
+
+  public static final String CHECK_URL = "/checkTurn";
   //
   // Attributes
   //
@@ -180,6 +182,9 @@ public class WebServer {
 
     //Enables the user to submit their turn
     post(SUBMIT_URL, new PostSubmitTurnRoute(templateEngine));
+
+    //Waiting player checks when their turn is
+    post(CHECK_URL, new PostCheckTurnRoute(templateEngine));
 
     LOG.config("WebServer is initialized.");
   }

@@ -92,6 +92,7 @@ public class GetGameRoute implements Route {
         // Gets the opponent from the URL and makes them the WHITE player
         Player opponent = playerLobby.getPlayer(request.queryParams("opponent"));
 
+
         if (opponent == null) {
             response.redirect(WebServer.HOME_URL);
             return halt();
@@ -127,8 +128,9 @@ public class GetGameRoute implements Route {
             // Create a gameID for the current game using the names of the players
             int gameID = playerLobby.createGameId(currentPlayer, opponent);
 
-            // Add it to the VM
-            vm.put("gameID", gameID);
+            session.attribute("gameID", gameID);
+
+
 
             //TODO whenever we get to coding the win state, set all these to not playing, and remove the opponents from each other,
             //TODO also remove the red and white players from the current session
@@ -137,22 +139,7 @@ public class GetGameRoute implements Route {
         Player redPlayer;
         Player whitePlayer;
 
-        if (session.attribute("activeColor") != null){
-
-            //not a new player, someone coming back from the last turn
-
-            //change their active color
-            if (session.attribute("activeColor") == activeColor.RED){
-                session.attribute("activeColor", activeColor.WHITE);
-            } else {
-                session.attribute("activeColor", activeColor.RED);
-            }
-
-            //get players from session
-            redPlayer = session.attribute(RED_ATTR);
-            whitePlayer = session.attribute(WHITE_ATTR);
-
-        } else {
+        if (session.attribute("activeColor") == null){
 
             //its a new player to the game
 
@@ -180,7 +167,25 @@ public class GetGameRoute implements Route {
             //adds the board to the session
             session.attribute(BOARD_ATTR, boardView);
             session.attribute("activeColor", activeColor.RED);
+
+        } else {
+
+
+            //not a new player, someone coming back from the last turn
+
+            //change their active color
+            if (session.attribute("activeColor") == activeColor.RED){
+                session.attribute("activeColor", activeColor.WHITE);
+            } else {
+                session.attribute("activeColor", activeColor.RED);
+            }
         }
+
+
+        //get players from session
+        redPlayer = session.attribute(RED_ATTR);
+        whitePlayer = session.attribute(WHITE_ATTR);
+
         // Check if currentPlayer was called into a game by opponent
 
 
@@ -189,6 +194,8 @@ public class GetGameRoute implements Route {
 
         // Adds all freemarker components to the HashMap
         vm.put("title", "Game");
+        // Add it to the VM
+        vm.put("gameID", session.attribute("gameID"));
         vm.put("currentUser", currentPlayer);
         vm.put("loggedIn", true);
         vm.put("viewMode", viewMode.PLAY);
