@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.google.gson.Gson;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.util.Message;
 import spark.*;
@@ -16,12 +17,15 @@ public class PostResignGame implements Route {
     private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
     private final TemplateEngine templateEngine;
 
+
+    final Message RESIGN_MSG = Message.info("Player Resigned");
+
+
     /**
      * Constructor for PostResignGame
      * @param templateEngine
-     * @param playerLobby
      */
-    public PostResignGame(TemplateEngine templateEngine, PlayerLobby playerLobby) {
+    public PostResignGame(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
         LOG.config("PostResignGame is initialized.");
     }
@@ -37,12 +41,7 @@ public class PostResignGame implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
         final Session session = request.session();
-
-        LOG.finer("PostResignGame is invoked.");
-        Map<String, Object> vm = new HashMap<>();
-
-        vm.put("title", "Resign Game");
-
-        return templateEngine.render(new ModelAndView(vm , "resignGame.ftl"));
+        Gson gson = new Gson();
+        return gson.toJson(RESIGN_MSG);
     }
 }

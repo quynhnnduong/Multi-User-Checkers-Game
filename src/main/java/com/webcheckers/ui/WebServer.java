@@ -69,6 +69,9 @@ public class WebServer {
    */
   public static final String GAME_URL = "/game";
 
+  /**
+   * The URL pattern to handle the Resign button
+   */
   public static final String RESIGN_URL = "/resignGame";
 
   //
@@ -170,7 +173,7 @@ public class WebServer {
     get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
 
     //handles the resign call
-    post(RESIGN_URL, new PostResignGame(templateEngine, playerLobby));
+    post(RESIGN_URL, new PostResignGame(templateEngine));
 
     //
     LOG.config("WebServer is initialized.");
