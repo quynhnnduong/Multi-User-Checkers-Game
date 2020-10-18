@@ -33,9 +33,9 @@ public class BoardViewTest {
             // Alternates the leading color in each Row to create a checker pattern
             if (i % 2 == 0) {
                 //check the color of the first space
-                assertEquals(SpaceColor.WHITE, bv.getRows().get(i).getSpaces().get(0).getColor(), "Leading space was black when it should be white");
+                assertEquals(SpaceColor.WHITE, bv.getBoard().get(i).getSpaces().get(0).getColor(), "Leading space was black when it should be white");
             } else  {
-                assertEquals(SpaceColor.BLACK, bv.getRows().get(i).getSpaces().get(0).getColor(), "Leading space was white when it should be black");
+                assertEquals(SpaceColor.BLACK, bv.getBoard().get(i).getSpaces().get(0).getColor(), "Leading space was white when it should be black");
             }
 
         }

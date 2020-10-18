@@ -78,7 +78,7 @@ public class GetHomeRouteTest {
         //   * test view name
         testHelper.assertViewName("home.ftl");
         //   * verify the player lobby object
-        verify(session).attribute(eq(UIProtocol.PLAYERLOBBY_KEY), any(PlayerLobby.class));
+        verify(session).attribute(eq(UIProtocol.PLAYERLOBBY_ATTR), any(PlayerLobby.class));
     }
 
 
