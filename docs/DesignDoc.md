@@ -147,6 +147,8 @@ or sign out.
 > a sequence diagram of the `POST /validateMove` HTTP request processing
 > or you might show a statechart diagram if the Game component uses a
 > state machine to manage the game._
+>
+![The StartAGame Sequence Diagram](StartAGame.png)
 
 > _If a dynamic model, such as a statechart describes a feature that is
 > not mostly in this tier and cuts across multiple tiers, you can
