@@ -47,6 +47,9 @@ public class GetGameRoute implements Route {
     /** Attribute to denote the board in the session*/
     public static final String BOARD_ATTR = "board";
 
+    /** Attribute to denote the active player in the session*/
+    public static final String ACTIVE_COLOR_ATTR = "activeColor";
+
     /** An enumeration of the mode selected by the user to enter into */
     enum viewMode {
         PLAY,
@@ -144,7 +147,7 @@ public class GetGameRoute implements Route {
         Player redPlayer;
         Player whitePlayer;
 
-        if (session.attribute("activeColor") == null){
+        if (session.attribute(ACTIVE_COLOR_ATTR) == null){
 
             //its a new player to the game
 
@@ -175,7 +178,7 @@ public class GetGameRoute implements Route {
 
             //adds the board to the session
             session.attribute(BOARD_ATTR, boardView);
-            session.attribute("activeColor", activeColor.RED);
+            session.attribute(ACTIVE_COLOR_ATTR, activeColor.RED);
 
         } else {
 
@@ -183,10 +186,10 @@ public class GetGameRoute implements Route {
             //not a new player, someone coming back from the last turn
 
             //change their active color
-            if (session.attribute("activeColor") == activeColor.RED){
-                session.attribute("activeColor", activeColor.WHITE);
+            if (session.attribute(ACTIVE_COLOR_ATTR) == activeColor.RED){
+                session.attribute(ACTIVE_COLOR_ATTR, activeColor.WHITE);
             } else {
-                session.attribute("activeColor", activeColor.RED);
+                session.attribute(ACTIVE_COLOR_ATTR, activeColor.RED);
             }
         }
 
@@ -211,7 +214,7 @@ public class GetGameRoute implements Route {
         vm.put("modeOptionsAsJSON", map);
         vm.put("redPlayer", redPlayer);
         vm.put("whitePlayer", whitePlayer);
-        vm.put("activeColor", session.attribute("activeColor"));
+        vm.put("activeColor", session.attribute(ACTIVE_COLOR_ATTR));
 
         // The BoardView depends on the currentPlayer
         // If the Player has white Pieces, flip the board to have the white Pieces at the bottom of the board

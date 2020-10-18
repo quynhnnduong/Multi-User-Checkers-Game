@@ -20,6 +20,7 @@ import static com.webcheckers.ui.PostSignInRoute.PLAYER_ATTR;
 public class PostSubmitTurnRoute implements Route {
 
     private TemplateEngine templateEngine;
+    private static final String TURN_ERROR = "If you're seeing this, you did a move you weren't supposed to";
 
     public PostSubmitTurnRoute(TemplateEngine templateEngine){
         this.templateEngine = templateEngine;
@@ -39,14 +40,12 @@ public class PostSubmitTurnRoute implements Route {
 
 
         //TODO use the move to determine what kind of message to show?
-        String messageText = "If you're seeing this, you did a move you weren't supposed to";
+//        String messageText = "If you're seeing this, you did a move you weren't supposed to";
 
         //for now, assume all moves are valid
         Message message;
         if (isValidTurn){
-
-
-            message = Message.info(messageText);
+            message = Message.info(TURN_ERROR);
             //add messages to the view model
             vm.put("message", message);
 
@@ -72,17 +71,13 @@ public class PostSubmitTurnRoute implements Route {
                 redPlayer.startTurn();
             }
 
-
-
-
         } else {
             // create a message with an error
-            message = Message.error(messageText);
+            message = Message.error(TURN_ERROR);
             //add messages to the view model
             vm.put("message", message);
-
-
         }
+
         //convert moveJSON to move Object using Gson
         Gson gson = new Gson();
         String messageJson = gson.toJson(message);
