@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import static com.webcheckers.ui.UIProtocol.LEGIT_NAME;
+import static com.webcheckers.ui.UIProtocol.LEGIT_NAME_ATTR;
 
 /**
  * The UI Controller to GET the Sign In page.
@@ -49,8 +49,8 @@ public class GetSignInRoute implements Route {
 
         // the key to tell someone if their last name for signin was taken by someone else (or there was none)
         try {
-            boolean legitName = session.attribute(LEGIT_NAME);
-            vm.put(LEGIT_NAME, legitName);
+            boolean legitName = session.attribute(LEGIT_NAME_ATTR);
+            vm.put(LEGIT_NAME_ATTR, legitName);
         }
         catch (NullPointerException ignored) {}
 
