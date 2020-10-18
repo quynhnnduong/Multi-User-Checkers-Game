@@ -137,6 +137,8 @@ or sign out.
 > responsibilities.  This should be a narrative description, i.e. it has
 > a flow or "story line" that the reader can follow._
 
+The UI Tier begins with the inception of the WebServer
+
 > _At appropriate places as part of this narrative provide one or more
 > static models (UML class structure or object diagrams) with some
 > details such as critical attributes and methods._
