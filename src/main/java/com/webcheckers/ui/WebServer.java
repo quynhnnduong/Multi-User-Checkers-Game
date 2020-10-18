@@ -81,7 +81,7 @@ public class WebServer {
 
   public static final String CHECK_URL = "/checkTurn";
 
-  public static final String RESIGN_URL = "/resign";
+  public static final String RESIGN_URL = "/resignGame";
   //
   // Attributes
   //
