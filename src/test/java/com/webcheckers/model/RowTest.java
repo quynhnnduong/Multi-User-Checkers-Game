@@ -19,23 +19,82 @@ public class RowTest {
     // Friendlies
     private int index;
     private ArrayList<Space> row;
-
-    // Attributes for mock objects
-    private SpaceColor spaceColor;
+    private SpaceColor leadingSpaceColor;
 
 
     @BeforeEach
     public void setUp(){
-
+        index = 0;
+        leadingSpaceColor = SpaceColor.BLACK;
     }
 
     @Test
-    public void testGenerateRow(){
+    public void testGenerateRowLeadingColor(){ // TODO Fix this test (Fails)
+        // Setup
+        CuT = mock(Row.class);
 
+        // Invoke
+        row = CuT.generateRow(leadingSpaceColor);
+
+        // Analyze
+        assertEquals(leadingSpaceColor, row.get(0).getColor());
+    }
+
+    @Test
+    public void testGenerateRowSize(){ // TODO Fix this test (AssertionError: expect 8, actual 0)
+        // Setup
+        CuT = mock(Row.class);
+
+        // Invoke
+        ArrayList<Space> generatedRow = CuT.generateRow(leadingSpaceColor);
+
+        // Analyze
+        assertEquals(8, generatedRow.size());
     }
 
     @Test
     public void testCreateRow(){
+        // Invoke
+        CuT = new Row(index, leadingSpaceColor);
 
+        // Analyze
+        assertNotNull(CuT);
+    }
+
+    @Test
+    public void testGetSpacesSize(){
+        // Setup
+        CuT = new Row(index, leadingSpaceColor);
+
+        // Invoke
+        ArrayList<Space> spaces = CuT.getSpaces();
+
+        // Analyze
+        assertEquals(spaces.size(), 8);
+    }
+
+    @Test
+    public void testGetSpacesLeadingColor(){
+        // Setup
+        CuT = new Row(index, leadingSpaceColor);
+
+        // Invoke
+        ArrayList<Space> spaces = CuT.getSpaces();
+
+        // Analyze
+        assertEquals(spaces.get(0).getColor(), leadingSpaceColor);
+    }
+
+    @Test
+    public void testFlipRow(){
+        //Setup
+        CuT = new Row(index, leadingSpaceColor);
+        int newIndex = 1;
+
+        // Invoke
+        Row newRow = CuT.flipRow(newIndex);
+
+        // Analyze - the leading color of the flipped row should not be the same as the original
+        assertNotEquals(newRow.getSpaces().get(0).getColor(), CuT.getSpaces().get(0).getColor());
     }
 }
