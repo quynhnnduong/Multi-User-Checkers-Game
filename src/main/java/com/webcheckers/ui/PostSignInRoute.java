@@ -57,6 +57,7 @@ public class PostSignInRoute implements Route {
 
         // retrieve the game object
         final Session session = request.session();
+
         Map<String, Object> vm = new HashMap<>();
 
         //if there is a session here - someone has already logged in

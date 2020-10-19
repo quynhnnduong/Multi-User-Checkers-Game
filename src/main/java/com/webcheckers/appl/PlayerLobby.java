@@ -39,7 +39,6 @@ public class PlayerLobby {
      * @return boolean
      */
     public boolean addPlayer(Player player) {
-
         if (player.isNameValid() && !players.containsKey(player.getName())) {
             players.put(player.getName(), player);
             return true;
@@ -89,6 +88,21 @@ public class PlayerLobby {
             return (--numOfPlayers + PLAYER_LOBBY_MSG);
 
         return NO_PLAYERS_MSG;
+    }
+
+    /**
+     * Prints all the players in the player lobby.
+     * Purely for debugging purposes, we can remove it later!
+     * @return String
+     * @author Sasha Persaud
+     */
+    public String printPlayers(){
+        StringBuilder playerString = new StringBuilder();
+        for (String name : players.keySet()) {
+            playerString.append(name);
+            playerString.append(" ");
+        }
+        return playerString.toString();
     }
 }
 

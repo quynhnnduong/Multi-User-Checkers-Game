@@ -53,22 +53,16 @@ public class WebServer {
   // Constants
   //
 
-  /**
-   * The URL pattern to request the Home page.
-   */
-  public static final String HOME_URL = "/";
+
 
   /**
-   * The URL pattern to request the Sign-In page
+   * The URL patterns to request the different pages of the web app.
    */
-    public static final String SIGNIN_URL = "/signin";
 
-  /**
-   * The URL pattern to request the Sign-In page
-   */
-  public static final String GAME_URL = "/game";
-
-  public static final String SIGN_OUT = "/resignGame";
+  public static final String HOME_URL = "/";                    // Request the home page.
+  public static final String SIGNIN_URL = "/signin";            // Request the sign in page.
+  public static final String GAME_URL = "/game";                // Request the game view page.
+  public static final String SIGNOUT_URL = "/signout";          // Request the sign out page.
 
   //
   // Attributes
@@ -165,9 +159,12 @@ public class WebServer {
     //Reloads sign-in page after signing in
     post(SIGNIN_URL, new PostSignInRoute(templateEngine, gameCenter, playerLobby));
 
+    //Reloads sign in page after signing out
+    post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, gameCenter, playerLobby));
+
     //shows the game page
     get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
-    //
+
     LOG.config("WebServer is initialized.");
   }
 

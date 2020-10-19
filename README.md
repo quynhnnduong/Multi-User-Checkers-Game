@@ -8,7 +8,7 @@ a web micro-framework.
 
 - Shubhang Mehrotra (sm9943)
 - Joel Clyne (jmc4514)
-- Sasha Persaud
+- Sasha Persaud (srp4581)
 - Quynh Duong (quynhnnduong)
 - Dmitry Selin (des3358)
 
