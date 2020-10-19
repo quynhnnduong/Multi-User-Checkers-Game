@@ -74,7 +74,7 @@ public class GetGameRouteTest {
 
         //the current player is player 1
         //session.attribute(PLAYER_NAME_ATTR, "Player1");
-        when(session.attribute(GetHomeRoute.PLAYER_ATTR)).thenReturn("Player1");
+        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn("Player1");
         //the opponent is player 2
         when(request.queryParams("opponent")).thenReturn("Player2");
         Player opponent = new Player("Player2");

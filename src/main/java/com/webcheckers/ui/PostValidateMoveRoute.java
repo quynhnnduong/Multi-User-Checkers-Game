@@ -12,8 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import static com.webcheckers.ui.GetGameRoute.*;
-import static com.webcheckers.ui.GetHomeRoute.PLAYER_ATTR;
+import static com.webcheckers.ui.UIProtocol.*;
 
 /**
  * This class handles the /validateMove route
@@ -91,7 +90,7 @@ public class PostValidateMoveRoute implements Route {
 
         // The BoardView depends on the currentPlayer
         // If the Player has white Pieces, flip the board to have the white Pieces at the bottom of the board
-        vm.put("board", (currentPlayer == redPlayer ? boardView : boardView.getFlippedBoard()));
+        vm.put("board", (currentPlayer == redPlayer ? boardView : boardView.flipBoard()));
 
 
         // return the move as a JSON string

@@ -73,12 +73,12 @@ public class GetHomeRouteTest {
         testHelper.assertViewModelIsaMap();
         //   * model contains all necessary View-Model data
         testHelper.assertViewModelAttribute("message", GetHomeRoute.WELCOME_MSG);
-        testHelper.assertViewModelAttribute(GetHomeRoute.PLAYER_MSG_ATTR, GetHomeRoute.NO_PLAYERS_MSG);
-        testHelper.assertViewModelAttribute(GetHomeRoute.PLAYER_ATTR, playerLobby.getPlayer(""));
+        testHelper.assertViewModelAttribute(UIProtocol.PLAYER_MSG_ATTR, PlayerLobby.NO_PLAYERS_MSG);
+        testHelper.assertViewModelAttribute(UIProtocol.PLAYER_ATTR, playerLobby.getPlayer(""));
         //   * test view name
         testHelper.assertViewName("home.ftl");
         //   * verify the player lobby object
-        verify(session).attribute(eq(GetHomeRoute.PLAYERLOBBY_KEY), any(PlayerLobby.class));
+        verify(session).attribute(eq(UIProtocol.PLAYERLOBBY_ATTR), any(PlayerLobby.class));
     }
 
 

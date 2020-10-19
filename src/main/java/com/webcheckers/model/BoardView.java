@@ -70,33 +70,26 @@ public class BoardView implements Iterable<Row>{
     }
 
     /**
-     * Returns a copy of this BoardView object, only with a flipped board.
-     * This is is used to give the white player a BoardView with the white
-     * Pieces at the bottom.
-     *
-     * @return a copy of this BoardView object, except with a flipped board
-     */
-    public BoardView getFlippedBoard() { return new BoardView(this.flipBoard()); }
-
-    /**
      * A helper function used for flipping the Rows of the board ArrayList.
      * A flipped board simply has its first Row as its new last Row (this is
      * done to give each Player a BoardView from their color's perspective).
      *
      * @return a flipped version of board
      */
-    private ArrayList<Row> flipBoard() {
+    public BoardView flipBoard() {
         ArrayList<Row> flippedBoard = new ArrayList<>();
+        int index = 0;
 
         // Reverses the order of the Rows without changing the Pieces
-        for (int i = 7; i >= 0; i--) {
-            flippedBoard.add(board.get(i));
+        for (int i = (BOARD_SIZE - 1); i >= 0; i--) {
+            Row newRow = board.get(i).flipRow(index);
+            flippedBoard.add(newRow);
         }
 
-        return flippedBoard;
+        return new BoardView(flippedBoard);
     }
 
-    public ArrayList<Row> getRows(){
+    public ArrayList<Row> getBoard(){
         return board;
     }
 }

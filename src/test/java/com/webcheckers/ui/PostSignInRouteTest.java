@@ -69,7 +69,7 @@ public class PostSignInRouteTest {
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
         playerLobby.addPlayer(player);
         session.attribute("playerlobby", playerLobby);
-        session.attribute("session_key", PostSignInRoute.PLAYERLOBBY_KEY);
+        session.attribute("session_key", UIProtocol.PLAYERLOBBY_ATTR);
 
         // Invoke the test: a user signs in
         System.out.println("Invoking test...");
@@ -82,12 +82,12 @@ public class PostSignInRouteTest {
 
         //   * model contains all necessary View-Model data
         testHelper.assertViewModelAttribute("title", "Welcome!");
-        testHelper.assertViewModelAttribute(GetHomeRoute.PLAYER_ATTR, playerLobby.getPlayer(""));
+        testHelper.assertViewModelAttribute(UIProtocol.PLAYER_ATTR, playerLobby.getPlayer(""));
         //   * test view name
         testHelper.assertViewName("home.ftl");
 
         //   * verify the session
-        verify(session).attribute(eq(PostSignInRoute.PLAYERLOBBY_KEY));
+        verify(session).attribute(eq(UIProtocol.PLAYERLOBBY_ATTR));
 
     }
 

@@ -15,13 +15,17 @@ public class PlayerLobby {
     /**
      * Creates a HashMap for players log in
      */
-    private HashMap<String, Player> players = new HashMap<>();
+    private final HashMap<String, Player> players = new HashMap<>();
 
     /**
      * Holds a like to the one and only GameCenter
      * @author Joel Clyne
      */
     private final GameCenter gameCenter;
+
+    public static final String PLAYER_LOBBY_MSG = " player(s) in lobby";
+
+    public static final String NO_PLAYERS_MSG = "There are no other players available to play at this time.";
 
     /**
      * New PlayerLobby set up
@@ -61,21 +65,13 @@ public class PlayerLobby {
      * Removes player from the players map.
      * @param player player to remove
      */
-    public void removePlayer(Player player){ players.remove(player); }
+    public void removePlayer(Player player){ players.remove(player.getName()); }
 
     public ArrayList<Player> getPlayers() { return new ArrayList<>(players.values()); }
 
     public void setOpponentMatch(Player  player1, Player player2){
         player1.setOpponent(player2);
         player2.setOpponent(player1);
-    }
-
-    public Player getPlayerOpponent(Player player){
-        return player.getOpponent();
-    }
-
-    public int createGameId(Player currentPlayer, Player opponent){
-        return gameCenter.generateGameID(currentPlayer, opponent);
     }
 
     /**
@@ -90,9 +86,9 @@ public class PlayerLobby {
         int numOfPlayers = getNumOfPlayers();
 
         if (numOfPlayers > 1)
-            return (--numOfPlayers + GetHomeRoute.PLAYER_LOBBY_MSG);
+            return (--numOfPlayers + PLAYER_LOBBY_MSG);
 
-        return GetHomeRoute.NO_PLAYERS_MSG;
+        return NO_PLAYERS_MSG;
     }
 }
 

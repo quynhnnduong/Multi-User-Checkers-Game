@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import static com.webcheckers.ui.GetHomeRoute.LEGIT_OPPONENT;
+import static com.webcheckers.ui.UIProtocol.*;
 import static spark.Spark.halt;
 
 /**
@@ -23,9 +23,7 @@ public class PostSignInRoute implements Route {
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
     private final GameCenter gameCenter;
-    public static final String PLAYER_ATTR = "player";
-    public static final String PLAYERLOBBY_KEY = "playerLobby";
-    private static final String LOGGED_IN_ATTR = "loggedIn";
+
     private static final Message INVALID_NAME_MSG = Message.info("Invalid Name. Please try again.");
 
     /**
@@ -54,7 +52,7 @@ public class PostSignInRoute implements Route {
      *   the rendered HTML for the Sign In page
      */
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
         LOG.finer("PostSignInRoute is invoked.");
 
         // retrieve the game object
@@ -62,7 +60,7 @@ public class PostSignInRoute implements Route {
         Map<String, Object> vm = new HashMap<>();
 
         //if there is a session here - someone has already logged in
-        if (session.attribute(PLAYERLOBBY_KEY) != null) {
+        if (session.attribute(PLAYERLOBBY_ATTR) != null) {
 
             //get the name from the text box
             final String name = request.queryParams("text_field");
@@ -75,7 +73,7 @@ public class PostSignInRoute implements Route {
                 vm.put("message", INVALID_NAME_MSG);
 
                 //this flag shows the message that the last name they put was taken by someone else
-                session.attribute(GetHomeRoute.LEGIT_NAME, false);
+                session.attribute(LEGIT_NAME_ATTR, false);
 
                 response.redirect(WebServer.SIGNIN_URL);
                 return halt();
@@ -98,7 +96,7 @@ public class PostSignInRoute implements Route {
         }
 
         //refresh the legit opponent bcs we're going to home.ftl
-        vm.put(LEGIT_OPPONENT, session.attribute(LEGIT_OPPONENT));
+        vm.put(LEGIT_OPPONENT_ATTR, session.attribute(LEGIT_OPPONENT_ATTR));
 
         // render the View
         return templateEngine.render(new ModelAndView(vm , "home.ftl"));

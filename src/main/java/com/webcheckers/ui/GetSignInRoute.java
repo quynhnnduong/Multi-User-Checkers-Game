@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import static com.webcheckers.ui.UIProtocol.LEGIT_NAME_ATTR;
+
 /**
  * The UI Controller to GET the Sign In page.
  * @author Shubhang Mehrotra, Dmitry Selin
@@ -15,7 +17,6 @@ import java.util.logging.Logger;
 public class GetSignInRoute implements Route {
     private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
     private final TemplateEngine templateEngine;
-    private final String LEGIT_NAME = "legitName";
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
@@ -40,7 +41,7 @@ public class GetSignInRoute implements Route {
      *   the rendered HTML for the Sign In page
      */
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
         final Session session = request.session();
 
         LOG.finer("GetSignInRoute is invoked.");
@@ -48,8 +49,8 @@ public class GetSignInRoute implements Route {
 
         // the key to tell someone if their last name for signin was taken by someone else (or there was none)
         try {
-            boolean legitName = session.attribute(LEGIT_NAME);
-            vm.put(LEGIT_NAME, legitName);
+            boolean legitName = session.attribute(LEGIT_NAME_ATTR);
+            vm.put(LEGIT_NAME_ATTR, legitName);
         }
         catch (NullPointerException ignored) {}
 
