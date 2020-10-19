@@ -99,7 +99,7 @@ public class PlayerLobbyTest {
         CuT.addPlayer(player);
         CuT.addPlayer(player);
         Player player = CuT.getPlayer("Player3");
-        CuT.removePlayer(player.getName());
+        CuT.removePlayer(player);
         assertEquals(2, CuT.getNumOfPlayers());
     }
 
