@@ -1,14 +1,12 @@
 package com.webcheckers.model;
 
 import org.junit.jupiter.api.Tag;
-
 import static org.mockito.Mockito.mock;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit Tests for {@link Piece} Component
+ * Unit Tests for {@link Move} Component
  * @author Sasha Persaud
  */
 @Tag("Model-tier")
