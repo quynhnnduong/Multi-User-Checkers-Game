@@ -137,7 +137,14 @@ or sign out.
 > responsibilities.  This should be a narrative description, i.e. it has
 > a flow or "story line" that the reader can follow._
 
-The UI Tier begins with the inception of the WebServer
+The most important aspect of any application for the user is the UI Tier. The User only sees and interacts with what is 
+on their screen, so it is of utmost importance for it to be top-notch! The UI Tier at the server side is nothing more 
+than just text on a black screen, but that text is able to understand and respond to the user for an overall enjoyable
+experience.
+
+The tier begins with the WebServer class, which initialises the View Elements of the website by calling the appropriate 
+HTTP Protocol handling class through Dependency Injection. What that means in English, is that WebServer is the stage 
+upon which the game is set. The first class 
 
 > _At appropriate places as part of this narrative provide one or more
 > static models (UML class structure or object diagrams) with some
