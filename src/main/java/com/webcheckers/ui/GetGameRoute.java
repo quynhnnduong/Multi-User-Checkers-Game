@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import static com.webcheckers.ui.PostSignInRoute.PLAYER_ATTR;
+import static com.webcheckers.ui.UIProtocol.*;
 import static spark.Spark.halt;
 
 /**
@@ -35,17 +35,7 @@ public class GetGameRoute implements Route {
     /** A model-tier component that houses and represents the checkers game */
     private final BoardView boardView;
 
-    //TODO Add  functionality and documentation to map
     private final HashMap<String, Object> map = null;
-
-    /** Attribute to denote the red player in the session */
-    public static final String RED_ATTR = "redPlayer";
-
-    /** Attribute to denote the white player in the session*/
-    public static final String WHITE_ATTR = "whitePlayer";
-
-    /** Attribute to denote the board in the session*/
-    public static final String BOARD_ATTR = "board";
 
     /** Attribute to denote the active player in the session*/
     public static final String ACTIVE_COLOR_ATTR = "activeColor";
@@ -86,21 +76,19 @@ public class GetGameRoute implements Route {
      * @return the rendered HTML for the Game page
      */
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
         final Session session = request.session();
 
         // Gets the current player
         Player currentPlayer = session.attribute(PLAYER_ATTR);
 
-        // Gets the opponent from the URL and makes them the WHITE player
-        Player opponent = playerLobby.getPlayer(request.queryParams("opponent"));
+        Player opponent;
 
-        if (opponent == null){
+        if (currentPlayer.isCalledForGame() || currentPlayer.isMidGame())
             opponent = currentPlayer.getOpponent();
-        }
+        else
+            opponent = playerLobby.getPlayer(request.queryParams("opponent"));
 
-        //TODO this is the part which makes the white player return home after switching the turns,
-        //TODO we need this to prevent a server error, so find another check that doesn't break this
         if (opponent == null) {
             response.redirect(WebServer.HOME_URL);
             return halt();
@@ -113,77 +101,58 @@ public class GetGameRoute implements Route {
         Map<String, Object> vm = new HashMap<>();
 
         // Checks if opponent is not in an existing game
-        if (opponent.isMidGame() && !opponent.isCalledForGame()) {
+        if (opponent.getOpponent() != null && !opponent.getOpponent().equals(currentPlayer)) {
 
             // Redirect and inform currentPlayer that their opponent is playing in a different game
-            session.attribute(GetHomeRoute.LEGIT_OPPONENT, false);
-            //response.redirect(WebServer.HOME_URL);
+            session.attribute(LEGIT_OPPONENT_ATTR, false);
+            response.redirect(WebServer.HOME_URL);
+            return halt();
         }
-        else {
+
+        // Start a new game
+        if (!currentPlayer.isMidGame() && !currentPlayer.isCalledForGame()) {
 
             // Sets the currentPlayer's state to be MID_GAME
-            session.attribute(GetHomeRoute.MID_GAME_KEY, true);
+            session.attribute(MID_GAME_ATTR, true);
+            session.attribute(LEGIT_OPPONENT_ATTR, true);
 
-            // Set currentPlayer and opponent's states to PLAYING in playerLobby
+            // Set currentPlayer and opponent's states to PLAYING in playerLobby and start calling opponent to the game
             currentPlayer.joinGame();
-
-            // Start calling opponent to the game
             opponent.call();
 
             // Inform PlayerLobby that currentPlayer and opponent are now playing
             playerLobby.setOpponentMatch(currentPlayer, opponent);
-
-            // Create a gameID for the current game using the names of the players
-            int gameID = playerLobby.createGameId(currentPlayer, opponent);
-
-            session.attribute("gameID", gameID);
-
-
-
-            //TODO whenever we get to coding the win state, set all these to not playing, and remove the opponents from each other,
-            //TODO also remove the red and white players from the current session
+            playerLobby.removePlayer(currentPlayer);
+            playerLobby.removePlayer(opponent);
         }
 
         Player redPlayer;
         Player whitePlayer;
 
-        if (session.attribute(ACTIVE_COLOR_ATTR) == null){
+        // Check if currentPlayer was called into a game by opponent or vice versa
+        if (currentPlayer.isCalledForGame()) {
+            currentPlayer.joinGame();
+            currentPlayer.stopCalling();
 
-            //its a new player to the game
+            redPlayer = opponent;
+            whitePlayer = currentPlayer;
+        }
+        else {
+            redPlayer = currentPlayer;
+            whitePlayer = opponent;
+        }
 
-            if (currentPlayer.isMidGame()){
+        // Adds Red and White players to the session
+        session.attribute(RED_ATTR, redPlayer);
+        session.attribute(WHITE_ATTR, whitePlayer);
 
-                // Opponent becomes the red Player since opponent started the game
-                redPlayer = opponent;
-                whitePlayer = currentPlayer;
-            }
-            else {
+        //adds the board to the session
+        session.attribute(BOARD_ATTR, boardView);
 
-                // Both Players get put into the MID_GAME state
-                opponent.joinGame();
-                opponent.stopCalling();
-
-                // CurrentPlayer called opponent, and therefore becomes the red Player
-                redPlayer = currentPlayer;
-                whitePlayer = opponent;
-            }
-
-            //the red player always goes first
-            redPlayer.startTurn();
-            whitePlayer.stopTurn();
-
-            //adds Red and White players to the session
-            session.attribute(RED_ATTR, redPlayer);
-            session.attribute(WHITE_ATTR, whitePlayer);
-
-            //adds the board to the session
-            session.attribute(BOARD_ATTR, boardView);
+        if (session.attribute(ACTIVE_COLOR_ATTR) == null) {
             session.attribute(ACTIVE_COLOR_ATTR, activeColor.RED);
-
-        } else {
-
-
-            //not a new player, someone coming back from the last turn
+        }
+        else {
 
             //change their active color
             if (session.attribute(ACTIVE_COLOR_ATTR) == activeColor.RED){
@@ -193,21 +162,8 @@ public class GetGameRoute implements Route {
             }
         }
 
-
-        //get players from session
-        redPlayer = session.attribute(RED_ATTR);
-        whitePlayer = session.attribute(WHITE_ATTR);
-
-        // Check if currentPlayer was called into a game by opponent
-
-
-
-        //sets the current color for t
-
         // Adds all freemarker components to the HashMap
         vm.put("title", "Game");
-        // Add it to the VM
-        vm.put("gameID", session.attribute("gameID"));
         vm.put("currentUser", currentPlayer);
         vm.put("loggedIn", true);
         vm.put("viewMode", viewMode.PLAY);
@@ -218,7 +174,7 @@ public class GetGameRoute implements Route {
 
         // The BoardView depends on the currentPlayer
         // If the Player has white Pieces, flip the board to have the white Pieces at the bottom of the board
-        vm.put("board", (currentPlayer == redPlayer ? boardView : boardView.getFlippedBoard()));
+        vm.put("board", (currentPlayer == redPlayer ? boardView : boardView.flipBoard()));
 
         // Render the Game Page
         return templateEngine.render(new ModelAndView(vm , "game.ftl"));

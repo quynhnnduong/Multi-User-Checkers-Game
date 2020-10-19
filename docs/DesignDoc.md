@@ -137,6 +137,8 @@ or sign out.
 > responsibilities.  This should be a narrative description, i.e. it has
 > a flow or "story line" that the reader can follow._
 
+The UI Tier begins with the inception of the WebServer
+
 > _At appropriate places as part of this narrative provide one or more
 > static models (UML class structure or object diagrams) with some
 > details such as critical attributes and methods._
@@ -147,6 +149,8 @@ or sign out.
 > a sequence diagram of the `POST /validateMove` HTTP request processing
 > or you might show a statechart diagram if the Game component uses a
 > state machine to manage the game._
+>
+![The StartAGame Sequence Diagram](StartAGame.png)
 
 > _If a dynamic model, such as a statechart describes a feature that is
 > not mostly in this tier and cuts across multiple tiers, you can

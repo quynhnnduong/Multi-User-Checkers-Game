@@ -7,8 +7,7 @@ import spark.*;
 
 import java.util.logging.Logger;
 
-import static com.webcheckers.ui.GetGameRoute.RED_ATTR;
-import static com.webcheckers.ui.GetGameRoute.WHITE_ATTR;
+import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
 
 public class PostCheckTurnRoute implements Route {
 
@@ -22,14 +21,14 @@ public class PostCheckTurnRoute implements Route {
 
 
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
 
         final Session session = request.session();
 
         //TODO actually check if its the waiting player's turn, and add the opponent's name to queryparams
         //for now assume its not the waiting player's turn
 
-        Player currentPlayer = session.attribute(GetHomeRoute.PLAYER_ATTR);
+        Player currentPlayer = session.attribute(PLAYER_ATTR);
 
         Message message = Message.info("false");
 

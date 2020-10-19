@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.model.Player;
 import spark.TemplateEngine;
 
 
@@ -82,6 +81,8 @@ public class WebServer {
   public static final String CHECK_URL = "/checkTurn";
 
   public static final String RESIGN_URL = "/resignGame";
+
+  public static final String SIGNOUT_URL = "/signout";
   //
   // Attributes
   //
@@ -176,6 +177,9 @@ public class WebServer {
 
     //Reloads sign-in page after signing in
     post(SIGNIN_URL, new PostSignInRoute(templateEngine, gameCenter, playerLobby));
+
+    //Reloads sign in page after signing out
+    post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, gameCenter, playerLobby));
 
     //shows the game page
     get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));

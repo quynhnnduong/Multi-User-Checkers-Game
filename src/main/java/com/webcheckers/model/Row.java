@@ -29,6 +29,11 @@ public class Row implements Iterable<Space> {
         row = generateRow(leadingColor);
     }
 
+    private Row(int newIndex, ArrayList<Space> spaces) {
+        index = newIndex;
+        row = spaces;
+    }
+
     /**
      * Returns the iterator of the Row object.
      *
@@ -80,4 +85,20 @@ public class Row implements Iterable<Space> {
 
         return row;
     }
+
+    public Row flipRow(int newIndex) {
+        ArrayList<Space> flippedRow = new ArrayList<>();
+        int index = 0;
+
+        for (int i = (BoardView.BOARD_SIZE - 1); i >= 0; i--) {
+            Space newSpace = new Space(index, row.get(i).getColor());
+            newSpace.placePiece(row.get(i).getPiece());
+
+            flippedRow.add(newSpace);
+        }
+
+        return new Row(newIndex, flippedRow);
+    }
+
+    public ArrayList<Space> getSpaces(){ return row; }
 }

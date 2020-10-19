@@ -11,18 +11,4 @@ public class GameCenter {
     private PlayerLobby playerLobby;
 
     public GameCenter() { playerLobby = new PlayerLobby(this); }
-
-    /**
-     * Creates a hashcode to be used as a game ID based on the player's names
-     * @param currentPlayer
-     * @param opponent
-     * @return
-     */
-    public int generateGameID(Player currentPlayer, Player opponent){
-        String namesTogether = currentPlayer.getName() + opponent.getName();
-        //return namesTogether.hashCode();
-        //TODO find a way to generate a gameID that uses the red and white players rather than the opponents
-        //TODO also, remove this from playerLobby, and probably gameCenter
-        return 21;
-    }
 }

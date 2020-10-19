@@ -10,9 +10,8 @@ import spark.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.webcheckers.ui.GetGameRoute.RED_ATTR;
-import static com.webcheckers.ui.GetGameRoute.WHITE_ATTR;
-import static com.webcheckers.ui.PostSignInRoute.PLAYER_ATTR;
+import static com.webcheckers.ui.UIProtocol.RED_ATTR;
+import static com.webcheckers.ui.UIProtocol.WHITE_ATTR;
 
 /**
  * Route for determining if the turn is valid
