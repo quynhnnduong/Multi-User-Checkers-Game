@@ -172,7 +172,7 @@ identify Game objects across multiple user sessions). The GameCenter component h
 a structure "players" (a HashMap that maps each Player object to their name), and a GameCenter "gameCenter" that
 ties the lobby to a single GameCenter.
 
-*** ADD A STATIC DIAGRAM OF ONE OF THE COMPONENTS HERE ***
+![The Game Static Diagram](Game.png)
 
 *** DESCRIBE THE RESPONSIBILITIES/JOBS/USES OF THESE COMPONENTS IN A NARRATIVE STYLE ***
 
