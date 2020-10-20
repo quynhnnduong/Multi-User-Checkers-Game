@@ -1,7 +1,9 @@
 package com.webcheckers.ui;
 
+import com.google.gson.Gson;
 import com.webcheckers.appl.PlayerLobby;
 
+import com.webcheckers.util.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -45,16 +47,25 @@ public class PostSubmitTurnRouteTest {
     /**
      * tests to make sure there are no errors when submitting a turn
      */
-   // @Test
+    @Test
     public void submitTurn() {
+        //This part works fine
+        Gson gson = new Gson();
         when(request.session().attribute(UIProtocol.RED_ATTR)).thenReturn(redPlayer);
         when(request.session().attribute(UIProtocol.WHITE_ATTR)).thenReturn(whitePlayer);
+
+        //This is throwing exception errors
         try {
-            Object turn_submit = CuT.handle(request, response);
-            assertEquals("{\"type\":\"info\",\"text\":\"Turn submitted\"}", turn_submit);
+            assertEquals(gson.toJson(Message.info("Turn submitted")), CuT.handle(request, response));
         } catch (Exception e) {
             e.printStackTrace();
         }
+//        try {
+//            Object turn_submit = CuT.handle(request, response);
+//            assertEquals("{\"type\":\"info\",\"text\":\"Turn submitted\"}", turn_submit);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
     }
 
