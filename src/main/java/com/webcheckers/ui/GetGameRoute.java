@@ -84,10 +84,13 @@ public class GetGameRoute implements Route {
 
         Player opponent;
 
+
+
         if (currentPlayer.isCalledForGame() || currentPlayer.isMidGame())
             opponent = currentPlayer.getOpponent();
-        else
+        else {
             opponent = playerLobby.getPlayer(request.queryParams("opponent"));
+        }
 
         if (opponent == null) {
             response.redirect(WebServer.HOME_URL);
