@@ -97,73 +97,101 @@ public class GetGameRoute implements Route {
             return halt();
         }
 
+        //the route doesn't know who the players are whenever it starts
+        Player redPlayer;
+        Player whitePlayer;
+
         // Logs a FINER invocation message
         LOG.finer("GetGameRoute is invoked.");
 
         // Creates the HashMap to house all the freemarker components
         Map<String, Object> vm = new HashMap<>();
 
-        // Checks if opponent is not in an existing game
-        if (opponent.getOpponent() != null && !opponent.getOpponent().equals(currentPlayer)) {
+        //checks if coming from a pre-existing game
+        if (session.attribute(RED_ATTR) == null || session.attribute(WHITE_ATTR) == null) {
 
-            // Redirect and inform currentPlayer that their opponent is playing in a different game
-            session.attribute(LEGIT_OPPONENT_ATTR, false);
-            response.redirect(WebServer.HOME_URL);
-            return halt();
-        }
+            //there was no pre-existing game, so we have to set one up
 
-        // Start a new game
-        if (!currentPlayer.isMidGame() && !currentPlayer.isCalledForGame()) {
+            // Checks if opponent is not in an existing game
+            if (opponent.getOpponent() != null && !opponent.getOpponent().equals(currentPlayer)) {
 
-            // Sets the currentPlayer's state to be MID_GAME
-            session.attribute(MID_GAME_ATTR, true);
-            session.attribute(LEGIT_OPPONENT_ATTR, true);
+                // Redirect and inform currentPlayer that their opponent is playing in a different game
+                session.attribute(LEGIT_OPPONENT_ATTR, false);
+                response.redirect(WebServer.HOME_URL);
+                return halt();
+            }
 
-            // Set currentPlayer and opponent's states to PLAYING in playerLobby and start calling opponent to the game
-            currentPlayer.joinGame();
-            opponent.call();
+            // Start a new game
+            if (!currentPlayer.isMidGame() && !currentPlayer.isCalledForGame()) {
 
-            // Inform PlayerLobby that currentPlayer and opponent are now playing
-            playerLobby.setOpponentMatch(currentPlayer, opponent);
-            playerLobby.removePlayer(currentPlayer);
-            playerLobby.removePlayer(opponent);
-        }
+                // Sets the currentPlayer's state to be MID_GAME
+                session.attribute(MID_GAME_ATTR, true);
+                session.attribute(LEGIT_OPPONENT_ATTR, true);
 
-        Player redPlayer;
-        Player whitePlayer;
+                // Set currentPlayer and opponent's states to PLAYING in playerLobby and start calling opponent to the game
+                currentPlayer.joinGame();
+                opponent.call();
 
-        // Check if currentPlayer was called into a game by opponent or vice versa
-        if (currentPlayer.isCalledForGame()) {
-            currentPlayer.joinGame();
-            currentPlayer.stopCalling();
+                // Inform PlayerLobby that currentPlayer and opponent are now playing
+                playerLobby.setOpponentMatch(currentPlayer, opponent);
+                playerLobby.removePlayer(currentPlayer);
+                playerLobby.removePlayer(opponent);
+            }
 
-            redPlayer = opponent;
-            whitePlayer = currentPlayer;
-        }
-        else {
-            redPlayer = currentPlayer;
-            whitePlayer = opponent;
-        }
 
-        // Adds Red and White players to the session
-        session.attribute(RED_ATTR, redPlayer);
-        session.attribute(WHITE_ATTR, whitePlayer);
 
-        //adds the board to the session
-        session.attribute(BOARD_ATTR, boardView);
+            // Check if currentPlayer was called into a game by opponent or vice versa
+            if (currentPlayer.isCalledForGame()) {
+                currentPlayer.joinGame();
+                currentPlayer.stopCalling();
 
-        if (session.attribute(ACTIVE_COLOR_ATTR) == null) {
+                redPlayer = opponent;
+                whitePlayer = currentPlayer;
+            } else {
+                redPlayer = currentPlayer;
+                whitePlayer = opponent;
+            }
+
+            // Adds Red and White players to the session
+            session.attribute(RED_ATTR, redPlayer);
+            session.attribute(WHITE_ATTR, whitePlayer);
+
+            //adds the board to the session
+            session.attribute(BOARD_ATTR, boardView);
+
+            //sets red to the active color and player
             session.attribute(ACTIVE_COLOR_ATTR, activeColor.RED);
-        }
-        else {
+
+            //make redPlayer start their turn
+            redPlayer.startTurn();
+            whitePlayer.stopTurn();
+
+        } else {
+            //if coming from an existing game
+
+            redPlayer = session.attribute(RED_ATTR);
+            whitePlayer = session.attribute(WHITE_ATTR);
+
 
             //change their active color
             if (session.attribute(ACTIVE_COLOR_ATTR) == activeColor.RED){
                 session.attribute(ACTIVE_COLOR_ATTR, activeColor.WHITE);
+
+                //start white player's turn
+                whitePlayer.startTurn();
+                redPlayer.stopTurn();
+
             } else {
                 session.attribute(ACTIVE_COLOR_ATTR, activeColor.RED);
+
+                //start red player's turn
+                redPlayer.startTurn();
+                whitePlayer.stopTurn();
             }
         }
+
+
+
 
         // Adds all freemarker components to the HashMap
         vm.put("title", "Game");

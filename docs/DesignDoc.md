@@ -239,7 +239,24 @@ the row and column of a change, one for the start and end of a piece movement.
 > have not had any testing yet. Highlight the issues found during
 > acceptance testing and if there are any concerns._
 
+Of the 5 user stories that we have worked on, 3 of them pass all of their acceptance criteria, and the other 2 pass some
+of their acceptance criteria.
 
+Turns - Players successfully switch between turns when one is finished. Although not a bug with turns directly,
+both players see their own pieces as red.
+
+Quit Game - Players can easily quit a game by clicking the resign button or closing the window. The player still playing 
+the game doesn't know that the other person left. Also, the session of the player who was still playing can no longer see
+other players in the player lobby after they sign out.
+
+Sign Out - Players are taken to a sign out screen up on signing out and are no longer shown in the home page to other 
+players.
+
+Illegal Moves - The player cannot move pieces on top of other pieces, or on a white space. However, other formed of 
+Illegal moves such as moving across 2 diagonal spaces aren't prohibited.
+
+Simple Move - The player can drag and drop the selected piece to their desired space, but the change doesn't persist when
+their turn ends.
 
 ### Unit Testing and Code Coverage
 > _Discuss your unit testing strategy. Report on the code coverage
@@ -247,3 +264,4 @@ the row and column of a change, one for the start and end of a piece movement.
 > coverage targets, why you selected those values, and how well your
 > code coverage met your targets. If there are any anomalies, discuss
 > those._
+
