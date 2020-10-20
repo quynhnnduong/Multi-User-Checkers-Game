@@ -58,6 +58,12 @@ public class PlayerLobbyTest {
         assertNotNull(CuT.getPlayers());
     }
 
+    @Test
+    public void testAddPlayerToLobbyInvalid(){
+        CuT.addPlayer(player);
+        assertFalse(CuT.addPlayer(new Player("Player")));
+    }
+
     /**
      *Test the ability to retrieve a specific player from the lobby.
      */
