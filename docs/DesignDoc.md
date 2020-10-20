@@ -269,8 +269,14 @@ Our Unit Testing strategy was to start with the Model classes then work our way 
 we could incrementally test our code and use less mocks classes in the UI tests, allowing us to simulate the
 exact behavior of the UI classes as they are used when the web application is run. 
 
-Our code coverage is currently ---
+Our code coverage is currently 100% for the application tier, 90% for the model tier and 35% for the UI tier. Our 
+code coverage targets were 95-100% for the Model and Application tiers and 75-80% for the UI tier. This is because 
+the tests for the Model and Application Tier were central to the business logic of the web application. We held testing
+to a higher standard for the classes in these tiers because they are essential for many of the features of the 
+application.
 
-Our coverage target was ---
+We reached our targets for both Model and Application tier, but in our results for the UI tier were an outlier.
+As a team, we struggled with testing the Routes, and some tests are absent. In the next release of the Checkers Web 
+Application, these will be implemented.
 
-Anomalies include ---
+
