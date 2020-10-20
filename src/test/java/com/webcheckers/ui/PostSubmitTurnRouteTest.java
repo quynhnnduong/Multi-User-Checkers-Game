@@ -76,7 +76,7 @@ public class PostSubmitTurnRouteTest {
     /**
      * test to make sure an error message is sent when appropriate
      */
-    @Test
+    // @Test
     void errorMessage() {
         when(request.session().attribute(UIProtocol.RED_ATTR)).thenReturn(new Player("redPlayer"));
         when(request.session().attribute(UIProtocol.WHITE_ATTR)).thenReturn(new Player("whitePlayer"));
