@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
 
 /**
- * @author Sasha Persaud (srp4581)
+ * @author Sasha Persaud (srp4581), Joel Clyne
  */
 public class PostSignOutRoute implements Route {
 
@@ -69,6 +69,11 @@ public class PostSignOutRoute implements Route {
 
         // Clean up the current player's presence in the game.
         playerLobby.removePlayer(currentPlayer);
+
+        // Remove the player from the session
+        session.attribute(PLAYER_ATTR, null);
+
+
 
         // render the View
         return templateEngine.render(new ModelAndView(vm , "signout.ftl"));

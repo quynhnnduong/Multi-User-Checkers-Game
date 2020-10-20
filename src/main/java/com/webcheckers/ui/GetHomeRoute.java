@@ -79,7 +79,7 @@ public class GetHomeRoute implements Route {
     //checks if last person current player picked was mid game
     boolean legitOpponent;
 
-    // if this is a brand new browser session (a new challenger approaches)
+    // if this is a brand new browser session (a new challenger approaches) or a signed out player returns to the home screen
     if (httpSession.attribute(PLAYERLOBBY_ATTR) == null || httpSession.attribute(PLAYER_ATTR) == null) {
 
       // get the object that will provide client-specific services for this player

@@ -134,8 +134,8 @@ public class GetGameRoute implements Route {
 
                 // Inform PlayerLobby that currentPlayer and opponent are now playing
                 playerLobby.setOpponentMatch(currentPlayer, opponent);
-                playerLobby.removePlayer(currentPlayer);
-                playerLobby.removePlayer(opponent);
+                //playerLobby.removePlayer(currentPlayer);
+                //playerLobby.removePlayer(opponent);
             }
 
 

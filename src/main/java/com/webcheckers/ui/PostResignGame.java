@@ -51,6 +51,11 @@ public class PostResignGame implements Route {
         Player currentPlayer = session.attribute(PLAYER_ATTR);
         currentPlayer.stopTurn();
         currentPlayer.exitGame();
+        currentPlayer.stopCalling();
+        currentPlayer.setOpponent(null);
+
+        //put the player back into the playerLobby
+
 
         return gson.toJson(RESIGN_MSG);
     }

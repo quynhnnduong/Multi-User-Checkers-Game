@@ -64,7 +64,7 @@ public class PlayerLobby {
      * Removes player from the players map.
      * @param player player to remove
      */
-    public void removePlayer(Player player){ players.remove(player.getName()); }
+    public void removePlayer(Player player){ players.remove(player.getName());  }
 
     public ArrayList<Player> getPlayers() { return new ArrayList<>(players.values()); }
 

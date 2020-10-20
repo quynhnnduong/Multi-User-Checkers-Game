@@ -200,21 +200,21 @@ against each other.
 >
 
 The Model Tier provides the game logic for the system. It takes the input from the UI tier and applies it to the inner
-workings of the games. It brings the different atributes of the players and checkers game into one tier where they dictate
-how both the game and player select works. 
+workings of the games. It brings the different attributes of the players and checkers game into one tier where they dictate
+how both the game and player select work. 
 
-For the most important part of any game, the people who play it, we have the player object. It holds various booleans deternmining 
+For the most important part of any game, the people who play it, there is the player object. It holds various booleans determining 
 what play states they are in, how they relate to their opponents, and the unique attributes each player has. 
 
 The players need a checkerboard to play on. That's where BoardView comes in. BoardView acts as a representation of a checkerboard
-comprised of 8 rows of spaces. The spaces on each row have a color and an indicator of whether there is a piece on it. 
-This keeps track of the board in the current game state.
+comprised of 8 rows of spaces. The spaces on each row have a color, and an indicator of whether there is a piece on it. 
+These keep track of the board in the current game state.
 
-Speaking of the pieces, the piece class represents a checker piece including what color it is and if it is a king. Through
+Speaking of the pieces, the Piece class represents a checker piece including what color it is and if it is a king. Through
 the UI tier, the players move these pieces across the BoardView until someone wins. 
 
-In order to maintain the good practice of High Cohesion and Low Coupling, the Player class does not directly interract with the BoardView, but 
-rather serves a representation of the people who are playing the checkers game. And the inputs from the UI are converted to 
+In order to maintain the good practice of High Cohesion and Low Coupling, the Player class does not directly interact with the BoardView, but 
+rather serves a representation of the people who are playing the checkers game. The inputs from the UI are converted to 
 the Move objects change the position  of pieces on the BoardView. The Move object has 2 Position objects, a denotation of 
 the row and column of a change, one for the start and end of a piece movement. 
 
@@ -242,17 +242,17 @@ the row and column of a change, one for the start and end of a piece movement.
 Of the 5 user stories that we have worked on, 3 of them pass all of their acceptance criteria, and the other 2 pass some
 of their acceptance criteria.
 
-Turns - Players successfully switch between turns when one is finished. Although not a bug with turns directly,
+Turns - Players successfully switch between turns when one finishes. Although not a bug with turns directly,
 both players see their own pieces as red.
 
 Quit Game - Players can easily quit a game by clicking the resign button or closing the window. The player still playing 
 the game doesn't know that the other person left. Also, the session of the player who was still playing can no longer see
-other players in the player lobby after they sign out.
+other players in the player lobby after they sign out once they quit a game.
 
-Sign Out - Players are taken to a sign out screen up on signing out and are no longer shown in the home page to other 
+Sign Out - Players are taken to a sign out screen upon signing out and are no longer shown in the home page to other 
 players.
 
-Illegal Moves - The player cannot move pieces on top of other pieces, or on a white space. However, other formed of 
+Illegal Moves - The player cannot move pieces on top of other pieces, or on a white space. However, other forms of 
 Illegal moves such as moving across 2 diagonal spaces aren't prohibited.
 
 Simple Move - The player can drag and drop the selected piece to their desired space, but the change doesn't persist when
