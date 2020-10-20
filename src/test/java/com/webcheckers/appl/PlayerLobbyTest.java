@@ -24,13 +24,11 @@ public class PlayerLobbyTest {
 
     // Friendly objects
     private GameCenter gameCenter;
-
-    // Attributes holding mock objects
     private Player player;
 
     @BeforeEach
     public void setup() {
-        player = mock(Player.class);
+        player = new Player("Player");
         gameCenter = new GameCenter();
         CuT = new PlayerLobby(gameCenter);
     }
@@ -63,7 +61,7 @@ public class PlayerLobbyTest {
     /**
      *Test the ability to retrieve a specific player from the lobby.
      */
-   // @Test
+    @Test
     public void testGetPlayerFromLobby(){
         CuT.addPlayer(player);
         assertEquals(player, CuT.getPlayer(player.getName()));
