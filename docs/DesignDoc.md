@@ -218,7 +218,7 @@ rather serves a representation of the people who are playing the checkers game. 
 the Move objects change the position  of pieces on the BoardView. The Move object has 2 Position objects, a denotation of 
 the row and column of a change, one for the start and end of a piece movement. 
 
-![The Model Diagram](Model-Diagram.png)
+![The Model Diagram](ModelDiagram.png)
 
 ### Design Improvements
 > _Discuss design improvements that you would make if the project were
