@@ -8,6 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
+import static com.webcheckers.ui.GetGameRoute.ACTIVE_COLOR_ATTR;
+import static com.webcheckers.ui.UIProtocol.RED_ATTR;
+import static com.webcheckers.ui.UIProtocol.WHITE_ATTR;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -45,7 +48,7 @@ public class GetGameRouteTest {
         playerLobby = mock(PlayerLobby.class);
         gameCenter = mock(GameCenter.class);
         player1 = mock(Player.class);
-        player1 = mock(Player.class);
+        player2 = mock(Player.class);
 
         // create a unique CuT for each test
         CuT = new GetGameRoute(engine, playerLobby);
@@ -53,7 +56,7 @@ public class GetGameRouteTest {
     /**
      * Test that the Game view will create a new game when a player initiates a game
      */
-   // @Test
+    @Test
     public void new_game() {
         //create playerLobby and it's 2 players
         //gameCenter = new GameCenter();
@@ -65,21 +68,26 @@ public class GetGameRouteTest {
         //Player player1 = new Player("Player1");
 
 
+        //set up everything for player 1
+        player1.stopCalling();
+        player1.exitGame();
+        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
+        when(session.attribute(RED_ATTR)).thenReturn(player1);
+
+        //set up everything for player 2
+        when(playerLobby.getPlayer(request.queryParams("opponent"))).thenReturn(player2);
+        when(session.attribute(WHITE_ATTR)).thenReturn(player2);
+
+        //make the active color red
+        when(session.attribute(ACTIVE_COLOR_ATTR)).thenReturn(GetGameRoute.activeColor.RED);
+
         //make them play a game against each other
         playerLobby.setOpponentMatch(playerLobby.getPlayer("Player1"), playerLobby.getPlayer("Player2"));
 
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-        // Arrange the test scenario: 2 users join a game
 
-        //the current player is player 1
-        //session.attribute(PLAYER_NAME_ATTR, "Player1");
-        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn("Player1");
-        //the opponent is player 2
-        when(request.queryParams("opponent")).thenReturn("Player2");
-        Player opponent = new Player("Player2");
-        opponent.joinGame();
-        opponent.call();
+
         // Invoke the test
         try {
             CuT.handle(request, response);
@@ -100,9 +108,9 @@ public class GetGameRouteTest {
         testHelper.assertViewModelAttribute("activeColor", GetGameRoute.activeColor.RED);
 
         //check if player 1 is red
-        testHelper.assertViewModelAttribute("redPlayer", playerLobby.getPlayer("player1"));
+        testHelper.assertViewModelAttribute("redPlayer", player1);
         //check if player 2 is white
-        testHelper.assertViewModelAttribute("whitePlayer", playerLobby.getPlayer("player2"));
+        testHelper.assertViewModelAttribute("whitePlayer", player2);
     }
 
 
