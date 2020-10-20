@@ -106,7 +106,7 @@ public class GetHomeRoute implements Route {
       vm.put(PLAYER_MSG_ATTR, playerLobby.getLobbyMessage());
 
       //check if the current player has been called to a game
-      if (currentPlayer.isMidGame() || currentPlayer.isCalledForGame()) {
+      if (currentPlayer.inGame()) {
 
         //append it onto the game url so its a bootleg query param
         response.redirect(WebServer.GAME_URL + "?opponent=" + currentPlayer.getOpponent().getName());
