@@ -197,6 +197,28 @@ against each other.
 > _Provide a summary of the Application tier of your architecture. This
 > section will follow the same instructions that are given for the UI
 > Tier above._
+>
+
+The Model Tier provides the game logic for the system. It takes the input from the UI tier and applies it to the inner
+workings of the games. It brings the different atributes of the players and checkers game into one tier where they dictate
+how both the game and player select works. 
+
+For the most important part of any game, the people who play it, we have the player object. It holds various booleans deternmining 
+what play states they are in, how they relate to their opponents, and the unique attributes each player has. 
+
+The players need a checkerboard to play on. That's where BoardView comes in. BoardView acts as a representation of a checkerboard
+comprised of 8 rows of spaces. The spaces on each row have a color and an indicator of whether there is a piece on it. 
+This keeps track of the board in the current game state.
+
+Speaking of the pieces, the piece class represents a checker piece including what color it is and if it is a king. Through
+the UI tier, the players move these pieces across the BoardView until someone wins. 
+
+In order to maintain the good practice of High Cohesion and Low Coupling, the Player class does not directly interract with the BoardView, but 
+rather serves a representation of the people who are playing the checkers game. And the inputs from the UI are converted to 
+the Move objects change the position  of pieces on the BoardView. The Move object has 2 Position objects, a denotation of 
+the row and column of a change, one for the start and end of a piece movement. 
+
+![The Model Diagram](Model-Diagram.png)
 
 ### Design Improvements
 > _Discuss design improvements that you would make if the project were
