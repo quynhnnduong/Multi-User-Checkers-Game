@@ -1,7 +1,10 @@
 package com.webcheckers.ui;
 
+import com.google.gson.Gson;
+import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.BoardView;
+import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 import spark.*;
 
@@ -32,13 +35,12 @@ public class GetGameRoute implements Route {
     /** A server-wide Player Lobby that keeps track of all the players waiting to start a game */
     private final PlayerLobby playerLobby;
 
+    private final GameCenter gameCenter;
+
     /** A model-tier component that houses and represents the checkers game */
     private final BoardView boardView;
 
-    private final HashMap<String, Object> map = null;
-
-    /** Attribute to denote the active player in the session*/
-    public static final String ACTIVE_COLOR_ATTR = "activeColor";
+    private final Map<String, Object> modeOptionsAsJSON = new HashMap<>(2);;
 
     /** An enumeration of the mode selected by the user to enter into */
     enum viewMode {
@@ -58,11 +60,16 @@ public class GetGameRoute implements Route {
      *
      * @param templateEngine the HTML template rendering engine
      */
-    public GetGameRoute(final TemplateEngine templateEngine, PlayerLobby playerLobby) {
+    public GetGameRoute(final TemplateEngine templateEngine, GameCenter gameCenter, PlayerLobby playerLobby) {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
         this.playerLobby = playerLobby;
+        this.gameCenter = gameCenter;
         boardView = new BoardView();
         LOG.config("GetGameRoute is initialized.");
+    }
+
+    public String makeGameID(Player redPlayer, Player whitePlayer) {
+        return (redPlayer.getName() + whitePlayer.getName());
     }
 
     /**
@@ -81,10 +88,10 @@ public class GetGameRoute implements Route {
 
         // Gets the current player
         Player currentPlayer = session.attribute(PLAYER_ATTR);
-
         Player opponent;
 
-        if (currentPlayer.isCalledForGame() || currentPlayer.isMidGame())
+        // Gets the opponent
+        if (currentPlayer.inGame())
             opponent = currentPlayer.getOpponent();
         else
             opponent = playerLobby.getPlayer(request.queryParams("opponent"));
@@ -110,11 +117,17 @@ public class GetGameRoute implements Route {
         }
 
         // Start a new game
-        if (!currentPlayer.isMidGame() && !currentPlayer.isCalledForGame()) {
+        if (!currentPlayer.inGame()) {
 
             // Sets the currentPlayer's state to be MID_GAME
             session.attribute(MID_GAME_ATTR, true);
             session.attribute(LEGIT_OPPONENT_ATTR, true);
+            session.attribute(RED_ATTR, currentPlayer);
+            session.attribute(WHITE_ATTR, opponent);
+
+            String gameID = makeGameID(session.attribute(RED_ATTR), session.attribute(WHITE_ATTR));
+            session.attribute(GAME_ID_ATTR, gameID);
+            gameCenter.addGame(new Game(gameID));
 
             // Set currentPlayer and opponent's states to PLAYING in playerLobby and start calling opponent to the game
             currentPlayer.joinGame();
@@ -126,40 +139,27 @@ public class GetGameRoute implements Route {
             playerLobby.removePlayer(opponent);
         }
 
-        Player redPlayer;
-        Player whitePlayer;
-
-        // Check if currentPlayer was called into a game by opponent or vice versa
+        // Check if currentPlayer was called into a game by opponent
         if (currentPlayer.isCalledForGame()) {
             currentPlayer.joinGame();
-            currentPlayer.stopCalling();
 
-            redPlayer = opponent;
-            whitePlayer = currentPlayer;
-        }
-        else {
-            redPlayer = currentPlayer;
-            whitePlayer = opponent;
+            // Adds Red and White players to the session
+            session.attribute(RED_ATTR, opponent);
+            session.attribute(WHITE_ATTR, currentPlayer);
         }
 
-        // Adds Red and White players to the session
-        session.attribute(RED_ATTR, redPlayer);
-        session.attribute(WHITE_ATTR, whitePlayer);
+        // The BoardView depends on the currentPlayer
+        // If the Player has white Pieces, flip the board to have the white Pieces at the bottom of the board
+        if (currentPlayer.equals(session.attribute(RED_ATTR)))
+            session.attribute(BOARD_ATTR, boardView);
+        else
+            session.attribute(BOARD_ATTR, boardView.flipBoard());
 
-        //adds the board to the session
-        session.attribute(BOARD_ATTR, boardView);
+        session.attribute(ACTIVE_COLOR_ATTR, activeColor.RED);
 
-        if (session.attribute(ACTIVE_COLOR_ATTR) == null) {
-            session.attribute(ACTIVE_COLOR_ATTR, activeColor.RED);
-        }
-        else {
-
-            //change their active color
-            if (session.attribute(ACTIVE_COLOR_ATTR) == activeColor.RED){
-                session.attribute(ACTIVE_COLOR_ATTR, activeColor.WHITE);
-            } else {
-                session.attribute(ACTIVE_COLOR_ATTR, activeColor.RED);
-            }
+        if (opponent.resigned()) {
+            modeOptionsAsJSON.put("isGameOver", true);
+            modeOptionsAsJSON.put("gameOverMessage", (opponent.getName() + " resigned."));
         }
 
         // Adds all freemarker components to the HashMap
@@ -167,14 +167,11 @@ public class GetGameRoute implements Route {
         vm.put("currentUser", currentPlayer);
         vm.put("loggedIn", true);
         vm.put("viewMode", viewMode.PLAY);
-        vm.put("modeOptionsAsJSON", map);
-        vm.put("redPlayer", redPlayer);
-        vm.put("whitePlayer", whitePlayer);
+        vm.put("modeOptionsAsJSON", new Gson().toJson(modeOptionsAsJSON));
+        vm.put("redPlayer", session.attribute(RED_ATTR));
+        vm.put("whitePlayer", session.attribute(WHITE_ATTR));
         vm.put("activeColor", session.attribute(ACTIVE_COLOR_ATTR));
-
-        // The BoardView depends on the currentPlayer
-        // If the Player has white Pieces, flip the board to have the white Pieces at the bottom of the board
-        vm.put("board", (currentPlayer == redPlayer ? boardView : boardView.flipBoard()));
+        vm.put("board", session.attribute(BOARD_ATTR));
 
         // Render the Game Page
         return templateEngine.render(new ModelAndView(vm , "game.ftl"));
