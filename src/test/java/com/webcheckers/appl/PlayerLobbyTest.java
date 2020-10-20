@@ -124,8 +124,24 @@ public class PlayerLobbyTest {
     }
 
     @Test
+    public void testGetLobbyMessageWithPlayers(){
+        // Setup
+        Player player1 = new Player("Me");
+        Player player2 = new Player("Player2");
+
+        CuT.addPlayer(player1);
+        CuT.addPlayer(player2);
+
+        // Invoke
+        String actualMessage = CuT.getLobbyMessage();
+        assertEquals("1 player(s) in lobby", actualMessage);
+    }
+
+    @Test
     public void testGetLobbyMessageNoPlayers(){
-       // Invoke with no one in the lobby
+        // Invoke and Analyze with no one in the lobby
         assertEquals("There are no other players available to play at this time.", CuT.getLobbyMessage());
     }
+
+
 }
