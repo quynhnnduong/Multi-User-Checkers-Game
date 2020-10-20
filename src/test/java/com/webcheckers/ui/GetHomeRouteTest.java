@@ -59,7 +59,7 @@ public class GetHomeRouteTest {
     /**
      * Test that CuT shows the Home view when the session is brand new.
      */
-   // @Test
+   @Test
     public void PreSignIn() {
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -73,7 +73,10 @@ public class GetHomeRouteTest {
         testHelper.assertViewModelIsaMap();
         //   * model contains all necessary View-Model data
         testHelper.assertViewModelAttribute("message", GetHomeRoute.WELCOME_MSG);
-        testHelper.assertViewModelAttribute(UIProtocol.PLAYER_MSG_ATTR, PlayerLobby.NO_PLAYERS_MSG);
+
+        //There should be no player amount message because the current player isn't signed in yet
+        testHelper.assertViewModelAttribute(UIProtocol.PLAYER_MSG_ATTR, null);
+
         testHelper.assertViewModelAttribute(UIProtocol.PLAYER_ATTR, playerLobby.getPlayer(""));
         //   * test view name
         testHelper.assertViewName("home.ftl");
