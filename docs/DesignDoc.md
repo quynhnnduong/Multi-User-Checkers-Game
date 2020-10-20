@@ -265,3 +265,12 @@ their turn ends.
 > code coverage met your targets. If there are any anomalies, discuss
 > those._
 
+Our Unit Testing strategy was to start with the Model classes then work our way up to the UI classes. This way,
+we could incrementally test our code and use less mocks classes in the UI tests, allowing us to simulate the
+exact behavior of the UI classes as they are used when the web application is run. 
+
+Our code coverage is currently ---
+
+Our coverage target was ---
+
+Anomalies include ---
