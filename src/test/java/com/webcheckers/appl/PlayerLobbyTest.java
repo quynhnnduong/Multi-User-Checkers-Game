@@ -10,6 +10,7 @@ import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit Test suite for {@link PlayerLobby} component
@@ -93,14 +94,21 @@ public class PlayerLobbyTest {
     /**
      *Test the ability to remove a player from the lobby.
      */
-   // @Test
+   @Test
     public void testRemovePlayerFromLobby(){
-        CuT.addPlayer(player);
-        CuT.addPlayer(player);
-        CuT.addPlayer(player);
-        Player player = CuT.getPlayer("Player3");
-        CuT.removePlayer(player);
-        assertEquals(2, CuT.getNumOfPlayers());
+        // Setup
+        Player player1 = new Player("Player1");
+        Player player2 = new Player("Player2");
+
+        CuT.addPlayer(player1);
+        CuT.addPlayer(player2);
+        System.out.println(CuT.getNumOfPlayers());
+
+        // Invoke
+        CuT.removePlayer(player1);
+
+        // Analyze
+        assertEquals(1, CuT.getNumOfPlayers());
     }
 
     @Test
