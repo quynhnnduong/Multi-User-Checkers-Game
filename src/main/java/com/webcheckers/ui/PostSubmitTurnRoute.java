@@ -36,26 +36,24 @@ public class PostSubmitTurnRoute implements Route {
 
         Map<String, Object> vm = new HashMap<>();
 
-
-
         //TODO use the move to determine what kind of message to show?
-//        String messageText = "If you're seeing this, you did a move you weren't supposed to";
+
+        // String messageText = "If you're seeing this, you did a move you weren't supposed to";
 
         //for now, assume all moves are valid
         Message message;
+
         if (isValidTurn){
             message = Message.info(TURN_ERROR);
             //add messages to the view model
             vm.put("message", message);
 
             //get the opponents name
-            /**
-             * Not useful here, will probably remove
+            // Not useful here, will probably remove
             //Player currentPlayer =  session.attribute(PLAYER_ATTR);
             //String opponentName = currentPlayer.getOpponent().getName();
             //vm.put("activeColor", GetGameRoute.activeColor.WHITE);
             //response.redirect(WebServer.GAME_URL + "?opponent=" + opponentName);
-             */
 
             //change who is playing
             Player redPlayer = session.attribute(RED_ATTR);
@@ -78,9 +76,7 @@ public class PostSubmitTurnRoute implements Route {
         }
 
         //convert moveJSON to move Object using Gson
-        Gson gson = new Gson();
-        String messageJson = gson.toJson(message);
         // render the View
-        return messageJson;
+        return new Gson().toJson(message);
     }
 }
