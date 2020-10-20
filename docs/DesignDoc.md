@@ -144,7 +144,25 @@ experience.
 
 The tier begins with the WebServer class, which initialises the View Elements of the website by calling the appropriate 
 HTTP Protocol handling class through Dependency Injection. What that means in English, is that WebServer is the stage 
-upon which the game is set. The first class 
+upon which the game is set. The first class to be greet the user is the class that handles the Home page of the Online 
+WebCheckers. The "GetHomeRoute" class is invoked and the user is able to interact with the Home Page. 
+
+When at the Home Page, the user has the ability to see the number of players online and currently playing the game, 
+and can join them by using the Sign In option.
+
+![The Home Page](HomePage.png) 
+
+Once they decide to Sign In, the WebServer then serves the SignIn page, handled by the "GetSignIn" class, to the user. 
+Here the user has the ability to Log in using a valid name, which is checked by the application, and can then join the 
+Player Lobby.
+
+![The Player Lobby](PlayerLobby.png)  
+
+The Player lobby lets a player choose their opponent to play against, with clicking on the "Start A Game" button. 
+Once the button is pressed, the Application begins to form a game session for the players and the users can now play the 
+game.
+
+![The StartAGame Sequence Diagram](StartAGame.png)
 
 > _At appropriate places as part of this narrative provide one or more
 > static models (UML class structure or object diagrams) with some
@@ -157,7 +175,6 @@ upon which the game is set. The first class
 > or you might show a statechart diagram if the Game component uses a
 > state machine to manage the game._
 >
-![The StartAGame Sequence Diagram](StartAGame.png)
 
 > _If a dynamic model, such as a statechart describes a feature that is
 > not mostly in this tier and cuts across multiple tiers, you can
