@@ -61,15 +61,7 @@ public class PostSubmitTurnRouteTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // tried it another way but still throwing errors
-       /**
-        try {
-            Object turn_submit = CuT.handle(request, response);
-            assertEquals("{\"type\":\"info\",\"text\":\"Turn submitted\"}", turn_submit);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        */
+
 
     }
 
@@ -78,12 +70,12 @@ public class PostSubmitTurnRouteTest {
      */
     @Test
     void errorMessage() {
+        Gson gson = new Gson();
         when(request.session().attribute(UIProtocol.RED_ATTR)).thenReturn(new Player("redPlayer"));
         when(request.session().attribute(UIProtocol.WHITE_ATTR)).thenReturn(new Player("whitePlayer"));
 
         try {
-            Object error = CuT.handle(request, response);
-            assertEquals("{\"type\":\"error\",\"text\":\"If you're seeing this, you did a move you weren't supposed to\"}", error);
+            assertEquals(gson.toJson(Message.error("If you're seeing this, you did a move you weren't supposed to")), CuT.handle(request, response));
         } catch (Exception e) {
             e.printStackTrace();
         }
