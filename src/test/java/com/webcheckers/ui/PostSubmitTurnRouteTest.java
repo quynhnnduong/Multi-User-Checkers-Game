@@ -60,6 +60,7 @@ public class PostSubmitTurnRouteTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //tried it another way but still throwing errors
 //        try {
 //            Object turn_submit = CuT.handle(request, response);
 //            assertEquals("{\"type\":\"info\",\"text\":\"Turn submitted\"}", turn_submit);
