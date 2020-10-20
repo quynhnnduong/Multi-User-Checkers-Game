@@ -64,6 +64,12 @@ public class PlayerLobbyTest {
         assertFalse(CuT.addPlayer(new Player("Player")));
     }
 
+    @Test
+    public void testAddPlayerToLobbyInvalid2(){
+        CuT.addPlayer(player);
+        assertFalse(CuT.addPlayer(new Player("@@@")));
+    }
+
     /**
      *Test the ability to retrieve a specific player from the lobby.
      */
@@ -124,8 +130,42 @@ public class PlayerLobbyTest {
     }
 
     @Test
+    public void testGetLobbyMessageWithPlayers(){
+        // Setup
+        Player player1 = new Player("Me");
+        Player player2 = new Player("Player2");
+
+        CuT.addPlayer(player1);
+        CuT.addPlayer(player2);
+
+        // Invoke
+        String actualMessage = CuT.getLobbyMessage();
+
+        // Analyze
+        assertEquals("1 player(s) in lobby", actualMessage);
+    }
+
+    @Test
     public void testGetLobbyMessageNoPlayers(){
-       // Invoke with no one in the lobby
+        // Invoke and Analyze with no one in the lobby
         assertEquals("There are no other players available to play at this time.", CuT.getLobbyMessage());
     }
+
+    @Test
+    public void testPrintPlayers(){
+       // Setup
+        Player player1 = new Player("Player1");
+        Player player2 = new Player("Player2");
+
+        CuT.addPlayer(player1);
+        CuT.addPlayer(player2);
+
+        // Invoke
+        String actual = CuT.printPlayers();
+
+        // Analyze
+        assertEquals("Player2 Player1 ", actual);
+
+    }
+
 }
