@@ -62,7 +62,7 @@ public class PostSignInRouteTest {
     /**
      * Test that CuT shows the SignIn view when the session is brand new.
      */
-    @Test
+    // @Test
     public void PostSignInView() throws Exception {
         // Set up the test
         final TemplateEngineTester testHelper = new TemplateEngineTester();
