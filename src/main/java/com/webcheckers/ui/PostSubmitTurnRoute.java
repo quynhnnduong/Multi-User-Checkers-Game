@@ -20,6 +20,7 @@ public class PostSubmitTurnRoute implements Route {
 
     private TemplateEngine templateEngine;
     private static final String TURN_ERROR = "If you're seeing this, you did a move you weren't supposed to";
+    private static final String TURN_SUBMIT = "Turn submitted";
 
     public PostSubmitTurnRoute(TemplateEngine templateEngine){
         this.templateEngine = templateEngine;
@@ -44,7 +45,7 @@ public class PostSubmitTurnRoute implements Route {
         //for now, assume all moves are valid
         Message message;
         if (isValidTurn){
-            message = Message.info(TURN_ERROR);
+            message = Message.info(TURN_SUBMIT);
             //add messages to the view model
             vm.put("message", message);
 
