@@ -154,7 +154,7 @@ public class PlayerLobbyTest {
     @Test
     public void testPrintPlayers(){
        // Setup
-        Player player1 = new Player("Me");
+        Player player1 = new Player("Player1");
         Player player2 = new Player("Player2");
 
         CuT.addPlayer(player1);
@@ -164,7 +164,7 @@ public class PlayerLobbyTest {
         String actual = CuT.printPlayers();
 
         // Analyze
-        assertEquals("", actual);
+        assertEquals("Player2 Player1 ", actual);
 
     }
 
