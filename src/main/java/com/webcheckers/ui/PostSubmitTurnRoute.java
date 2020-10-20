@@ -32,8 +32,9 @@ public class PostSubmitTurnRoute implements Route {
         //TODO: Add a way to validate a turn, possibly using boardVie w
 
         //for now assume its valid
-
-        boolean isValidTurn = true; //isTurnValid(boardView)
+        //add true like this for testing
+        session.attribute("lastValidTurn", true);
+        boolean isValidTurn = session.attribute("lastValidTurn"); //isTurnValid(boardView)
 
         Map<String, Object> vm = new HashMap<>();
 

@@ -54,7 +54,7 @@ public class PostSubmitTurnRouteTest {
         Gson gson = new Gson();
         when(request.session().attribute(UIProtocol.RED_ATTR)).thenReturn(new Player("redPlayer"));
         when(request.session().attribute(UIProtocol.WHITE_ATTR)).thenReturn(new Player("whitePlayer"));
-
+       when(session.attribute("lastValidTurn")).thenReturn(true);
         //This is throwing exception errors
         try {
             assertEquals(gson.toJson(Message.info("Turn submitted")), CuT.handle(request, response));
@@ -77,16 +77,15 @@ public class PostSubmitTurnRouteTest {
      * test to make sure an error message is sent when appropriate
      */
     @Test
-    void errorMessage() {
+    void errorMessage() throws Exception {
+        //This part works fine
+        Gson gson = new Gson();
         when(request.session().attribute(UIProtocol.RED_ATTR)).thenReturn(new Player("redPlayer"));
         when(request.session().attribute(UIProtocol.WHITE_ATTR)).thenReturn(new Player("whitePlayer"));
+        when(session.attribute("lastValidTurn")).thenReturn(false);
+        Object error = CuT.handle(request, response);
+        assertEquals(gson.toJson(Message.error("If you're seeing this, you did a move you weren't supposed to")), error);
 
-        try {
-            Object error = CuT.handle(request, response);
-            assertEquals("{\"type\":\"error\",\"text\":\"If you're seeing this, you did a move you weren't supposed to\"}", error);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
     }
 }
