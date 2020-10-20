@@ -3,6 +3,7 @@ package com.webcheckers.ui;
 import com.google.gson.Gson;
 import com.webcheckers.appl.PlayerLobby;
 
+import com.webcheckers.model.Player;
 import com.webcheckers.util.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,12 +48,12 @@ public class PostSubmitTurnRouteTest {
     /**
      * tests to make sure there are no errors when submitting a turn
      */
-    @Test
+   @Test
     public void submitTurn() {
         //This part works fine
         Gson gson = new Gson();
-        when(request.session().attribute(UIProtocol.RED_ATTR)).thenReturn(redPlayer);
-        when(request.session().attribute(UIProtocol.WHITE_ATTR)).thenReturn(whitePlayer);
+        when(request.session().attribute(UIProtocol.RED_ATTR)).thenReturn(new Player("redPlayer"));
+        when(request.session().attribute(UIProtocol.WHITE_ATTR)).thenReturn(new Player("whitePlayer"));
 
         //This is throwing exception errors
         try {
@@ -60,23 +61,26 @@ public class PostSubmitTurnRouteTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //tried it another way but still throwing errors
-//        try {
-//            Object turn_submit = CuT.handle(request, response);
-//            assertEquals("{\"type\":\"info\",\"text\":\"Turn submitted\"}", turn_submit);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        // tried it another way but still throwing errors
+       /**
+        try {
+            Object turn_submit = CuT.handle(request, response);
+            assertEquals("{\"type\":\"info\",\"text\":\"Turn submitted\"}", turn_submit);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        */
 
     }
 
     /**
      * test to make sure an error message is sent when appropriate
      */
-    // @Test
+    @Test
     void errorMessage() {
-        when(request.session().attribute(UIProtocol.RED_ATTR)).thenReturn(redPlayer);
-        when(request.session().attribute(UIProtocol.WHITE_ATTR)).thenReturn(whitePlayer);
+        when(request.session().attribute(UIProtocol.RED_ATTR)).thenReturn(new Player("redPlayer"));
+        when(request.session().attribute(UIProtocol.WHITE_ATTR)).thenReturn(new Player("whitePlayer"));
+
         try {
             Object error = CuT.handle(request, response);
             assertEquals("{\"type\":\"error\",\"text\":\"If you're seeing this, you did a move you weren't supposed to\"}", error);
