@@ -122,4 +122,10 @@ public class PlayerLobbyTest {
         CuT.setOpponentMatch(player1, player2);
         assertEquals(player2, player1.getOpponent());
     }
+
+    @Test
+    public void testGetLobbyMessageNoPlayers(){
+       // Invoke with no one in the lobby
+        assertEquals("There are no other players available to play at this time.", CuT.getLobbyMessage());
+    }
 }
