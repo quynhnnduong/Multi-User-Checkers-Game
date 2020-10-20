@@ -54,7 +54,7 @@ public class PostSubmitTurnRouteTest {
         Gson gson = new Gson();
         when(request.session().attribute(UIProtocol.RED_ATTR)).thenReturn(new Player("redPlayer"));
         when(request.session().attribute(UIProtocol.WHITE_ATTR)).thenReturn(new Player("whitePlayer"));
-       when(session.attribute("lastValidTurn")).thenReturn(true);
+        when(session.attribute("lastValidTurn")).thenReturn(true);
         //This is throwing exception errors
         try {
             assertEquals(gson.toJson(Message.info("Turn submitted")), CuT.handle(request, response));
