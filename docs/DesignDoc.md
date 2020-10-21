@@ -187,11 +187,37 @@ game.
 > _Provide a summary of the Application tier of your architecture. This
 > section will follow the same instructions that are given for the UI
 > Tier above._
+*** DESCRIBE THE COMPONENTS ***
 
-The application tier consists of the PlayerLobby and GameCenter. The PlayerLobby manages player sign in and 
-the status of all players (in game , waiting for game) including the amount of total concurrently logged in players.
-It can add and remove players with sign in and sign out respectively. It also records which players are playing 
-against each other.  
+The Application Tier of this application consists of 3 components: Game, GameCenter, and PlayerLobby.
+A Game object represents a game event in the application. It contains a "redPlayer" (a Player object that 
+represents the user who interacts with the red pieces on the checker board), a "whitePlayer" (a Player object that
+represents the user who interacts with the white pieces on the checker board), and an "id" (a unique number used to 
+identify Game objects across multiple user sessions). The GameCenter component holds a PlayerLobby object, 
+"playerLobby", which is a collection of all the users logged into the webapp across all games. PlayerLobby contains 
+a structure "players" (a HashMap that maps each Player object to their name), and a GameCenter "gameCenter" that
+ties the lobby to a single GameCenter.
+
+![The Game Static Diagram](Game.png)
+
+*** DESCRIBE THE RESPONSIBILITIES/JOBS/USES OF THESE COMPONENTS IN A NARRATIVE STYLE ***
+
+When the application is started up, a GameCenter and a PlayerLobby are both also constructed. These both store 
+application-wide data. When players sign-in to the checkers app, they are added to the PlayerLobby HashMap. The names
+listed in the Player Lobby are the names saved in the PlayerLobby object. This is the main responsibility of the
+PlayerLobby: to hold a record of all the Player objects, and for ease of display, their names as Strings. Once a user 
+can see the other signed-in users in the lobby, they can choose one to play a game against. Once the "Start a Game" 
+button is pressed and the request is validated, a new Game object is created. This Game object is responsible for 
+representing a checker game and it's players. Therefore, the user who initiates the game is assigned at the red player
+and the user that was chosen by the first user is then added to the game as the white player. Both users' Player object
+representations are held in the Game object, as well as the unique id that allows the application to differentiate 
+different games as well as to tie users in different sessions to the same game.
+
+Currently, the GameCenter is not used in full as designed. When multiple games are being held, all the Game instances 
+and players will be held in the application-wide gameCenter. The gameCenter will then keep track of the wins and 
+losses across the application, the number of users and games, and other features like saved games or the all-time user
+with the highest number of wins. Currently, the design implemented does not include these planned responsibilities
+of the GameCenter class.
 
 ### Model Tier
 > _Provide a summary of the Application tier of your architecture. This
