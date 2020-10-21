@@ -69,4 +69,6 @@ public class Space {
      * @return returns the enumerated color of the Space tile
      */
     public SpaceColor getColor() { return color; }
+
+    public void removePiece() { piece = null; }
 }

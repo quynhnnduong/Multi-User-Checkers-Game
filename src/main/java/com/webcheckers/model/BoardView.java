@@ -84,6 +84,7 @@ public class BoardView implements Iterable<Row>{
         for (int i = (BOARD_SIZE - 1); i >= 0; i--) {
             Row newRow = board.get(i).flipRow(index);
             flippedBoard.add(newRow);
+            index++;
         }
 
         return new BoardView(flippedBoard);
@@ -91,5 +92,27 @@ public class BoardView implements Iterable<Row>{
 
     public ArrayList<Row> getBoard(){
         return board;
+    }
+
+    public void makeMove(Move move) {
+        Position start = move.getStart();
+        Position end = move.getEnd();
+
+        Space startSpace = board.get(start.getRow()).getSpace(start.getCell());
+        Space endSpace = board.get(end.getRow()).getSpace(end.getCell());
+
+        Piece piece = startSpace.getPiece();
+        startSpace.removePiece();
+
+        endSpace.placePiece(piece);
+    }
+
+    public void printRows() {
+
+        for(Row row : board) {
+            System.out.print(row.getIndex() + ", ");
+        }
+
+        System.out.println();
     }
 }

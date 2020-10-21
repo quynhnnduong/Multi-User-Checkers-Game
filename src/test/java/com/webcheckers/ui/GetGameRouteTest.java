@@ -51,7 +51,7 @@ public class GetGameRouteTest {
         player2 = mock(Player.class);
 
         // create a unique CuT for each test
-        CuT = new GetGameRoute(engine, playerLobby);
+        CuT = new GetGameRoute(engine, gameCenter, playerLobby);
     }
     /**
      * Test that the Game view will create a new game when a player initiates a game

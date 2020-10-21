@@ -1,6 +1,8 @@
 package com.webcheckers.appl;
 
-import com.webcheckers.model.Player;
+import com.webcheckers.model.Game;
+
+import java.util.HashMap;
 
 /**
  * Class to keep track of the Application-wide information and data.
@@ -8,7 +10,17 @@ import com.webcheckers.model.Player;
  * Eventually, store saved games here.
  */
 public class GameCenter {
+
     private PlayerLobby playerLobby;
 
-    public GameCenter() { playerLobby = new PlayerLobby(this); }
+    private final HashMap<String, Game> games;
+
+    public GameCenter() {
+        playerLobby = new PlayerLobby(this);
+        games = new HashMap<>();
+    }
+
+    public void addGame(Game game) { games.put(game.getId(), game); }
+
+    public Game getGame(String id) { return games.get(id); }
 }

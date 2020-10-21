@@ -1,5 +1,11 @@
 package com.webcheckers.ui;
 
+/**
+ * A centralized protocol for accessing Route attributes. This class is a pure fabrication
+ * 
+ *
+ * @author Dmitry Selin
+ */
 public class UIProtocol {
 
     //tells whether to show the no log in, or log in screen
@@ -31,4 +37,9 @@ public class UIProtocol {
 
     //the key to determine if a player is currently playing a game
     public static final String MID_GAME_ATTR = "midGame";
+
+    /** Attribute to denote the active player in the session*/
+    public static final String ACTIVE_COLOR_ATTR = "activeColor";
+
+    public static final String GAME_ID_ATTR = "gameID";
 }
