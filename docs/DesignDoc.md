@@ -132,10 +132,6 @@ be returned to their respective myHome tabs. They'll be able to repeat the proce
 or sign out.
 
 ### UI Tier
-> _Provide a summary of the Server-side UI tier of your architecture.
-> Describe the types of components in the tier and describe their
-> responsibilities.  This should be a narrative description, i.e. it has
-> a flow or "story line" that the reader can follow._
 
 The most important aspect of any application for the user is the UI Tier. The User only sees and interacts with what is 
 on their screen, so it is of utmost importance for it to be top-notch! The UI Tier at the server side is nothing more 
@@ -164,30 +160,7 @@ game.
 
 ![The StartAGame Sequence Diagram](StartAGame.png)
 
-> _At appropriate places as part of this narrative provide one or more
-> static models (UML class structure or object diagrams) with some
-> details such as critical attributes and methods._
-
-> _You must also provide any dynamic models, such as statechart and
-> sequence diagrams, as is relevant to a particular aspect of the design
-> that you are describing.  For example, in WebCheckers you might create
-> a sequence diagram of the `POST /validateMove` HTTP request processing
-> or you might show a statechart diagram if the Game component uses a
-> state machine to manage the game._
->
-
-> _If a dynamic model, such as a statechart describes a feature that is
-> not mostly in this tier and cuts across multiple tiers, you can
-> consider placing the narrative description of that feature in a
-> separate section for describing significant features. Place this after
-> you describe the design of the three tiers._
-
-
 ### Application Tier
-> _Provide a summary of the Application tier of your architecture. This
-> section will follow the same instructions that are given for the UI
-> Tier above._
-*** DESCRIBE THE COMPONENTS ***
 
 The Application Tier of this application consists of 3 components: Game, GameCenter, and PlayerLobby.
 A Game object represents a game event in the application. It contains a "redPlayer" (a Player object that 
@@ -200,9 +173,7 @@ ties the lobby to a single GameCenter.
 
 ![The Game Static Diagram](Game.png)
 
-*** DESCRIBE THE RESPONSIBILITIES/JOBS/USES OF THESE COMPONENTS IN A NARRATIVE STYLE ***
-
-When the application is started up, a GameCenter and a PlayerLobby are both also constructed. These both store 
+When the application starts up, a GameCenter and a PlayerLobby are both also constructed. These both store 
 application-wide data. When players sign-in to the checkers app, they are added to the PlayerLobby HashMap. The names
 listed in the Player Lobby are the names saved in the PlayerLobby object. This is the main responsibility of the
 PlayerLobby: to hold a record of all the Player objects, and for ease of display, their names as Strings. Once a user 
@@ -220,10 +191,6 @@ with the highest number of wins. Currently, the design implemented does not incl
 of the GameCenter class.
 
 ### Model Tier
-> _Provide a summary of the Application tier of your architecture. This
-> section will follow the same instructions that are given for the UI
-> Tier above._
->
 
 The Model Tier provides the game logic for the system. It takes the input from the UI tier and applies it to the inner
 workings of the games. It brings the different attributes of the players and checkers game into one tier where they dictate
@@ -247,23 +214,25 @@ the row and column of a change, one for the start and end of a piece movement.
 ![The Model Diagram](ModelDiagram.png)
 
 ### Design Improvements
-> _Discuss design improvements that you would make if the project were
-> to continue. These improvement should be based on your direct
-> analysis of where there are problems in the code base which could be
-> addressed with design changes, and describe those suggested design
-> improvements. After completion of the Code metrics exercise, you
-> will also discuss the resutling metric measurements.  Indicate the
-> hot spots the metrics identified in your code base, and your
-> suggested design improvements to address those hot spots._
+
+The main design improvements there are still to be made within the WebCheckers application stem from the UI and Model
+tiers. The Model tier is extensive and complicated by nature - it is the job of the developers to simplify this
+component, which can definitely be done. Currently, the Player class has some overlapping functionality with the Game
+class, which can be separated to conform to the Single-Responsibility Principle. 
+
+Additionally, the Game class could
+contain much of the functionality from many UI components and Spark session attributes (such as storing the board,
+active color, etc.). Having this functionality housed inside of the newly added Game class would be more fitting as it
+would create greater cohesion throughout the program. 
+
+A final design improvement can be made within the UI tier. Many 
+handle() methods are simply too large to be read without extensive documentation - this situation would be a perfect
+place to include several Pure Fabrications - these classes or methods would serve as 'helper' constructs that have no
+presence in the domain of the application, but would greatly improve the cohesion and readability of the program.
 
 ## Testing
 
 ### Acceptance Testing
-> _Report on the number of user stories that have passed all their
-> acceptance criteria tests, the number that have some acceptance
-> criteria tests failing, and the number of user stories that
-> have not had any testing yet. Highlight the issues found during
-> acceptance testing and if there are any concerns._
 
 Of the 5 user stories that we have worked on, 3 of them pass all of their acceptance criteria, and the other 2 pass some
 of their acceptance criteria.
@@ -285,11 +254,6 @@ Simple Move - The player can drag and drop the selected piece to their desired s
 their turn ends.
 
 ### Unit Testing and Code Coverage
-> _Discuss your unit testing strategy. Report on the code coverage
-> achieved from unit testing of the code base. Discuss the team's
-> coverage targets, why you selected those values, and how well your
-> code coverage met your targets. If there are any anomalies, discuss
-> those._
 
 Our Unit Testing strategy was to start with the Model classes then work our way up to the UI classes. This way,
 we could incrementally test our code and use less mocks classes in the UI tests, allowing us to simulate the
