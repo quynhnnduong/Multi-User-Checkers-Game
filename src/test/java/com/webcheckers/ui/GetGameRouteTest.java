@@ -112,6 +112,56 @@ public class GetGameRouteTest {
         testHelper.assertViewModelAttribute("whitePlayer", player2);
     }
 
+    @Test
+    public void playerWasCalledByOpponent(){
+        //create playerLobby and it's 2 players
+        //gameCenter = new GameCenter();
+        //playerLobby = new PlayerLobby(gameCenter);
+        playerLobby.addPlayer(player1);
+        player1.joinGame();
+        playerLobby.addPlayer(player2);
+        player2.joinGame();
+        //Player player1 = new Player("Player1");
+
+        //set up everything for player 1
+        player1.stopCalling();
+        player1.exitGame();
+        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player2);
+        when(session.attribute(RED_ATTR)).thenReturn(player2);
+
+        //set up everything for player 2
+        when(playerLobby.getPlayer(request.queryParams("opponent"))).thenReturn(player1);
+        when(session.attribute(WHITE_ATTR)).thenReturn(player1);
+
+        //make the active color red
+        when(session.attribute(ACTIVE_COLOR_ATTR)).thenReturn(GetGameRoute.activeColor.RED);
+
+        //make them play a game against each other
+        playerLobby.setOpponentMatch(playerLobby.getPlayer("Player1"), playerLobby.getPlayer("Player2"));
+
+        //Player currentPlayer = player1;
+
+        //when(currentPlayer.isCalledForGame()).thenReturn(true);
+
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+
+
+        // Invoke the test
+        try {
+            CuT.handle(request, response);
+        } catch (Exception e){
+            System.out.println("Route returned an exception during execution");
+            e.printStackTrace();
+        }
+
+        //check if player 2 is red
+        testHelper.assertViewModelAttribute("redPlayer", player2);
+        //check if player 1 is white
+        testHelper.assertViewModelAttribute("whitePlayer", player1);
+    }
+
 
 
 
