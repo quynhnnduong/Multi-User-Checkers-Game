@@ -14,6 +14,7 @@ import java.util.Map;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+import static spark.Spark.halt;
 
 
 /**
@@ -70,10 +71,16 @@ public class PostSignInRouteTest {
         playerLobby.addPlayer(player);
         session.attribute("playerlobby", playerLobby);
         session.attribute("session_key", UIProtocol.PLAYERLOBBY_ATTR);
+        //when(halt()).thenReturn();
 
         // Invoke the test: a user signs in
         System.out.println("Invoking test...");
-        CuT.handle(request, response);
+
+        try {
+            CuT.handle(request, response);
+        } catch (HaltException he){
+            System.out.println("The program did a redirect");
+        }
 
         // Analyze the results:
         //   * model is a non-null Map
