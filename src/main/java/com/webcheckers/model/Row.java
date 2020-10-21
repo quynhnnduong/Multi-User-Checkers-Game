@@ -93,6 +93,7 @@ public class Row implements Iterable<Space> {
         for (int i = (BoardView.BOARD_SIZE - 1); i >= 0; i--) {
             Space newSpace = new Space(index, row.get(i).getColor());
             newSpace.placePiece(row.get(i).getPiece());
+            index++;
 
             flippedRow.add(newSpace);
         }
@@ -101,4 +102,6 @@ public class Row implements Iterable<Space> {
     }
 
     public ArrayList<Space> getSpaces(){ return row; }
+
+    public Space getSpace(int index) { return row.get(index); }
 }

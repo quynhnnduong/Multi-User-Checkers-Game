@@ -9,6 +9,7 @@ import com.webcheckers.util.Message;
 import spark.*;
 
 import static com.webcheckers.ui.UIProtocol.GAME_ID_ATTR;
+import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
 
 /**
  * This class handles the /validateMove route

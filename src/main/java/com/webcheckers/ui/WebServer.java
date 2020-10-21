@@ -190,10 +190,10 @@ public class WebServer {
     post(VALIDATE_URL, new PostValidateMoveRoute(gameCenter));
 
     //Enables the user to submit their turn
-    post(SUBMIT_URL, new PostSubmitTurnRoute(templateEngine));
+    post(SUBMIT_URL, new PostSubmitTurnRoute(gameCenter));
 
     //Waiting player checks when their turn is
-    post(CHECK_URL, new PostCheckTurnRoute());
+    post(CHECK_URL, new PostCheckTurnRoute(gameCenter));
 
     //Resign button is pressed
     post(RESIGN_URL, new PostResignGame());

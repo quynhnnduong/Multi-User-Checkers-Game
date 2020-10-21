@@ -124,6 +124,8 @@ public class GetGameRoute implements Route {
             session.attribute(LEGIT_OPPONENT_ATTR, true);
             session.attribute(RED_ATTR, currentPlayer);
             session.attribute(WHITE_ATTR, opponent);
+            session.attribute(ACTIVE_COLOR_ATTR, activeColor.RED);
+            session.attribute(BOARD_ATTR, boardView);
 
             String gameID = makeGameID(session.attribute(RED_ATTR), session.attribute(WHITE_ATTR));
             session.attribute(GAME_ID_ATTR, gameID);
@@ -146,16 +148,12 @@ public class GetGameRoute implements Route {
             // Adds Red and White players to the session
             session.attribute(RED_ATTR, opponent);
             session.attribute(WHITE_ATTR, currentPlayer);
-        }
-
-        // The BoardView depends on the currentPlayer
-        // If the Player has white Pieces, flip the board to have the white Pieces at the bottom of the board
-        if (currentPlayer.equals(session.attribute(RED_ATTR)))
+            session.attribute(ACTIVE_COLOR_ATTR, activeColor.RED);
             session.attribute(BOARD_ATTR, boardView);
-        else
-            session.attribute(BOARD_ATTR, boardView.flipBoard());
 
-        session.attribute(ACTIVE_COLOR_ATTR, activeColor.RED);
+            String gameID = makeGameID(session.attribute(RED_ATTR), session.attribute(WHITE_ATTR));
+            session.attribute(GAME_ID_ATTR, gameID);
+        }
 
         if (opponent.resigned()) {
             modeOptionsAsJSON.put("isGameOver", true);
@@ -171,7 +169,9 @@ public class GetGameRoute implements Route {
         vm.put("redPlayer", session.attribute(RED_ATTR));
         vm.put("whitePlayer", session.attribute(WHITE_ATTR));
         vm.put("activeColor", session.attribute(ACTIVE_COLOR_ATTR));
-        vm.put("board", session.attribute(BOARD_ATTR));
+
+        BoardView board = session.attribute(BOARD_ATTR);
+        vm.put("board", (currentPlayer.equals(session.attribute(RED_ATTR)) ? board : board.flipBoard()));
 
         // Render the Game Page
         return templateEngine.render(new ModelAndView(vm , "game.ftl"));
