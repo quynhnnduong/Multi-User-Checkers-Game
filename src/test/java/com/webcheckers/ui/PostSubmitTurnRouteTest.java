@@ -49,27 +49,19 @@ public class PostSubmitTurnRouteTest {
      * tests to make sure there are no errors when submitting a turn
      */
    @Test
-    public void submitTurn() {
+    public void submitTurn() throws Exception {
         //This part works fine
         Gson gson = new Gson();
         when(request.session().attribute(UIProtocol.RED_ATTR)).thenReturn(new Player("redPlayer"));
         when(request.session().attribute(UIProtocol.WHITE_ATTR)).thenReturn(new Player("whitePlayer"));
-        when(session.attribute("lastValidTurn")).thenReturn(true);
-        //This is throwing exception errors
+       when(session.attribute("lastValidTurn")).thenReturn(true);
+       Object submit = CuT.handle(request, response);
+
         try {
-            assertEquals(gson.toJson(Message.info("Turn submitted")), CuT.handle(request, response));
+            assertEquals(gson.toJson(Message.info("Turn submitted")), submit);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // tried it another way but still throwing errors
-       /**
-        try {
-            Object turn_submit = CuT.handle(request, response);
-            assertEquals("{\"type\":\"info\",\"text\":\"Turn submitted\"}", turn_submit);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        */
 
     }
 
@@ -85,7 +77,5 @@ public class PostSubmitTurnRouteTest {
         when(session.attribute("lastValidTurn")).thenReturn(false);
         Object error = CuT.handle(request, response);
         assertEquals(gson.toJson(Message.error("If you're seeing this, you did a move you weren't supposed to")), error);
-
-
     }
 }
