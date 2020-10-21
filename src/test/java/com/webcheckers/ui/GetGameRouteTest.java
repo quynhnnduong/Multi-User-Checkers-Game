@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
-import static com.webcheckers.ui.GetGameRoute.ACTIVE_COLOR_ATTR;
+import static com.webcheckers.ui.UIProtocol.ACTIVE_COLOR_ATTR;
 import static com.webcheckers.ui.UIProtocol.RED_ATTR;
 import static com.webcheckers.ui.UIProtocol.WHITE_ATTR;
 import static org.mockito.ArgumentMatchers.any;
@@ -69,8 +69,7 @@ public class GetGameRouteTest {
 
 
         //set up everything for player 1
-        player1.stopCalling();
-        player1.exitGame();
+        player1.resign();
         when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
         when(session.attribute(RED_ATTR)).thenReturn(player1);
 
