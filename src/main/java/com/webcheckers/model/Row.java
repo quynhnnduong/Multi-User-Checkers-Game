@@ -15,7 +15,7 @@ public class Row implements Iterable<Space> {
     private final int index;
 
     /** The ArrayList that houses the eight spaces that represent a Row */
-    private ArrayList<Space> row;
+    private final ArrayList<Space> row;
 
     /**
      * Creates a new Row object with a specified index within a checkers
@@ -24,14 +24,9 @@ public class Row implements Iterable<Space> {
      * @param index index of row within a checkers board
      * @param leadingColor the first color of a Space in the Row
      */
-    public Row(int index, SpaceColor leadingColor){
+    public Row(int index, SpaceColor leadingColor, Piece.Color bottomColor){
         this.index = index;
-        row = generateRow(leadingColor);
-    }
-
-    private Row(int newIndex, ArrayList<Space> spaces) {
-        index = newIndex;
-        row = spaces;
+        row = generateRow(leadingColor, bottomColor);
     }
 
     /**
@@ -61,8 +56,10 @@ public class Row implements Iterable<Space> {
      *
      * @return an ArrayList of eight Space objects with alternating colors
      */
-    public ArrayList<Space> generateRow(SpaceColor leadingColor) {
+    public ArrayList<Space> generateRow(SpaceColor leadingColor, Piece.Color bottomColor) {
         ArrayList<Space> row = new ArrayList<>();
+
+        Piece.Color topColor = (bottomColor == Piece.Color.RED ? Piece.Color.WHITE : Piece.Color.RED);
 
         // Creates all Space objects and adds them to row
         for (int i = 0; i < BoardView.BOARD_SIZE; i++){
@@ -70,9 +67,9 @@ public class Row implements Iterable<Space> {
 
             // Places the checkers Pieces at the top and bottom 3 Rows (RED -> Bottom, WHITE -> Top)
             if (index <= 2 && newSpace.isValid())
-                newSpace.placePiece(new Piece(Piece.Color.WHITE));
+                newSpace.placePiece(new Piece(topColor));
             else if (index >= 5 && newSpace.isValid())
-                newSpace.placePiece(new Piece(Piece.Color.RED));
+                newSpace.placePiece(new Piece(bottomColor));
 
             row.add(i, newSpace);
 
@@ -84,21 +81,6 @@ public class Row implements Iterable<Space> {
         }
 
         return row;
-    }
-
-    public Row flipRow(int newIndex) {
-        ArrayList<Space> flippedRow = new ArrayList<>();
-        int index = 0;
-
-        for (int i = (BoardView.BOARD_SIZE - 1); i >= 0; i--) {
-            Space newSpace = new Space(index, row.get(i).getColor());
-            newSpace.placePiece(row.get(i).getPiece());
-            index++;
-
-            flippedRow.add(newSpace);
-        }
-
-        return new Row(newIndex, flippedRow);
     }
 
     public ArrayList<Space> getSpaces(){ return row; }
