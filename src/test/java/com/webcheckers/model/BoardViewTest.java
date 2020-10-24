@@ -15,12 +15,6 @@ public class BoardViewTest {
     public void bv_noArg(){new BoardView(Piece.Color.RED);}
 
     /**
-     * Test that the constructor works with row[] arg
-     */
-    @Test
-    public void bv_rowArr(){new BoardView(new ArrayList<Row>());}
-
-    /**
      * Test that leading board spaces are the correct color
      */
     @Test
