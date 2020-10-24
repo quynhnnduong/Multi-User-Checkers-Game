@@ -30,13 +30,7 @@ public class Player {
 
         MY_TURN,
 
-        WAITING,
-
-        /**
-         * Enters this state when the Player hits the 'Resign' button on the Game Page - used
-         * for letting the opponent know when a Player has resigned.
-         */
-        RESIGNED
+        WAITING
     }
 
     /** The name of the Player (entered when signing in) */
@@ -82,15 +76,15 @@ public class Player {
      */
     public boolean isCalledForGame() { return state == PlayerState.CALLED; }
 
-    /**
-     * Checks if the Player has resigned from a Game.
-     *
-     * @return true if the Player has resigned, false otherwise
-     */
-    public boolean resigned() { return state == PlayerState.RESIGNED; }
-
     /** Changes a Player's state to SIGNED_IN (happens when a Player exits the Sign-In Page). */
     public void signIn() { state = PlayerState.SIGNED_IN; }
+
+    public boolean isSignedIn() { return state != PlayerState.NEW; }
+
+    public void exitGame() {
+        state = PlayerState.SIGNED_IN;
+        opponent = null;
+    }
 
     /**
      * Changes the Player's state to MID_GAME when a new Game of
@@ -100,9 +94,6 @@ public class Player {
 
     /** Represents calling a Player to join a Game (happens when a Player is clicked on at the PlayerLobby). */
     public void call() { state = PlayerState.CALLED; }
-
-    /** A Player resigns from the Game. Happens when the 'Resign' button is clicked. */
-    public void resign() { state = PlayerState.RESIGNED; }
 
     /**
      * Initializes the opponent of Player. This occurs when two Players are matched for a Game.

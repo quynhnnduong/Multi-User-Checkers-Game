@@ -15,7 +15,7 @@
 
     <!-- Confirmation and cancel buttons. -->
     <div class="inline-buttons">
-        <form method="get" action="/signin">
+        <form method="get" action="/">
             <button>Yes, please!</button>
         </form>
 

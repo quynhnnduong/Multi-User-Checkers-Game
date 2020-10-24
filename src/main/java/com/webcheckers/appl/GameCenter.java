@@ -23,4 +23,15 @@ public class GameCenter {
     public void addGame(Game game) { games.put(game.getId(), game); }
 
     public Game getGame(String id) { return games.get(id); }
+
+    public void removeEndedGames() {
+
+        for (String id : games.keySet()) {
+
+            if (games.get(id).hasGameEnded()) {
+                System.out.println("GAME REMOVED: " + id);
+                games.remove(id);
+            }
+        }
+    }
 }

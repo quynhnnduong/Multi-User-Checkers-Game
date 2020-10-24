@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import static com.webcheckers.ui.UIProtocol.GAME_ID_ATTR;
 import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
 
 /**
@@ -20,8 +21,8 @@ public class PostSignOutRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(PostSignOutRoute.class.getName());
     private final TemplateEngine templateEngine;
-    private PlayerLobby playerLobby;
-    private GameCenter gameCenter;
+    private final PlayerLobby playerLobby;
+    private final GameCenter gameCenter;
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code POST/} HTTP requests.
@@ -44,10 +45,10 @@ public class PostSignOutRoute implements Route {
      *
      * @param request the HTTP request
      * @param response the HTTP response
-     * @return the Sign In HTML page TODO or maybe the welcome page? -Sasha
+     * @return the Sign In HTML page
      */
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
         LOG.finer("PostSignOutRoute is invoked.");
 
         // Retrieve the current game object.
@@ -55,6 +56,11 @@ public class PostSignOutRoute implements Route {
 
         // Get the current user
         Player currentPlayer = session.attribute(PLAYER_ATTR);
+        currentPlayer.exitGame();
+
+        String signedOut = request.queryParams("sign_out");
+
+        System.out.println("QueryParams: " + signedOut);
 
         // Create the view-model map and add values that will be displayed in the sign in page.
         Map<String, Object> vm = new HashMap<>();
