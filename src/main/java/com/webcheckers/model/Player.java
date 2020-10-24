@@ -28,8 +28,9 @@ public class Player {
          */
         CALLED,
 
-        /** The Player is currently in a game of WebCheckers */
-        MID_GAME,
+        MY_TURN,
+
+        WAITING,
 
         /**
          * Enters this state when the Player hits the 'Resign' button on the Game Page - used
@@ -46,8 +47,6 @@ public class Player {
 
     /** The current state of the Player */
     private PlayerState state;
-
-    private boolean isTurn = false;
 
     /**
      * Creates a new Player object.
@@ -71,7 +70,9 @@ public class Player {
      *
      * @return true if a Player was either called for, or is currently in a Game, otherwise false.
      */
-    public boolean inGame() { return state == PlayerState.CALLED || state == PlayerState.MID_GAME; }
+    public boolean inGame() {
+        return state == PlayerState.CALLED || state == PlayerState.MY_TURN || state == PlayerState.WAITING;
+    }
 
     /**
      * Returns true if a Player has been called into a Game of WebCheckers by an opponent,
@@ -95,7 +96,7 @@ public class Player {
      * Changes the Player's state to MID_GAME when a new Game of
      * WebCheckers is started or the Player transitions from the CALLED state.
      */
-    public void joinGame() { state = PlayerState.MID_GAME; }
+    public void joinGame(boolean myTurn) { state = (myTurn ? PlayerState.MY_TURN : PlayerState.WAITING); }
 
     /** Represents calling a Player to join a Game (happens when a Player is clicked on at the PlayerLobby). */
     public void call() { state = PlayerState.CALLED; }
@@ -117,9 +118,9 @@ public class Player {
      */
     public Player getOpponent() { return opponent; }
 
+    public boolean isMyTurn() { return state == PlayerState.MY_TURN; }
 
-    public boolean isTurn() { return isTurn; }
-    public void startTurn() { isTurn = true; }
-    public void stopTurn() { isTurn = false; }
-    public boolean getTurn() { return isTurn; }
+    public void startTurn() { state = PlayerState.MY_TURN; }
+
+    public void endTurn() { state = PlayerState.WAITING; }
 }
