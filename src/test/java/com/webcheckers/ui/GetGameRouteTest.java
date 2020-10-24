@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
-import static com.webcheckers.ui.UIProtocol.ACTIVE_COLOR_ATTR;
+import static com.webcheckers.ui.GetGameRoute.ACTIVE_COLOR_ATTR;
 import static com.webcheckers.ui.UIProtocol.RED_ATTR;
 import static com.webcheckers.ui.UIProtocol.WHITE_ATTR;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,12 +51,12 @@ public class GetGameRouteTest {
         player2 = mock(Player.class);
 
         // create a unique CuT for each test
-        CuT = new GetGameRoute(engine, gameCenter, playerLobby);
+        CuT = new GetGameRoute(engine, playerLobby);
     }
     /**
      * Test that the Game view will create a new game when a player initiates a game
      */
-   // @Test
+    @Test
     public void new_game() {
         //create playerLobby and it's 2 players
         //gameCenter = new GameCenter();
@@ -69,7 +69,8 @@ public class GetGameRouteTest {
 
 
         //set up everything for player 1
-        player1.resign();
+        player1.stopCalling();
+        player1.exitGame();
         when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
         when(session.attribute(RED_ATTR)).thenReturn(player1);
 
