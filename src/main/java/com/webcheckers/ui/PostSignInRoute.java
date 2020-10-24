@@ -3,11 +3,8 @@ package com.webcheckers.ui;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
-import com.webcheckers.util.Message;
 import spark.*;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
@@ -17,7 +14,7 @@ import static spark.Spark.halt;
 /**
  * Class that defines the route that retrieves the App view after signing in.
  *
- * @author Joel Clyne (jmc4514)
+ * @author Joel Clyne (jmc4514), Dmitry Selin (des3358)
  */
 public class PostSignInRoute implements Route {
 

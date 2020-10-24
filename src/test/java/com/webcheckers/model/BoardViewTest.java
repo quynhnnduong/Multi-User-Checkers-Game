@@ -12,21 +12,15 @@ public class BoardViewTest {
      * Test that the constructor works with no arg
      */
     @Test
-    public void bv_noArg(){new BoardView();}
-
-    /**
-     * Test that the constructor works with row[] arg
-     */
-    @Test
-    public void bv_rowArr(){new BoardView(new ArrayList<Row>());}
+    public void bv_noArg(){new BoardView(Piece.Color.RED);}
 
     /**
      * Test that leading board spaces are the correct color
      */
     @Test
     public void bv_initColors(){
-        BoardView bv = new BoardView();
-        bv.generateBoard();
+        BoardView bv = new BoardView(Piece.Color.RED);
+        bv.generateBoard(Piece.Color.RED);
 
         SpaceColor leadingColor = SpaceColor.WHITE;
         for (int i = 0; i < BOARD_SIZE; i++){

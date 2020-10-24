@@ -74,7 +74,7 @@ public class WebServer {
   public static final String VALIDATE_URL = "/validateMove";
 
   /**
-   * The URL pattern to request teh submit turn page
+   * The URL pattern to request the submit turn page
    */
   public static final String SUBMIT_URL = "/submitTurn";
 
@@ -83,6 +83,8 @@ public class WebServer {
   public static final String RESIGN_URL = "/resignGame";
 
   public static final String SIGNOUT_URL = "/signout";
+
+  public static final String BACKUP_URL = "/backupMove";
   //
   // Attributes
   //
@@ -181,19 +183,22 @@ public class WebServer {
     //Reloads sign in page after signing out
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, gameCenter, playerLobby));
 
-    //shows the game page
-    get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
-    //sends a move for validation submission
-    post(VALIDATE_URL, new PostValidateMoveRoute(templateEngine, playerLobby));
+    //Shows the game page
+    get(GAME_URL, new GetGameRoute(templateEngine, gameCenter, playerLobby));
+
+    //Sends a move for validation submission
+    post(VALIDATE_URL, new PostValidateMoveRoute(gameCenter));
 
     //Enables the user to submit their turn
-    post(SUBMIT_URL, new PostSubmitTurnRoute(templateEngine));
+    post(SUBMIT_URL, new PostSubmitTurnRoute(gameCenter));
 
     //Waiting player checks when their turn is
-    post(CHECK_URL, new PostCheckTurnRoute(templateEngine));
+    post(CHECK_URL, new PostCheckTurnRoute());
 
     //Resign button is pressed
-    post(RESIGN_URL, new PostResignGame(templateEngine));
+    post(RESIGN_URL, new PostResignGame());
+
+    post(BACKUP_URL, new PostBackupMove(gameCenter));
 
     LOG.config("WebServer is initialized.");
   }

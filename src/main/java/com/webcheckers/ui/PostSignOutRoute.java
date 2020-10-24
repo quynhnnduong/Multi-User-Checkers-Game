@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
 
 /**
- * @author Sasha Persaud (srp4581)
+ * @author Sasha Persaud (srp4581), Joel Clyne
  */
 public class PostSignOutRoute implements Route {
 
@@ -22,12 +22,6 @@ public class PostSignOutRoute implements Route {
     private final TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
     private GameCenter gameCenter;
-
-
-    public static final String PLAYER_NAME_ATTR = "playerName";
-    public static final String PLAYERLOBBY_KEY = "playerLobby";
-    private static final String LOGGED_IN_ATTR = "loggedIn";
-    private static final Message INVALID_NAME_MSG = Message.info("Invalid Name. Please try again.");
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code POST/} HTTP requests.
@@ -69,6 +63,9 @@ public class PostSignOutRoute implements Route {
 
         // Clean up the current player's presence in the game.
         playerLobby.removePlayer(currentPlayer);
+
+        // Remove the player from the session
+        session.attribute(PLAYER_ATTR, null);
 
         // render the View
         return templateEngine.render(new ModelAndView(vm , "signout.ftl"));

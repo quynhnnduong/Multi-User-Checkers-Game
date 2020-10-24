@@ -1,5 +1,11 @@
 package com.webcheckers.ui;
 
+/**
+ * A centralized protocol for accessing Route attributes. This class is a pure fabrication
+ * 
+ *
+ * @author Dmitry Selin
+ */
 public class UIProtocol {
 
     //tells whether to show the no log in, or log in screen
@@ -10,15 +16,6 @@ public class UIProtocol {
 
     //the object to display the current online players on the home page.
     public static final String PLAYER_MSG_ATTR = "playersMessage";
-
-    /** Attribute to denote the red player in the session */
-    public static final String RED_ATTR = "redPlayer";
-
-    /** Attribute to denote the white player in the session*/
-    public static final String WHITE_ATTR = "whitePlayer";
-
-    /** Attribute to denote the board in the session*/
-    public static final String BOARD_ATTR = "board";
 
     //Key in the session attribute map for the player who started the session stating that this player has interracted with the player lobby
     public static final String PLAYERLOBBY_ATTR = "playerLobby";
@@ -31,4 +28,6 @@ public class UIProtocol {
 
     //the key to determine if a player is currently playing a game
     public static final String MID_GAME_ATTR = "midGame";
+
+    public static final String GAME_ID_ATTR = "gameID";
 }

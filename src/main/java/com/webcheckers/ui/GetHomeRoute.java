@@ -35,7 +35,7 @@ public class GetHomeRoute implements Route {
   /** The TemplateEngine that renders all HTML .ftl files */
   private final TemplateEngine templateEngine;
 
-  /**A Message that is displayed at the top of the home screen */
+  /** A Message that is displayed at the top of the home screen */
   public static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
 
   /**
@@ -52,7 +52,7 @@ public class GetHomeRoute implements Route {
   }
 
   /**
-   * Render the WebCheckers home page.
+   * Each time the '/' or '/home' route is invoked, this method is run to handle the request.
    *
    * @param request  the HTTP request
    * @param response the HTTP response
@@ -79,12 +79,10 @@ public class GetHomeRoute implements Route {
     //checks if last person current player picked was mid game
     boolean legitOpponent;
 
-    // if this is a brand new browser session (a new challenger approaches)
+    // A new browser session or a Player signs in after signing out
     if (httpSession.attribute(PLAYERLOBBY_ATTR) == null || httpSession.attribute(PLAYER_ATTR) == null) {
 
       // get the object that will provide client-specific services for this player
-      //say that this player lobby object belongs to the current session - this is the key connecting the current session to the
-      //one playerlobby that all the sessions will share
       httpSession.attribute(PLAYERLOBBY_ATTR, playerLobby);
 
       // show the not signed in page
@@ -106,7 +104,7 @@ public class GetHomeRoute implements Route {
       vm.put(PLAYER_MSG_ATTR, playerLobby.getLobbyMessage());
 
       //check if the current player has been called to a game
-      if (currentPlayer.isMidGame() || currentPlayer.isCalledForGame()) {
+      if (currentPlayer.inGame()) {
 
         //append it onto the game url so its a bootleg query param
         response.redirect(WebServer.GAME_URL + "?opponent=" + currentPlayer.getOpponent().getName());
@@ -116,15 +114,11 @@ public class GetHomeRoute implements Route {
 
     vm.put(LEGIT_OPPONENT_ATTR, legitOpponent);
 
-    //Anything below here is to reset when the page is reloaded
-
-    //this is a key that will toggle telling someone if the last name they put in getSignIn is valid
+    // Resets these attributes upon each home page reload
     httpSession.attribute(LEGIT_NAME_ATTR, true);
-
-    //this is a key that will toggle telling someone if the last opponent they selected is valid
     httpSession.attribute(LEGIT_OPPONENT_ATTR, true);
 
-      // render the View
+      // Render the Home Page
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     }
 }

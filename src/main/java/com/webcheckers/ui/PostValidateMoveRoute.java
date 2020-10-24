@@ -1,99 +1,58 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
-import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.model.BoardView;
+import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Move;
-import com.webcheckers.model.Player;
+import com.webcheckers.model.Position;
+import com.webcheckers.model.Turn;
 import com.webcheckers.util.Message;
 import spark.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import static com.webcheckers.ui.UIProtocol.*;
+import static com.webcheckers.ui.UIProtocol.GAME_ID_ATTR;
+import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
 
 /**
  * This class handles the /validateMove route
  * Used for allowing player moves to happen (and later validating if the move was legal)
- * @author Joel Clyne
+ *
+ * @author Joel Clyne, Dmitry Selin
  */
 public class PostValidateMoveRoute implements Route {
-    /** A logger used to send messages to the console - for testing purposes */
-    private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
 
-    /** The Template Engine that generates the '.ftl' pages */
-    private final TemplateEngine templateEngine;
+    private final GameCenter gameCenter;
 
-    /** A server-wide Player Lobby that keeps track of all the players waiting to start a game */
-    private final PlayerLobby playerLobby;
-
-    //TODO Add  functionality and documentation to map
-    private final HashMap<String, Object> map = null;
-
-    public PostValidateMoveRoute(TemplateEngine templateEngine, PlayerLobby playerLobby){
-        this.templateEngine = templateEngine;
-        this.playerLobby = playerLobby;
-    }
+    public PostValidateMoveRoute(GameCenter gameCenter) { this.gameCenter = gameCenter; }
 
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
         final Session session = request.session();
 
-        Map<String, Object> vm = new HashMap<>();
-
-        //get the move from actionData (see sprint2 documentation) as JSON string
+        //get the move from actionData as JSON string
         String moveJSON = request.queryParams("actionData");
 
         //convert moveJSON to move Object using Gson
-        Gson gson = new Gson();
-        Move move = gson.fromJson(moveJSON, Move.class);
+        Move move = new Gson().fromJson(moveJSON, Move.class);
+        Turn turn = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getCurrentTurn();
 
-        //TODO Implement isValidMove to determine if move was actually valid
-        boolean isValidMove = true; //isValidMove(move)
+        Position startPosition = (!turn.hasMoves() ? move.getStart() : turn.getFirstMove().getStart());
+        Position endPosition = move.getEnd();
 
-        //TODO use the move to determine what kind of message to show?
-        String messageText = "I Don't Know What's Supposed to Go Here";
+        int rowDifference = Math.abs(endPosition.getCell() - startPosition.getCell());
+        int colDifference = startPosition.getRow() - endPosition.getRow();
 
-        //for now, assume all moves are valid
         Message message;
-        if (isValidMove){
-            //the turn is valid, so we go to the get game route
-            message = Message.info(messageText);
-        } else {
-            // create a message with an error
-            message = Message.error(messageText);
+
+        if (turn.hasMoves())
+            message = Message.error("INVALID MOVE: Can only move once");
+        else if (colDifference < 1)
+            message = Message.error("INVALID MOVE: Cannot move backwards");
+        else if (rowDifference != 1 || colDifference > 1)
+            message = Message.error("INVALID MOVE: Not directly diagonal");
+        else {
+            message = Message.info("Valid Move");
+            turn.addValidMove(move);
         }
 
-        //Get the players
-        Player currentPlayer = session.attribute(PLAYER_ATTR);
-        Player redPlayer = session.attribute(RED_ATTR);
-        Player whitePlayer = session.attribute(WHITE_ATTR);
-
-        //Get the board
-        BoardView boardView = session.attribute(BOARD_ATTR);
-
-        //add messages to the view model
-        vm.put("message", message);
-
-        //add other parts to the view model
-        //vm.put("title", "Game");
-        //vm.put("currentUser", currentPlayer);
-        //vm.put("loggedIn", true);
-        //vm.put("viewMode", GetGameRoute.viewMode.PLAY);
-        //vm.put("modeOptionsAsJSON", map);
-        //vm.put("redPlayer", redPlayer);
-        //vm.put("whitePlayer", whitePlayer);
-        //vm.put("activeColor", GetGameRoute.activeColor.RED);
-
-        // The BoardView depends on the currentPlayer
-        // If the Player has white Pieces, flip the board to have the white Pieces at the bottom of the board
-        vm.put("board", (currentPlayer == redPlayer ? boardView : boardView.flipBoard()));
-
-
-        // return the move as a JSON string
-        return moveJSON;
-        //return templateEngine.render(new ModelAndView(vm , "message.ftl"));
+        return new Gson().toJson(message);
     }
 }
