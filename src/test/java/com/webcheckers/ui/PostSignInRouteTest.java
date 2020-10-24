@@ -69,7 +69,7 @@ public class PostSignInRouteTest {
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
         playerLobby.addPlayer(player);
         session.attribute("playerlobby", playerLobby);
-        session.attribute("session_key", UIProtocol.PLAYERLOBBY_ATTR);
+        //session.attribute("session_key", UIProtocol.PLAYERLOBBY_ATTR);
 
         // Invoke the test: a user signs in
         System.out.println("Invoking test...");
@@ -87,7 +87,7 @@ public class PostSignInRouteTest {
         testHelper.assertViewName("home.ftl");
 
         //   * verify the session
-        verify(session).attribute(eq(UIProtocol.PLAYERLOBBY_ATTR));
+        //verify(session).attribute(eq(UIProtocol.PLAYERLOBBY_ATTR));
 
     }
 
