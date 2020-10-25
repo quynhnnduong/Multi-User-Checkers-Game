@@ -15,12 +15,12 @@
 
     <!-- Confirmation and cancel buttons. -->
     <div class="inline-buttons">
-        <form method="get" action="/signin">
-            <button>Yes, please!</button>
+        <form method="post" action="/signout">
+            <button name="sign_out" value="true">Yes, please!</button>
         </form>
 
-        <form method="get" action="/">
-            <button>No, thank you!</button>
+        <form method="post" action="/signout">
+            <button name="sign_out" value="false">No, thank you!</button>
         </form>
     </div>
 

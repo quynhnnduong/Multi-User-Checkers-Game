@@ -52,7 +52,9 @@ public class GetSignInRoute implements Route {
             boolean legitName = session.attribute(LEGIT_NAME_ATTR);
             vm.put(LEGIT_NAME_ATTR, legitName);
         }
-        catch (NullPointerException ignored) {}
+        catch (NullPointerException ignored) {
+            vm.put(LEGIT_NAME_ATTR, true);
+        }
 
         vm.put("title", "Sign In");
         vm.put("message", Message.info("Sign in with your username."));
