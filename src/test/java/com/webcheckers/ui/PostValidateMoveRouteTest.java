@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.util.Message;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +20,7 @@ public class PostValidateMoveRouteTest {
     private Session session;
     private TemplateEngine engine;
     private PlayerLobby playerLobby;
+    private GameCenter gameCenter;
 
     // Component under test (CuT)
     private PostValidateMoveRoute CuT;
@@ -34,8 +36,9 @@ public class PostValidateMoveRouteTest {
         response = mock(Response.class);
         engine = mock(TemplateEngine.class);
         playerLobby = mock(PlayerLobby.class);
+        gameCenter = mock(GameCenter.class);
 
-        CuT = new PostValidateMoveRoute(engine, playerLobby);
+        CuT = new PostValidateMoveRoute(gameCenter);
     }
 
     @Test

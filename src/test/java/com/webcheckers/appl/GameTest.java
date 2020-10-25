@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Unit Tests for {@link Game} Component
  * @author Sasha Persaud
  */
-@Tag("Application-tier")
+//@Tag("Application-tier")
 public class GameTest {
 
     // Component under test
@@ -21,14 +21,14 @@ public class GameTest {
     private Player whitePlayer;
     private int id;
 
-    @BeforeEach
+//    @BeforeEach
     private void setUp(){
         redPlayer = new Player("RedPlayer");
         whitePlayer = new Player("WhitePlayer");
         id = 1234;
     }
 
-    @Test
+//    @Test
     public void testCreateGame(){
         // Invoke
         CuT = new Game(redPlayer, whitePlayer, id);
@@ -37,7 +37,7 @@ public class GameTest {
         assertNotNull(CuT);
     }
 
-    @Test
+//    @Test
     public void testGetRedPlayer(){
         // Invoke
         CuT = new Game(redPlayer, whitePlayer, id);
@@ -47,7 +47,7 @@ public class GameTest {
         assertEquals(redPlayer, testPlayer);
     }
 
-    @Test
+//    @Test
     public void testGetWhitePlayer(){
         // Invoke
         CuT = new Game(redPlayer, whitePlayer, id);
@@ -57,7 +57,7 @@ public class GameTest {
         assertEquals(whitePlayer, testPlayer);
     }
 
-    @Test
+//    @Test
     public void testGetId(){
         // Invoke
         CuT = new Game(redPlayer, whitePlayer, id);

@@ -36,7 +36,7 @@ public class PostResignGameRouteTest {
         response = mock(Response.class);
         engine = mock(TemplateEngine.class);
         // create a new CuT for each test
-        CuT = new PostResignGame(engine);
+        CuT = new PostResignGame();
     }
 
     /**
