@@ -180,6 +180,8 @@ public class WebServer {
     //Reloads sign-in page after signing in
     post(SIGNIN_URL, new PostSignInRoute(templateEngine, gameCenter, playerLobby));
 
+    get(SIGNOUT_URL, new GetSignOutRoute(templateEngine, gameCenter, playerLobby));
+
     //Reloads sign in page after signing out
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, gameCenter, playerLobby));
 
