@@ -23,12 +23,17 @@ public class PostResignGameRouteTest {
     private Request request;
     private Session session;
     private Response response;
+    private GameCenter gameCenter;
+    private PlayerLobby playerLobby;
 
     /**
      * Setup new mock objects for each test.
      */
     @BeforeEach
     public void setup(){
+        // create friendlies
+        gameCenter = new GameCenter();
+        playerLobby = new PlayerLobby(gameCenter);
         // create mocks
         request = mock(Request.class);
         session = mock(Session.class);
@@ -36,7 +41,7 @@ public class PostResignGameRouteTest {
         response = mock(Response.class);
         engine = mock(TemplateEngine.class);
         // create a new CuT for each test
-        CuT = new PostResignGame();
+        CuT = new PostResignGame(gameCenter, playerLobby);
     }
 
     /**
@@ -48,6 +53,5 @@ public class PostResignGameRouteTest {
         Gson gson = new Gson();
         assertEquals(gson.toJson(Message.info("Player Resigned")), resignation);
     }
-
 
 }
