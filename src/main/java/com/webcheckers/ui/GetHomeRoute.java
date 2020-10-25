@@ -23,7 +23,7 @@ import static spark.Spark.halt;
  */
 public class GetHomeRoute implements Route {
 
-  /**A Logger that outputs messages relating the performance of the application to the terminal */
+  /** A Logger that outputs messages relating the performance of the application to the terminal */
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
   /** The passed in global GameCenter object (tracks site-wide game statistics) */
@@ -35,7 +35,7 @@ public class GetHomeRoute implements Route {
   /** The TemplateEngine that renders all HTML .ftl files */
   private final TemplateEngine templateEngine;
 
-  /**A Message that is displayed at the top of the home screen */
+  /** A Message that is displayed at the top of the home screen */
   public static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
 
   /**
@@ -52,7 +52,7 @@ public class GetHomeRoute implements Route {
   }
 
   /**
-   * Render the WebCheckers home page.
+   * Each time the '/' or '/home' route is invoked, this method is run to handle the request.
    *
    * @param request  the HTTP request
    * @param response the HTTP response
@@ -61,70 +61,48 @@ public class GetHomeRoute implements Route {
    */
   @Override
   public Object handle(Request request, Response response) {
-    final Session httpSession = request.session();
+    final Session session = request.session();
 
     LOG.finer("GetHomeRoute is invoked.");
 
     Map<String, Object> vm = new HashMap<>();
 
-    //this makes the current player's state be in game according to the httpSession
-    //for showing the error message of choosing to play against someone who's already in game
-    httpSession.attribute(MID_GAME_ATTR, false);
-
     vm.put("title", "Welcome!");
-
-    // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
 
-    //checks if last person current player picked was mid game
-    boolean legitOpponent;
+    // A new browser session or a Player signs in after signing out
+    if (session.attribute(PLAYER_ATTR) == null) {
 
-    // if this is a brand new browser session (a new challenger approaches) or a signed out player returns to the home screen
-    if (httpSession.attribute(PLAYERLOBBY_ATTR) == null || httpSession.attribute(PLAYER_ATTR) == null) {
-
-      // get the object that will provide client-specific services for this player
-      //say that this player lobby object belongs to the current session - this is the key connecting the current session to the
-      //one playerlobby that all the sessions will share
-      httpSession.attribute(PLAYERLOBBY_ATTR, playerLobby);
-
-      // show the not signed in page
-      vm.put(LOGGED_IN_ATTR, false);
-
-      legitOpponent = true;
+      session.attribute(LEGIT_NAME_ATTR, true);
+      vm.put("loggedIn", false);
     }
     else {
-      //tells the playerlobby to get the player with the name of this session's player
-      Player currentPlayer = httpSession.attribute(PLAYER_ATTR);
-      vm.put("currentUser", currentPlayer);
+      Player currentPlayer = session.attribute(PLAYER_ATTR);
 
-      //check if the last person they fought against was valid to choose whether or not to display the message
-      legitOpponent = httpSession.attribute(LEGIT_OPPONENT_ATTR);
-
-      //gets the players hashset to display all the players
-      vm.put("playerList", playerLobby.getPlayers());
-      vm.put(LOGGED_IN_ATTR, true);
-      vm.put(PLAYER_MSG_ATTR, playerLobby.getLobbyMessage());
-
-      //check if the current player has been called to a game
+      // Check if currentPlayer has been called to a game
       if (currentPlayer.inGame()) {
-
-        //append it onto the game url so its a bootleg query param
         response.redirect(WebServer.GAME_URL + "?opponent=" + currentPlayer.getOpponent().getName());
         return halt();
       }
+
+      if (session.attribute(GAME_ID_ATTR) != null)
+        session.attribute(GAME_ID_ATTR, null);
+
+      vm.put("currentUser", currentPlayer);
+      vm.put("playerList", playerLobby.getPlayers());
+      vm.put("loggedIn", true);
+      vm.put("playersMessage", playerLobby.getLobbyMessage());
   }
 
-    vm.put(LEGIT_OPPONENT_ATTR, legitOpponent);
+    vm.put(LEGIT_OPPONENT_ATTR, session.attribute(LEGIT_NAME_ATTR));
 
-    //Anything below here is to reset when the page is reloaded
+    // Resets these attributes upon each home page reload
+    session.attribute(LEGIT_NAME_ATTR, true);
+    session.attribute(LEGIT_OPPONENT_ATTR, true);
 
-    //this is a key that will toggle telling someone if the last name they put in getSignIn is valid
-    httpSession.attribute(LEGIT_NAME_ATTR, true);
+    gameCenter.removeEndedGames();
 
-    //this is a key that will toggle telling someone if the last opponent they selected is valid
-    httpSession.attribute(LEGIT_OPPONENT_ATTR, true);
-
-      // render the View
+      // Render the Home Page
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     }
 }

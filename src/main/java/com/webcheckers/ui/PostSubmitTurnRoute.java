@@ -2,10 +2,7 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameCenter;
-import com.webcheckers.model.BoardView;
 import com.webcheckers.model.Game;
-import com.webcheckers.model.Move;
-import com.webcheckers.model.Player;
 import com.webcheckers.util.Message;
 import spark.*;
 
@@ -13,6 +10,8 @@ import static com.webcheckers.ui.UIProtocol.*;
 
 /**
  * Route for determining if the turn is valid
+ *
+ * @author Dmitry Selin
  */
 public class PostSubmitTurnRoute implements Route {
 
@@ -26,20 +25,8 @@ public class PostSubmitTurnRoute implements Route {
 
         Game game = gameCenter.getGame(session.attribute(GAME_ID_ATTR));
 
-        if (game.getCurrentTurn().hasMoves()) {
-            BoardView board = session.attribute(BOARD_ATTR);
-            board.makeMove(game.getCurrentTurn().getFirstMove());
-
-            GetGameRoute.activeColor activeColor = session.attribute(ACTIVE_COLOR_ATTR);
-            session.attribute(ACTIVE_COLOR_ATTR, (activeColor == GetGameRoute.activeColor.RED ?
-                    GetGameRoute.activeColor.WHITE : GetGameRoute.activeColor.RED));
-
-            game.addTurn();
-
-            Player currentPlayer = session.attribute(PLAYER_ATTR);
-            currentPlayer.stopTurn();
-            currentPlayer.getOpponent().startTurn();
-
+        if (game != null && game.getCurrentTurn().hasMoves()) {
+            game.endTurn();
             return new Gson().toJson(Message.info("Successfully Submitted Turn"));
         }
 

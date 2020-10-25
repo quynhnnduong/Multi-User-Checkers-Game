@@ -28,14 +28,9 @@ public class Player {
          */
         CALLED,
 
-        /** The Player is currently in a game of WebCheckers */
-        MID_GAME,
+        MY_TURN,
 
-        /**
-         * Enters this state when the Player hits the 'Resign' button on the Game Page - used
-         * for letting the opponent know when a Player has resigned.
-         */
-        RESIGNED
+        WAITING
     }
 
     /** The name of the Player (entered when signing in) */
@@ -46,8 +41,6 @@ public class Player {
 
     /** The current state of the Player */
     private PlayerState state;
-
-    private boolean isTurn = false;
 
     /**
      * Creates a new Player object.
@@ -71,7 +64,9 @@ public class Player {
      *
      * @return true if a Player was either called for, or is currently in a Game, otherwise false.
      */
-    public boolean inGame() { return state == PlayerState.CALLED || state == PlayerState.MID_GAME; }
+    public boolean inGame() {
+        return state == PlayerState.CALLED || state == PlayerState.MY_TURN || state == PlayerState.WAITING;
+    }
 
     /**
      * Returns true if a Player has been called into a Game of WebCheckers by an opponent,
@@ -81,27 +76,24 @@ public class Player {
      */
     public boolean isCalledForGame() { return state == PlayerState.CALLED; }
 
-    /**
-     * Checks if the Player has resigned from a Game.
-     *
-     * @return true if the Player has resigned, false otherwise
-     */
-    public boolean resigned() { return state == PlayerState.RESIGNED; }
-
     /** Changes a Player's state to SIGNED_IN (happens when a Player exits the Sign-In Page). */
     public void signIn() { state = PlayerState.SIGNED_IN; }
+
+    public boolean isSignedIn() { return state != PlayerState.NEW; }
+
+    public void exitGame() {
+        state = PlayerState.SIGNED_IN;
+        opponent = null;
+    }
 
     /**
      * Changes the Player's state to MID_GAME when a new Game of
      * WebCheckers is started or the Player transitions from the CALLED state.
      */
-    public void joinGame() { state = PlayerState.MID_GAME; }
+    public void joinGame(boolean myTurn) { state = (myTurn ? PlayerState.MY_TURN : PlayerState.WAITING); }
 
     /** Represents calling a Player to join a Game (happens when a Player is clicked on at the PlayerLobby). */
     public void call() { state = PlayerState.CALLED; }
-
-    /** A Player resigns from the Game. Happens when the 'Resign' button is clicked. */
-    public void resign() { state = PlayerState.RESIGNED; }
 
     /**
      * Initializes the opponent of Player. This occurs when two Players are matched for a Game.
@@ -117,9 +109,9 @@ public class Player {
      */
     public Player getOpponent() { return opponent; }
 
+    public boolean isMyTurn() { return state == PlayerState.MY_TURN; }
 
-    public boolean isTurn() { return isTurn; }
-    public void startTurn() { isTurn = true; }
-    public void stopTurn() { isTurn = false; }
-    public boolean getTurn() { return isTurn; }
+    public void startTurn() { state = PlayerState.MY_TURN; }
+
+    public void endTurn() { state = PlayerState.WAITING; }
 }
