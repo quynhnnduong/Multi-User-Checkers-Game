@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import static com.webcheckers.ui.UIProtocol.GAME_ID_ATTR;
 import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
 import static spark.Spark.halt;
 
@@ -21,14 +22,8 @@ public class PostSignOutRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(PostSignOutRoute.class.getName());
     private final TemplateEngine templateEngine;
-    private PlayerLobby playerLobby;
-    private GameCenter gameCenter;
-
-
-    public static final String PLAYER_NAME_ATTR = "playerName";
-    public static final String PLAYERLOBBY_KEY = "playerLobby";
-    private static final String LOGGED_IN_ATTR = "loggedIn";
-    private static final Message INVALID_NAME_MSG = Message.info("Invalid Name. Please try again.");
+    private final PlayerLobby playerLobby;
+    private final GameCenter gameCenter;
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code POST/} HTTP requests.
@@ -54,7 +49,7 @@ public class PostSignOutRoute implements Route {
      * @return the Sign In HTML page
      */
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
         LOG.finer("PostSignOutRoute is invoked.");
 
         // Retrieve the current game object.
@@ -62,14 +57,19 @@ public class PostSignOutRoute implements Route {
 
         // Get the current user
         Player currentPlayer = session.attribute(PLAYER_ATTR);
+        currentPlayer.exitGame();
+
+        String signedOut = request.queryParams("sign_out");
+
+        System.out.println("QueryParams: " + signedOut);
 
         //get the value of the button the user clicked - see signout.ftl
         String performSignOut = request.queryParams("sign_out");
 
         //if they clicked
         if (performSignOut.equals("true")){
-            currentPlayer.resign();
-            currentPlayer.stopTurn();
+            currentPlayer.exitGame();
+            currentPlayer.endTurn();
             // Remove the player from the session
             session.attribute(PLAYER_ATTR, null);
             // Clean up the current player's presence in the game.
@@ -80,8 +80,6 @@ public class PostSignOutRoute implements Route {
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Sign Out");
         vm.put("message", Message.info("Are you sure you want to sign out?"));
-
-
 
 
 
