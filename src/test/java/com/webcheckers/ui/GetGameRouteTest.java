@@ -66,7 +66,7 @@ public class GetGameRouteTest {
 
 
         //set up everything for player 1
-        player1.resign();
+        player1.exitGame();
         when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
         //when(session.attribute(RED_ATTR)).thenReturn(player1);
 

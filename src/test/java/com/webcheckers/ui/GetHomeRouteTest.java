@@ -81,10 +81,12 @@ public class GetHomeRouteTest {
         //There should be no player amount message because the current player isn't signed in yet
         testHelper.assertViewModelAttribute(UIProtocol.PLAYER_MSG_ATTR, null);
 
+
         testHelper.assertViewModelAttribute(UIProtocol.PLAYER_ATTR, playerLobby.getPlayer(""));
         //   * test view name
         testHelper.assertViewName("home.ftl");
         //   * verify the player lobby object
+
         verify(httpSession).attribute(eq(UIProtocol.PLAYERLOBBY_ATTR), any(PlayerLobby.class));
     }
 

@@ -5,9 +5,12 @@ import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
 import spark.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import static com.webcheckers.ui.GetHomeRoute.WELCOME_MSG;
 import static com.webcheckers.ui.UIProtocol.*;
 import static spark.Spark.halt;
 
@@ -50,29 +53,33 @@ public class PostSignInRoute implements Route {
         // retrieve the game object
         final Session session = request.session();
 
-        //if there is a session here - someone has already logged in
-        if (session.attribute(PLAYERLOBBY_ATTR) != null) {
+        Map<String, Object> vm = new HashMap<>();
 
-            //get the name from the text box
-            Player currentPlayer = new Player(request.queryParams("text_field"));
+        //get the name from the text box
+        Player currentPlayer = new Player(request.queryParams("text_field"));
 
-            //adds the name to the playerlobby.
-            if (!playerLobby.addPlayer(currentPlayer)) {
+        //adds the name to the playerlobby.
+        if (!playerLobby.addPlayer(currentPlayer)) {
 
-                //this flag shows the message that the last name they put was taken by someone else
-                session.attribute(LEGIT_NAME_ATTR, false);
+            //this flag shows the message that the last name they put was taken by someone else
+            session.attribute(LEGIT_NAME_ATTR, false);
 
-                response.redirect(WebServer.SIGNIN_URL);
-                return halt();
-            }
-
-            session.attribute(PLAYER_ATTR, currentPlayer);
-            session.attribute(PLAYERLOBBY_ATTR, playerLobby);
-            session.attribute(LOGGED_IN_ATTR, true);
-            session.attribute(LEGIT_NAME_ATTR, true);
+            response.redirect(WebServer.SIGNIN_URL);
+            return halt();
         }
 
+        session.attribute(PLAYER_ATTR, currentPlayer);
+        session.attribute(LEGIT_NAME_ATTR, true);
+
+        vm.put("title", "Welcome!");
+        vm.put("message", WELCOME_MSG);
+        vm.put("currentUser", currentPlayer);
+        vm.put("playerList", playerLobby.getPlayers());
+        vm.put("loggedIn", true);
+        vm.put("playersMessage", playerLobby.getLobbyMessage());
+        vm.put(LEGIT_OPPONENT_ATTR, session.attribute(LEGIT_NAME_ATTR));
+
         response.redirect(WebServer.HOME_URL);
-        return halt();
+        return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     }
 }

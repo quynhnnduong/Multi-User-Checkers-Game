@@ -196,7 +196,7 @@ public class WebServer {
     post(CHECK_URL, new PostCheckTurnRoute());
 
     //Resign button is pressed
-    post(RESIGN_URL, new PostResignGame());
+    post(RESIGN_URL, new PostResignGame(gameCenter, playerLobby));
 
     post(BACKUP_URL, new PostBackupMove(gameCenter));
 
