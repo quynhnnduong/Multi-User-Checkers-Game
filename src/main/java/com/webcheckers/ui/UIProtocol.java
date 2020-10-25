@@ -27,4 +27,13 @@ public class UIProtocol {
     public static final String LEGIT_OPPONENT_ATTR = "legitOpponent";
 
     public static final String GAME_ID_ATTR = "gameID";
+
+    // Added the RED/WHITE_ATTR keys to prevent compile errors in test code - Sasha
+    public static final String RED_ATTR = "redPlayer";
+
+    public static final String WHITE_ATTR = "whitePlayer";
+
+
+
+
 }
