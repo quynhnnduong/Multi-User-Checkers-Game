@@ -68,8 +68,8 @@ public class PostSignOutRoute implements Route {
 
         //if they clicked
         if (performSignOut.equals("true")){
-            currentPlayer.resign();
-            currentPlayer.stopTurn();
+            currentPlayer.exitGame();
+            currentPlayer.endTurn();
             // Remove the player from the session
             session.attribute(PLAYER_ATTR, null);
             // Clean up the current player's presence in the game.
