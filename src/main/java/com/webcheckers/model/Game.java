@@ -16,19 +16,42 @@ public class Game {
     /** A gameID for an instance of Game (redPlayer's Name + whitePlayer's Name) */
     private final String id;
 
+    private final Player redPlayer;
+
+    private final Player whitePlayer;
+
+    private ActiveColor activeColor = ActiveColor.RED;
+
+    private final BoardView redView = new BoardView(Piece.Color.RED);
+
+    private final BoardView whiteView = new BoardView(Piece.Color.WHITE);
+
+    /** The color (representing a Player) whose turn it is currently */
+    public enum ActiveColor{
+        RED,
+        WHITE
+    }
+
     /**
      * Creates a new instance of Game - used in GameCenter to keep track of all existing Games.
      *
      * @param id the ID of the Game
      */
-    public Game(String id){
+    public Game(String id, Player redPlayer, Player whitePlayer){
         this.id = id;
+        this.redPlayer = redPlayer;
+        this.whitePlayer = whitePlayer;
+
         turns = new ArrayList<>();
         addTurn();
     }
 
+    public Player getRedPlayer() { return redPlayer; }
+
+    public Player getWhitePlayer() { return whitePlayer; }
+
     /** Adds a new Turn to turns - used when it is the Player's turn */
-    public void addTurn() { turns.add(new Turn()); }
+    private void addTurn() { turns.add(new Turn()); }
 
     /**
      * Returns the last Turn object in turns. This represents the Turn that the Player
@@ -37,6 +60,37 @@ public class Game {
      * @return the Turn that the Player is currently on (still modifying)
      */
     public Turn getCurrentTurn() { return turns.get(turns.size() - 1); }
+
+    public ActiveColor getActiveColor() { return activeColor; }
+
+    public BoardView getRedView() { return redView; }
+
+    public BoardView getWhiteView() { return whiteView; }
+
+    public void endTurn() {
+        Move move = getCurrentTurn().getFirstMove();
+
+        if (activeColor == ActiveColor.RED) {
+            activeColor = ActiveColor.WHITE;
+
+            redPlayer.endTurn();
+            whitePlayer.startTurn();
+
+            redView.makeMove(move);
+            whiteView.makeMove(move.getFlippedMove());
+        }
+        else {
+            activeColor = ActiveColor.RED;
+
+            redPlayer.startTurn();
+            whitePlayer.endTurn();
+
+            redView.makeMove(move.getFlippedMove());
+            whiteView.makeMove(move);
+        }
+
+        addTurn();
+    }
 
     /**
      * Simply returns the Game's ID.
