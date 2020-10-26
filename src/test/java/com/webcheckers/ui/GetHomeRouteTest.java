@@ -96,8 +96,8 @@ public class GetHomeRouteTest {
         when(httpSession.attribute(PLAYERLOBBY_ATTR)).thenReturn(playerLobby);
         when(httpSession.attribute(PLAYER_ATTR)).thenReturn(currentUser);
         when(httpSession.attribute(LEGIT_OPPONENT_ATTR)).thenReturn(true);
-        currentUser.stopCalling();
-        currentUser.exitGame();
+//        currentUser.stopCalling();
+//        currentUser.exitGame();
 
         // Invoke the test
         CuT.handle(request, response);
