@@ -57,11 +57,11 @@ public class PostSubmitTurnRouteTest {
         Gson gson = new Gson();
         when(request.session().attribute(UIProtocol.RED_ATTR)).thenReturn(new Player("redPlayer"));
         when(request.session().attribute(UIProtocol.WHITE_ATTR)).thenReturn(new Player("whitePlayer"));
-       when(session.attribute("lastValidTurn")).thenReturn(true);
-       Object submit = CuT.handle(request, response);
+        when(session.attribute("lastValidTurn")).thenReturn(true);
+        Object submit = CuT.handle(request, response);
 
         try {
-            assertEquals(gson.toJson(Message.info("Turn submitted")), submit);
+            assertEquals(gson.toJson(Message.info("Successfully Submitted Turn")), submit);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -79,6 +79,6 @@ public class PostSubmitTurnRouteTest {
         when(request.session().attribute(UIProtocol.WHITE_ATTR)).thenReturn(new Player("whitePlayer"));
         when(session.attribute("lastValidTurn")).thenReturn(false);
         Object error = CuT.handle(request, response);
-        assertEquals(gson.toJson(Message.error("If you're seeing this, you did a move you weren't supposed to")), error);
+        assertEquals(gson.toJson(Message.error("Turn cannot be submitted")), error);
     }
 }
