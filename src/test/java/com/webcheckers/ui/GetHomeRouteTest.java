@@ -81,12 +81,10 @@ public class GetHomeRouteTest {
         //There should be no player amount message because the current player isn't signed in yet
         testHelper.assertViewModelAttribute(UIProtocol.PLAYER_MSG_ATTR, null);
 
-
         testHelper.assertViewModelAttribute(UIProtocol.PLAYER_ATTR, playerLobby.getPlayer(""));
         //   * test view name
         testHelper.assertViewName("home.ftl");
         //   * verify the player lobby object
-
         verify(httpSession).attribute(eq(UIProtocol.PLAYERLOBBY_ATTR), any(PlayerLobby.class));
     }
 
@@ -98,9 +96,8 @@ public class GetHomeRouteTest {
         when(httpSession.attribute(PLAYERLOBBY_ATTR)).thenReturn(playerLobby);
         when(httpSession.attribute(PLAYER_ATTR)).thenReturn(currentUser);
         when(httpSession.attribute(LEGIT_OPPONENT_ATTR)).thenReturn(true);
-        // Commenting out the line below until developers implement this method - Sasha
-        // currentUser.stopCalling();
-        currentUser.exitGame();
+//        currentUser.stopCalling();
+//        currentUser.exitGame();
 
         // Invoke the test
         CuT.handle(request, response);

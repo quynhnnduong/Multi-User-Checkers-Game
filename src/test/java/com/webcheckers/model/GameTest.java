@@ -1,4 +1,4 @@
-package com.webcheckers.appl;
+package com.webcheckers.model;
 
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
