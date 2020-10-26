@@ -53,7 +53,7 @@ public class PostCheckTurnRouteTest {
 
 
         // create a unique CuT for each test
-        CuT = new PostCheckTurnRoute(engine);
+        CuT = new PostCheckTurnRoute();
     }
 
     /**
@@ -72,7 +72,7 @@ public class PostCheckTurnRouteTest {
 
     @Test
     public void changeTurn() {
-        opponent.stopTurn();
+        opponent.endTurn();
         Gson gson = new Gson();
         when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
         Object wait = CuT.handle(request, response);

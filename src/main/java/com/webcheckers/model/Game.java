@@ -68,29 +68,35 @@ public class Game {
     public BoardView getWhiteView() { return whiteView; }
 
     public void endTurn() {
-        Move move = getCurrentTurn().getFirstMove();
+        if (!hasPlayerResigned()) {
+            Move move = getCurrentTurn().getFirstMove();
 
-        if (activeColor == ActiveColor.RED) {
-            activeColor = ActiveColor.WHITE;
+            if (activeColor == ActiveColor.RED) {
+                activeColor = ActiveColor.WHITE;
 
-            redPlayer.endTurn();
-            whitePlayer.startTurn();
+                redPlayer.endTurn();
+                whitePlayer.startTurn();
 
-            redView.makeMove(move);
-            whiteView.makeMove(move.getFlippedMove());
+                redView.makeMove(move);
+                whiteView.makeMove(move.getFlippedMove());
+            }
+            else {
+                activeColor = ActiveColor.RED;
+
+                redPlayer.startTurn();
+                whitePlayer.endTurn();
+
+                redView.makeMove(move.getFlippedMove());
+                whiteView.makeMove(move);
+            }
+
+            addTurn();
         }
-        else {
-            activeColor = ActiveColor.RED;
-
-            redPlayer.startTurn();
-            whitePlayer.endTurn();
-
-            redView.makeMove(move.getFlippedMove());
-            whiteView.makeMove(move);
-        }
-
-        addTurn();
     }
+
+    public boolean hasPlayerResigned() { return !(redPlayer.inGame() && whitePlayer.inGame()); }
+
+    public boolean hasGameEnded() { return (!redPlayer.inGame() && !whitePlayer.inGame()); }
 
     /**
      * Simply returns the Game's ID.

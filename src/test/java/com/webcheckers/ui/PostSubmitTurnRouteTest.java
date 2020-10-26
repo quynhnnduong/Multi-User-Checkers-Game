@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
+import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 
 import com.webcheckers.model.Player;
@@ -27,6 +28,7 @@ public class PostSubmitTurnRouteTest {
     private TemplateEngine engine;
     private PlayerLobby playerLobby;
     private PostSubmitTurnRoute CuT;
+    private GameCenter gameCenter;
 
     private final String redPlayer = "redPlayer";
     private final String whitePlayer = "whitePlayer";
@@ -41,8 +43,9 @@ public class PostSubmitTurnRouteTest {
         when(request.session()).thenReturn(session);
         response = mock(Response.class);
         playerLobby = mock(PlayerLobby.class);
+        gameCenter = new GameCenter();
 
-        CuT = new PostSubmitTurnRoute(engine);
+        CuT = new PostSubmitTurnRoute(gameCenter);
     }
 
     /**
