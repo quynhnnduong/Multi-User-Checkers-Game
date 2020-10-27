@@ -1,0 +1,17 @@
+This file contains instructions for anyone testing this web application.
+
+To build and start the web application:
+    1. Open a terminal and navigate to the root directory of the application.
+    2. Type "mvn compile exec:java" and hit enter.
+
+To connect to WebCheckers server:
+    1. Open a web browser (Google Chrome, Microsoft Edge, Firefox, etc.).
+    2. Type "localhost:4567" in the search bar and hit enter.
+
+To simulate two user sessions started in the web application:
+    1. Open a different browser (or an incognito window in the same browser as before).
+    2. Type "localhost:4567" in search bar and hit enter.
+
+Additional instructions:
+    1. At the sign-in page, enter a valid name.
+    2. Player will be redirected to the home page where they can challenge other signed in players.

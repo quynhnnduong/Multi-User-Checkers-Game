@@ -15,7 +15,7 @@ import static com.webcheckers.ui.UIProtocol.*;
 import static spark.Spark.halt;
 
 /**
- * The UI Controller to GET the Home page. This class contains the handle() method that is run when the '/' or
+ * The UI Controller to GET the Home page. This class contains the handle() method that is run when the '/' or the
  * '/home' route is requested. This route displays the home page of the application while dealing with certain edge
  * cases.
  *

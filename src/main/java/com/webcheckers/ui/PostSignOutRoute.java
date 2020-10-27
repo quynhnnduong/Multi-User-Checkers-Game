@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import static com.webcheckers.ui.UIProtocol.GAME_ID_ATTR;
 import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
+import static spark.Spark.halt;
 
 /**
  * @author Sasha Persaud (srp4581), Joel Clyne
@@ -62,18 +63,32 @@ public class PostSignOutRoute implements Route {
 
         System.out.println("QueryParams: " + signedOut);
 
+        //get the value of the button the user clicked - see signout.ftl
+        String performSignOut = request.queryParams("sign_out");
+
+        //if they clicked
+        if (performSignOut.equals("true")){
+            currentPlayer.exitGame();
+            currentPlayer.endTurn();
+            // Remove the player from the session
+            session.attribute(PLAYER_ATTR, null);
+            // Clean up the current player's presence in the game.
+            playerLobby.removePlayer(currentPlayer);
+        }
+
         // Create the view-model map and add values that will be displayed in the sign in page.
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Sign Out");
         vm.put("message", Message.info("Are you sure you want to sign out?"));
 
-        // Clean up the current player's presence in the game.
-        playerLobby.removePlayer(currentPlayer);
 
-        // Remove the player from the session
-        session.attribute(PLAYER_ATTR, null);
+
+
+
+
 
         // render the View
-        return templateEngine.render(new ModelAndView(vm , "signout.ftl"));
+        response.redirect(WebServer.HOME_URL);
+        return halt();
     }
 }
