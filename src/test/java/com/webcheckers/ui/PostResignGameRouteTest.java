@@ -34,12 +34,15 @@ public class PostResignGameRouteTest {
         // create friendlies
         gameCenter = new GameCenter();
         playerLobby = new PlayerLobby(gameCenter);
+
         // create mocks
         request = mock(Request.class);
         session = mock(Session.class);
         when(request.session()).thenReturn(session);
+        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(new Player("currentUser"));
         response = mock(Response.class);
         engine = mock(TemplateEngine.class);
+
         // create a new CuT for each test
         CuT = new PostResignGame(gameCenter, playerLobby);
     }
