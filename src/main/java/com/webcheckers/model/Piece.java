@@ -16,7 +16,7 @@ public class Piece {
     }
 
     /** An enumeration of the only two colors that a checkers Piece can be: Black and Red */
-    enum Color {
+    public enum Color {
         RED,
         WHITE
     }

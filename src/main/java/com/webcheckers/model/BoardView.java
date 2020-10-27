@@ -65,12 +65,26 @@ public class BoardView implements Iterable<Row>{
         return board;
     }
 
+    /**
+     * Add capturing pieces
+     * @param move
+     */
     public void makeMove(Move move) {
         Position start = move.getStart();
         Position end = move.getEnd();
 
         Space startSpace = board.get(start.getRow()).getSpace(start.getCell());
         Space endSpace = board.get(end.getRow()).getSpace(end.getCell());
+
+        //check if its a jump
+        //we know if its a jump if the row and cell changed by 2 spaces
+        if ((Math.abs(start.getCell() - end.getCell()) == 2) && Math.abs(start.getRow() - end.getRow()) == 2){
+            //remove the captured piece
+            int capturedCell = (start.getCell() + end.getCell()) / 2;
+            int capturedRow = (start.getRow() + end.getRow()) / 2 ;
+            Space jumpedOverSpace = board.get(capturedRow).getSpace(capturedCell);
+            jumpedOverSpace.removePiece();
+        }
 
         Piece piece = startSpace.getPiece();
         startSpace.removePiece();
