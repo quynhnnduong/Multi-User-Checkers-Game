@@ -100,7 +100,7 @@ public class GetHomeRoute implements Route {
     session.attribute(LEGIT_NAME_ATTR, true);
     session.attribute(LEGIT_OPPONENT_ATTR, true);
 
-    gameCenter.removeEndedGames();
+    gameCenter.removeAbandonedGames();
 
       // Render the Home Page
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
