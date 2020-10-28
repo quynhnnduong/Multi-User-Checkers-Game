@@ -41,6 +41,7 @@ public class PostCheckTurnRouteTest {
         engine = mock(TemplateEngine.class);
         playerLobby = mock(PlayerLobby.class);
         opponent = mock(Player.class);
+        currentPlayer = mock(Player.class);
 
         //friendly
         currentPlayer = new Player("user");
@@ -73,8 +74,10 @@ public class PostCheckTurnRouteTest {
     @Test
     public void changeTurn() {
         opponent.endTurn();
-        Gson gson = new Gson();
         when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
+        currentPlayer = session.attribute(PLAYER_ATTR);
+        when(currentPlayer.isMyTurn()).thenReturn(true);
+        Gson gson = new Gson();
         Object wait = CuT.handle(request, response);
         assertEquals(gson.toJson(Message.info("true")), wait);
 
