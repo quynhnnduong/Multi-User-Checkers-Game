@@ -23,6 +23,7 @@ public class Row implements Iterable<Space> {
      *
      * @param index index of row within a checkers board
      * @param leadingColor the first color of a Space in the Row
+     * @param bottomColor the color of the Pieces found on this Row (applies to bottom and top 3 Rows)
      */
     public Row(int index, SpaceColor leadingColor, Piece.Color bottomColor){
         this.index = index;
@@ -48,29 +49,35 @@ public class Row implements Iterable<Space> {
 
     /**
      * A helper method that creates all the Space objects and places them inside
-     * the row ArrayList (as specified by leadingColor). Additionally, this method also
-     * places red and white pieces on the valid spaces of the bottom and top 3 rows
-     * (the index determines the location of the row).
+     * the row ArrayList (as specified by leadingColor). Additionally, this method places
+     * Pieces on the bottom and top 3 Rows. The color of the placed Pieces is determined by
+     * bottomColor (the color of the Pieces at the bottom 3 Rows of the board). Based on the American
+     * Rules for Checkers, the Pieces of the top 3 Rows will be the opposite of the bottom 3 Rows (Red vs White).
      *
      * @param leadingColor the color of the first Space tile in the row
+     * @param bottomColor the color of the Pieces at the bottom 3 Rows of the board
      *
      * @return an ArrayList of eight Space objects with alternating colors
      */
     public ArrayList<Space> generateRow(SpaceColor leadingColor, Piece.Color bottomColor) {
         ArrayList<Space> row = new ArrayList<>();
 
+        // Determines the color of the Pieces at the top of the board based on the entered bottomColor.
         Piece.Color topColor = (bottomColor == Piece.Color.RED ? Piece.Color.WHITE : Piece.Color.RED);
 
         // Creates all Space objects and adds them to row
         for (int i = 0; i < BoardView.BOARD_SIZE; i++){
             Space newSpace = new Space(i, leadingColor);
 
-            // Places the checkers Pieces at the top and bottom 3 Rows (RED -> Bottom, WHITE -> Top)
+            // Places the checkers Pieces at the top 3 Rows of color topColor
             if (index <= 2 && newSpace.isValid())
                 newSpace.placePiece(new Piece(topColor));
+
+            // Places checkers Pieces at the bottom 3 Rows of color bottomColor
             else if (index >= 5 && newSpace.isValid())
                 newSpace.placePiece(new Piece(bottomColor));
 
+            // i = index of the Space
             row.add(i, newSpace);
 
             // Swaps colors for each alternating Space to create a checker pattern
@@ -83,7 +90,19 @@ public class Row implements Iterable<Space> {
         return row;
     }
 
+    /**
+     * Simply returns all the Spaces within a Row as an ArrayList.
+     *
+     * @return an ArrayList of Spaces found in Row
+     */
     public ArrayList<Space> getSpaces(){ return row; }
 
+    /**
+     * Returns the Space object at the specified index.
+     *
+     * @param index the index of a Space within the row ArrayList
+     *
+     * @return a Space corresponding to the given index
+     */
     public Space getSpace(int index) { return row.get(index); }
 }
