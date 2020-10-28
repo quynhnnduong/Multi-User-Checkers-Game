@@ -2,7 +2,7 @@ package com.webcheckers.model;
 
 /**
  * This class represents the "Space" domain object. This object is housed in a
- * Row object and contains a potential "Piece" object that represents an occupying
+ * Row object and contains a potential Piece object that represents an occupying
  * checkers Piece.
  *
  * @author Shubhang Mehrotra, Joel Clyne, Dmitry Selin
@@ -70,5 +70,6 @@ public class Space {
      */
     public SpaceColor getColor() { return color; }
 
+    /** Removes a Piece object by setting it to null (meaning no Piece is occupying this Space) */
     public void removePiece() { piece = null; }
 }

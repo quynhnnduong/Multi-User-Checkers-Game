@@ -1,7 +1,5 @@
 package com.webcheckers.model;
 
-import spark.Route;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -13,7 +11,7 @@ import java.util.Iterator;
  * @author Joel Clyne, Dmitry Selin
  */
 
-public class BoardView implements Iterable<Row>{
+public class BoardView implements Iterable<Row> {
 
     /** The size of the checkers board (square) */
     static final int BOARD_SIZE = 8;
@@ -21,7 +19,11 @@ public class BoardView implements Iterable<Row>{
     /** An ArrayList containing the Row objects that make up the checkers board */
     private final ArrayList<Row> board;
 
-    /** A simple constructor that creates a clean and set checkers board. */
+    /**
+     * Creates a new BoardView object with the bottom checkers Pierces of color bottomColor.
+     *
+     * @param bottomColor the color of the checkers Pieces at the bottom of the board
+     */
     public BoardView(Piece.Color bottomColor) { board = generateBoard(bottomColor); }
 
     /**
@@ -30,19 +32,20 @@ public class BoardView implements Iterable<Row>{
      * @return an iterator generated from board
      */
     @Override
-    public Iterator<Row> iterator() {
-        return board.iterator();
-    }
+    public Iterator<Row> iterator() { return board.iterator(); }
 
     /**
      * Generates a brand new checkers board with preset Pieces. The board will follow a
      * "checkered pattern" or black and white Spaces with the top left corner always being
-     * white. Red Pieces will always be placed at the bottom 3 Rows of the board, while black Pieces
-     * will be placed at the top 3 Rows.
+     * white. The color of the pieces at the bottom 3 Rows is determined by the variable, bottomColor.
+     * Naturally, the top 3 Rows will use the color not in use by bottomColor. Since there are only two
+     * possible colors (RED and WHITE), this deduction is relatively straightforward.
+     *
+     * @param bottomColor the color of the checkers Piece at the bottom 3 Rows of the board
      *
      * @return an ArrayList or Rows representing a clean and set checkers board
      */
-    public ArrayList<Row> generateBoard(Piece.Color bottomColor){
+    public ArrayList<Row> generateBoard(Piece.Color bottomColor) {
         ArrayList<Row> rows = new ArrayList<>();
 
         // The top left corner of an 8 x 8 checkers board is always white
@@ -63,18 +66,26 @@ public class BoardView implements Iterable<Row>{
         return rows;
     }
 
-    public ArrayList<Row> getBoard(){
-        return board;
-    }
+    /**
+     * Simply returns the ArrayList of Rows representing the checkers board.
+     *
+     * @return the board ArrayList object (ArrayList of Rows)
+     */
+    public ArrayList<Row> getBoard(){ return board; }
 
     /**
-     * Add capturing pieces
-     * @param move
+     * This method updates the BoardView when a new Move is made. This is done
+     * by moving the Piece at the starting Position of Move to the ending
+     * Position of Move. The Piece is simply taken off its Space and placed on the
+     * ending Position.
+     *
+     * @param move the Move that updates the BoardView
      */
     public void makeMove(Move move) {
         Position start = move.getStart();
         Position end = move.getEnd();
 
+        // Creates and initializes the individual board Spaces that correspond to their respective Positions
         Space startSpace = board.get(start.getRow()).getSpace(start.getCell());
         Space endSpace = board.get(end.getRow()).getSpace(end.getCell());
 
@@ -88,9 +99,11 @@ public class BoardView implements Iterable<Row>{
             jumpedOverSpace.removePiece();
         }
 
+        // Gets the Piece in focus
         Piece piece = startSpace.getPiece();
-        startSpace.removePiece();
 
+        // Removes the Piece from the starting Space and places is on the ending Space
+        startSpace.removePiece();
         endSpace.placePiece(piece);
     }
 

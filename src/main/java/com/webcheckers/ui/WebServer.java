@@ -195,7 +195,7 @@ public class WebServer {
     post(SUBMIT_URL, new PostSubmitTurnRoute(gameCenter));
 
     //Waiting player checks when their turn is
-    post(CHECK_URL, new PostCheckTurnRoute());
+    post(CHECK_URL, new PostCheckTurnRoute(gameCenter));
 
     //Resign button is pressed
     post(RESIGN_URL, new PostResignGame(gameCenter, playerLobby));

@@ -57,11 +57,6 @@ public class PostSignOutRoute implements Route {
 
         // Get the current user
         Player currentPlayer = session.attribute(PLAYER_ATTR);
-        currentPlayer.exitGame();
-
-        String signedOut = request.queryParams("sign_out");
-
-        System.out.println("QueryParams: " + signedOut);
 
         //get the value of the button the user clicked - see signout.ftl
         String performSignOut = request.queryParams("sign_out");
@@ -69,11 +64,25 @@ public class PostSignOutRoute implements Route {
         //if they clicked
         if (performSignOut.equals("true")){
             currentPlayer.exitGame();
-            currentPlayer.endTurn();
+
             // Remove the player from the session
             session.attribute(PLAYER_ATTR, null);
+            session.attribute(GAME_ID_ATTR, null);
+
             // Clean up the current player's presence in the game.
             playerLobby.removePlayer(currentPlayer);
+            response.redirect(WebServer.HOME_URL);
+            return halt();
+        }
+
+        if (performSignOut.equals("false")) {
+
+            if (currentPlayer.inGame())
+                response.redirect(WebServer.GAME_URL + "?opponent=" + currentPlayer.getOpponent().getName());
+            else
+                response.redirect(WebServer.HOME_URL);
+
+            return halt();
         }
 
         // Create the view-model map and add values that will be displayed in the sign in page.
@@ -81,14 +90,7 @@ public class PostSignOutRoute implements Route {
         vm.put("title", "Sign Out");
         vm.put("message", Message.info("Are you sure you want to sign out?"));
 
-
-
-
-
-
-
         // render the View
-        response.redirect(WebServer.HOME_URL);
-        return halt();
+        return templateEngine.render(new ModelAndView(vm, "signout.ftl"));
     }
 }

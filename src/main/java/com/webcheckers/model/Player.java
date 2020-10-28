@@ -24,12 +24,15 @@ public class Player {
 
         /**
          * Enters this state briefly if the Player is picked by a different Player on the PlayerLobby
-         * to start a game with. Transitions to MID_GAME when the Game Page is shown.
+         * to start a game with. Transitions to MY_TURN or WAITING when the Game Page is shown.
          */
         CALLED,
 
+        /** A Game state that is entered into when it transitions to this Player's turn */
         MY_TURN,
 
+        /** Represents the Player waiting for his/her turn -
+         * a second Game state (alternates with MY_TURN)*/
         WAITING
     }
 
@@ -65,7 +68,7 @@ public class Player {
      * @return true if a Player was either called for, or is currently in a Game, otherwise false.
      */
     public boolean inGame() {
-        return state == PlayerState.CALLED || state == PlayerState.MY_TURN || state == PlayerState.WAITING;
+        return (state == PlayerState.CALLED || state == PlayerState.MY_TURN || state == PlayerState.WAITING);
     }
 
     /**
@@ -78,13 +81,6 @@ public class Player {
 
     /** Changes a Player's state to SIGNED_IN (happens when a Player exits the Sign-In Page). */
     public void signIn() { state = PlayerState.SIGNED_IN; }
-
-    public boolean isSignedIn() { return state != PlayerState.NEW; }
-
-    public void exitGame() {
-        state = PlayerState.SIGNED_IN;
-        opponent = null;
-    }
 
     /**
      * Changes the Player's state to MID_GAME when a new Game of
@@ -109,9 +105,46 @@ public class Player {
      */
     public Player getOpponent() { return opponent; }
 
+    /**
+     * Returns a boolean is a Player has signed in. Every other state implies that the
+     * Player has signed in, except for NEW.
+     *
+     * @return true if the player has signed in, false otherwise
+     */
+    public boolean isSignedIn() { return state != PlayerState.NEW; }
+
+    /** When a Player exits a Game, their opponent is set back to null, and their state gets set back to SIGNED_IN */
+    public void exitGame() {
+        state = PlayerState.SIGNED_IN;
+        opponent = null;
+    }
+
+    /**
+     * Returns if it is the Player's turn.
+     *
+     * @return true if it is the Player's turn, otherwise false
+     */
     public boolean isMyTurn() { return state == PlayerState.MY_TURN; }
 
+    /** Sets the Player's state to MY_TURN when a Player starts his/her turn */
     public void startTurn() { state = PlayerState.MY_TURN; }
 
+    /** When the Player's turn comes to an end, their state gets set to WAITING */
     public void endTurn() { state = PlayerState.WAITING; }
+
+    /**
+     * Checks if this Player is playing with a certain other Player passed by through the
+     * player argument.
+     *
+     * @param player a Player object
+     * @return true if player is the same object as opponent, otherwise false
+     */
+    public boolean isPlayingWith(Player player)
+    {
+        // Checks that opponent is not null before comparing the objects
+        if (opponent != null)
+            return opponent.equals(player);
+
+        return false;
+    }
 }
