@@ -134,6 +134,7 @@ public class GetGameRoute implements Route {
             session.attribute(GAME_ID_ATTR, gameID);
         }
 
+        // Checks if the currentPlayer's opponent has prematurely left the game
         if (!opponent.inGame()) {
             modeOptionsAsJSON.put("isGameOver", true);
             modeOptionsAsJSON.put("gameOverMessage", (opponent.getName() + " resigned."));
