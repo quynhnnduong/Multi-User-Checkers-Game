@@ -73,4 +73,14 @@ public class SpaceTest {
         space.placePiece(PIECE);
         assertFalse(space.isValid());
     }
+
+    /** Tests the removePiece() method of Space */
+    @Test
+    public void remove_piece(){
+        final Space space = new Space(CELL_INDEX, COLOR);
+
+        space.placePiece(PIECE);
+        space.removePiece();
+        assertEquals(null, space.getPiece());
+    }
 }

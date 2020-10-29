@@ -31,7 +31,6 @@ public class PostSubmitTurnRouteTest {
     private PlayerLobby playerLobby;
     private PostSubmitTurnRoute CuT;
     private GameCenter gameCenter;
-    private Game game;
 
 
     /**
@@ -45,7 +44,6 @@ public class PostSubmitTurnRouteTest {
         response = mock(Response.class);
         playerLobby = mock(PlayerLobby.class);
         gameCenter = new GameCenter();
-        game = mock(Game.class);
 
         CuT = new PostSubmitTurnRoute(gameCenter);
     }
@@ -56,19 +54,13 @@ public class PostSubmitTurnRouteTest {
      */
    @Test
     public void submitTurn() throws Exception {
-        //This part works fine
-//        Gson gson = new Gson();
-//        when(session.attribute(GAME_ID_ATTR)).thenReturn(game.getId());
-////        when(game.hasGameEnded()).thenReturn(false);
-//        Object submit = CuT.handle(request, response);
-//
-//        assertEquals(gson.toJson(Message.info("Successfully Submitted Turn")), submit);
        Gson gson = new Gson();
-       when(gameCenter.getGame("1234")).thenReturn(game);
+       when(session.attribute(GAME_ID_ATTR)).thenReturn("1234");
+       Game game = gameCenter.getGame(session.attribute(GAME_ID_ATTR));
+       when(game.getCurrentTurn().hasMoves()).thenReturn(true);
+//       when(gameCenter.getGame("1234")).thenReturn(game);
        Object submit = CuT.handle(request, response);
        assertEquals(gson.toJson(Message.info("Successfully Submitted Turn")), submit);
-
-
     }
 
     /**

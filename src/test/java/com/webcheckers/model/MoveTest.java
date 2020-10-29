@@ -45,4 +45,17 @@ public class MoveTest {
         // Analyze
         assertEquals(end, CuT.getEnd());
     }
+
+    @Test
+    public void testGetFlippedMove(){
+        // Setup/Invoke
+        Position newStart = new Position((7 - start.getRow()), (7 - start.getCell()));
+        Position newEnd = new Position((7 - end.getRow()), (7 - end.getCell()));
+        CuT = new Move(newStart, newEnd);
+
+        // Analyze
+        assertEquals(newStart, CuT.getStart());
+        assertEquals(newEnd, CuT.getEnd());
+
+    }
 }

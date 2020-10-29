@@ -37,7 +37,7 @@ public class PlayerTest {
     @Test
     public void name_not_null() { assertNotNull(CuT.getName()); }
 
-    /** Tests the startCallingPlayer() method of Player */
+    /** Tests the isCalledForGame() method of Player */
     @Test
     public void start_calling_player() {
         CuT.call();
@@ -51,5 +51,21 @@ public class PlayerTest {
 
         CuT.setOpponent(new Player(NAME));
         assertNotNull(CuT.getOpponent());
+    }
+
+    /** Tests inGame() method of Player */
+    @Test
+    public void player_in_game(){
+        CuT.call();
+        CuT.isMyTurn();
+        CuT.endTurn();
+        assertTrue(CuT.inGame());
+    }
+
+    /** Tests isMyTurn() method of Player*/
+    @Test
+    public void player_start_turn(){
+        CuT.startTurn();
+        assertTrue(CuT.isMyTurn());
     }
 }
