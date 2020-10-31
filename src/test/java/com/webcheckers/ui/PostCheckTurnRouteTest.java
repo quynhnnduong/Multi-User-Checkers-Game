@@ -71,7 +71,7 @@ public class PostCheckTurnRouteTest {
 
     }
 
-    @Test
+//    @Test
     public void changeTurn() {
         opponent.endTurn();
         when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
