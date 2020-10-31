@@ -30,28 +30,29 @@ public class RowTest {
         bottomColor = Piece.Color.RED;
     }
 
-   // @Test
-    public void testGenerateRowLeadingColor(){ // TODO Fix this test (Fails)
+    @Test
+    public void testGenerateRowLeadingColor(){
         // Setup
-        CuT = mock(Row.class);
+        CuT = new Row(index, leadingSpaceColor, bottomColor);
 
         // Invoke
-        row = CuT.generateRow(leadingSpaceColor, bottomColor);
+        ArrayList<Space> row = CuT.generateRow(leadingSpaceColor, bottomColor);
 
         // Analyze
         assertEquals(leadingSpaceColor, row.get(0).getColor());
     }
 
-   // @Test
-    public void testGenerateRowSize(){ // TODO Fix this test (AssertionError: expect 8, actual 0)
+    @Test
+    public void testGenerateRowSize(){
         // Setup
-        CuT = mock(Row.class);
+        CuT = new Row(index, leadingSpaceColor, bottomColor);
 
         // Invoke
-        ArrayList<Space> generatedRow = CuT.generateRow(leadingSpaceColor, bottomColor);
+        ArrayList<Space> row = CuT.generateRow(leadingSpaceColor, bottomColor);
 
         // Analyze
-        assertEquals(8, generatedRow.size());
+        assertEquals(row.size(), 8);
+
     }
 
     @Test
@@ -87,16 +88,4 @@ public class RowTest {
         assertEquals(spaces.get(0).getColor(), leadingSpaceColor);
     }
 
-//    @Test
-//    public void testFlipRow(){
-//        //Setup
-//        CuT = new Row(index, leadingSpaceColor);
-//        int newIndex = 1;
-//
-//        // Invoke
-//        Row newRow = CuT.flipRow(newIndex);
-//
-//        // Analyze - the leading color of the flipped row should not be the same as the original
-//        assertNotEquals(newRow.getSpaces().get(0).getColor(), CuT.getSpaces().get(0).getColor());
-//    }
 }
