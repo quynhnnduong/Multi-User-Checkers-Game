@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
+import static com.webcheckers.ui.UIProtocol.LEGIT_NAME_ATTR;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -38,7 +39,7 @@ public class GetSignInRouteTest {
     /**
      * tests to make sure there are no errors with a valid home page
      */
-//    @Test
+    @Test
     public void signedInView(){
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -54,7 +55,7 @@ public class GetSignInRouteTest {
         testHelper.assertViewModelExists();
         testHelper.assertViewModelIsaMap();
         //   * model contains all necessary View-Model data
-        testHelper.assertViewModelAttribute(UIProtocol.LEGIT_NAME_ATTR,null);
+        testHelper.assertViewModelAttribute(UIProtocol.LEGIT_NAME_ATTR, true);
         //   * test view name
         testHelper.assertViewName("signIn.ftl");
     }
