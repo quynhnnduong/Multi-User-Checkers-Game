@@ -25,111 +25,103 @@ public class PostCheckTurnRouteTest {
     private TemplateEngine engine;
     private PlayerLobby playerLobby;
     private Player currentPlayer;
-    private Player opponent;
     private PostCheckTurnRoute CuT;
+    private Gson gson;
 
     /**
      * Setup new mock objects for each test.
      */
     @BeforeEach
     public void setup() {
+        // Set up mocks
         request = mock(Request.class);
         session = mock(Session.class);
-        when(request.session()).thenReturn(session);
         response = mock(Response.class);
         engine = mock(TemplateEngine.class);
         playerLobby = mock(PlayerLobby.class);
-        opponent = mock(Player.class);
         currentPlayer = mock(Player.class);
 
-        //friendly
-        currentPlayer = new Player("user");
-        opponent = new Player("opponent");
-        currentPlayer.setOpponent(opponent);
+        // Mock methods
+        when(request.session()).thenReturn(session);
+        when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
+
+        // Gson object for ...
+        gson = new Gson();
 
         // create a unique CuT for each test
         CuT = new PostCheckTurnRoute();
     }
 
     /**
-     * Test that the Game view will create a new game when a player initiates a game
+     * Test that the route changes the turn to be the user's turn
+     * if their turn has been started and if their opponent is null.
+     * (True/True branch of conditional in PostCheckTurnRoute, line 19)
      */
     @Test
-    public void keepWaiting() {
-        opponent.startTurn();
-        when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
-        Gson gson = new Gson();
-        Object wait = CuT.handle(request, response);
-        assertEquals(gson.toJson(Message.info("false")), wait);
-    }
-
-    @Test
     public void testChangeTurn1() {
-        // T, T
-        Gson gson = new Gson();
-        when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
-        currentPlayer = session.attribute(PLAYER_ATTR);
+        // Set up
+        when(currentPlayer.isMyTurn()).thenReturn(true);
+        when(currentPlayer.getOpponent()).thenReturn(null);
 
-        currentPlayer.startTurn();
-        opponent = null;
-
+        // Invoke
         Object wait = CuT.handle(request, response);
+
+        // Analyze
         assertEquals(gson.toJson(Message.info("true")), wait);
     }
 
+    /**
+     * Test that the route changes the turn to be the user's turn
+     * if it their turn has been started and their opponent is not null.
+     * (True/False branch of conditional in PostCheckTurnRoute, line 19)
+     */
     @Test
     public void testChangeTurn2() {
-        // T, F
-        Gson gson = new Gson();
-        when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
-        currentPlayer = session.attribute(PLAYER_ATTR);
+        // Set up
+        when(currentPlayer.isMyTurn()).thenReturn(true);
+        when(currentPlayer.getOpponent()).thenReturn(new Player("opponent"));
 
-        currentPlayer.startTurn();
-        opponent.endTurn();
-
+        // Invoke
         Object wait = CuT.handle(request, response);
+
+        // Analyze
         assertEquals(gson.toJson(Message.info("true")), wait);
     }
 
+    /**
+     * Test that the route changes the turn to be the user's turn
+     * if their turn has been ended or their opponent is null.
+     * (False/True branch of conditional in PostCheckTurnRoute, line 19)
+     */
     @Test
     public void testChangeTurn3() {
-        // F, T
-//        Gson gson = new Gson();
-//        when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
-//        currentPlayer = session.attribute(PLAYER_ATTR);
-//
-//        currentPlayer.endTurn();
-//        opponent = null;
-//
-//        Object wait = CuT.handle(request, response);
-//        assertEquals(gson.toJson(Message.info("true")), wait);
-
-        Gson gson = new Gson();
-        currentPlayer = mock(Player.class);
-
-        when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
+        // Set up
         when(currentPlayer.isMyTurn()).thenReturn(false);
         when(currentPlayer.getOpponent()).thenReturn(null);
 
+        // Invoke
         Object wait = CuT.handle(request, response);
+
+        // Analyze
         assertEquals(gson.toJson(Message.info("true")), wait);
     }
 
+    /**
+     * Test that the route does not change the turn to be the user's turn
+     * if their turn has been ended and their opponent is not null.
+     * (False/False branch of conditional in PostCheckTurnRoute, line 19)
+     */
     @Test
     public void testChangeTurn4() {
-        // F, F
-        Gson gson = new Gson();
-        when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
-        currentPlayer = session.attribute(PLAYER_ATTR);
+        // Set up
+        when(currentPlayer.isMyTurn()).thenReturn(false);
+        when(currentPlayer.getOpponent()).thenReturn(new Player("opponent"));
 
-        currentPlayer.endTurn();
-        opponent.endTurn();
-
+        // Invoke
         Object wait = CuT.handle(request, response);
+
+        // Analyze
         assertEquals(gson.toJson(Message.info("false")), wait);
     }
-
-
-    // TODO Add a test for if it is both Player's turns? This should be for catching a bug.
 
 }
