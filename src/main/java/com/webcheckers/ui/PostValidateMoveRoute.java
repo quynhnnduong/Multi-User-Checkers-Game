@@ -2,9 +2,7 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameCenter;
-import com.webcheckers.model.Move;
-import com.webcheckers.model.Position;
-import com.webcheckers.model.Turn;
+import com.webcheckers.model.*;
 import com.webcheckers.util.Message;
 import spark.*;
 
@@ -14,7 +12,7 @@ import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
 /**
  * This class handles the /validateMove route
  * Used for allowing player moves to happen (and later validating if the move was legal)
- *
+ * Added Jump move functionality
  * @author Joel Clyne, Dmitry Selin
  */
 public class PostValidateMoveRoute implements Route {
@@ -40,14 +38,57 @@ public class PostValidateMoveRoute implements Route {
         int rowDifference = Math.abs(endPosition.getCell() - startPosition.getCell());
         int colDifference = startPosition.getRow() - endPosition.getRow();
 
+        BoardView redView = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getRedView();
+        BoardView whiteView = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getWhiteView();
+
+        Game.ActiveColor currentColor = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getActiveColor();
+
+        BoardView currentView;
+        if (currentColor == Game.ActiveColor.RED) {
+            currentView = redView;
+        } else {
+            currentView = whiteView;
+        }
+
         Message message;
 
         if (turn.hasMoves())
             message = Message.error("INVALID MOVE: Can only move once");
         else if (colDifference < 1)
             message = Message.error("INVALID MOVE: Cannot move backwards");
-        else if (rowDifference != 1 || colDifference > 1)
-            message = Message.error("INVALID MOVE: Not directly diagonal");
+        else if (rowDifference != 1 || colDifference > 1) {
+            //check if the move was a jump
+            if (rowDifference == 2 && colDifference == 2){
+                int capturedCell = (startPosition.getCell() + endPosition.getCell()) / 2;
+                int capturedRow = (startPosition.getRow() + endPosition.getRow()) / 2 ;
+                Space jumpedSpace = null;
+                //get the view of the active player's turn
+                jumpedSpace = currentView.getBoard().get(capturedRow).getSpace(capturedCell);
+                //check if there was a piece on the jumped space
+                if (jumpedSpace.getPiece() != null) {
+                    //if there was the move was a jump
+                    Piece.Color pieceColor = jumpedSpace.getPiece().getColor();
+                    //Game.ActiveColor playerColor = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getActiveColor();
+                    //now check to see if a player is trying to jump over their own piece
+                    if ((pieceColor == Piece.Color.RED && currentColor == Game.ActiveColor.RED) || (pieceColor == Piece.Color.WHITE && currentColor == Game.ActiveColor.WHITE)) {
+                        //if they are they can't do that
+                        message = Message.error("INVALID MOVE: Cannot capture your own piece");
+                    } else {
+                        message = Message.info("Valid Move");
+                        turn.addValidMove(move);
+                    }
+                } else {
+                    message = Message.error("INVALID MOVE: Not directly diagonal");
+                }
+
+            } else {
+                message = Message.error("INVALID MOVE: Not directly diagonal");
+            }
+                    //board.get(capturedRow).getSpace(capturedCell);
+        } else if(currentView.checkForJumpAcrossBoard(currentColor)){
+            // check if tbe player is able to jump and didn't
+            message = Message.error("You have an available move, so just do it");
+        }
         else {
             message = Message.info("Valid Move");
             turn.addValidMove(move);
