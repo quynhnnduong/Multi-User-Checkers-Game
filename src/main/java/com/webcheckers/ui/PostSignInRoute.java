@@ -70,6 +70,7 @@ public class PostSignInRoute implements Route {
 
         session.attribute(PLAYER_ATTR, currentPlayer);
         session.attribute(LEGIT_NAME_ATTR, true);
+        currentPlayer.signIn();
 
         vm.put("title", "Welcome!");
         vm.put("message", WELCOME_MSG);
