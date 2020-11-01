@@ -54,6 +54,13 @@ public class BoardViewTest {
 
         //Invoke
         bv.generateBoard(Piece.Color.RED);
+        Position start = new Position(0,0);
+        Position end = new Position(0,0);
+        Move move = new Move(start, end);
+
+        //Analyze
+
+
     }
 
     @Test
@@ -63,12 +70,9 @@ public class BoardViewTest {
 
         //Invoke
         bv.generateBoard(Piece.Color.RED);
-        Position start = new Position(0,0);
-        Position end = new Position(0,0);
-        Move move = new Move(start, end);
 
         //Analyze
-//        assertNotNull(bv.makeMove(move));
+        assertNotNull(bv.iterator());
 
     }
 

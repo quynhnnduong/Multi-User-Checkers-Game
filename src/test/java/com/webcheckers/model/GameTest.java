@@ -58,7 +58,7 @@ public class GameTest {
         assertEquals(whitePlayer, testPlayer);
     }
 
-//    @Test
+    @Test
     public void testGetRedView(){
         // Invoke
         CuT = new Game(id,redPlayer, whitePlayer);
