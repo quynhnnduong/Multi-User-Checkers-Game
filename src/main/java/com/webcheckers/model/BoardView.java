@@ -102,6 +102,9 @@ public class BoardView implements Iterable<Row> {
         // Gets the Piece in focus
         Piece piece = startSpace.getPiece();
 
+        //check if the piece ends in the top row
+
+
         // Removes the Piece from the starting Space and places is on the ending Space
         startSpace.removePiece();
         endSpace.placePiece(piece);
