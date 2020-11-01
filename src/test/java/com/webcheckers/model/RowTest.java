@@ -88,4 +88,16 @@ public class RowTest {
         assertEquals(spaces.get(0).getColor(), leadingSpaceColor);
     }
 
+    @Test
+    public void testGetIndex(){
+        // Setup
+        CuT = new Row(index, leadingSpaceColor, bottomColor);
+
+        // Invoke
+        ArrayList<Space> row = CuT.generateRow(leadingSpaceColor, bottomColor);
+
+        // Analyze
+        assertEquals(CuT.getIndex(), 0);
+    }
+
 }
