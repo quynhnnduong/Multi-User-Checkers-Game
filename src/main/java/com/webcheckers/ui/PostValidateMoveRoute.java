@@ -38,10 +38,13 @@ public class PostValidateMoveRoute implements Route {
         int rowDifference = Math.abs(endPosition.getCell() - startPosition.getCell());
         int colDifference = startPosition.getRow() - endPosition.getRow();
 
+
         BoardView redView = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getRedView();
         BoardView whiteView = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getWhiteView();
 
         Game.ActiveColor currentColor = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getActiveColor();
+
+
 
         BoardView currentView;
         if (currentColor == Game.ActiveColor.RED) {
@@ -50,12 +53,20 @@ public class PostValidateMoveRoute implements Route {
             currentView = whiteView;
         }
 
-        Message message;
+        //used to check if the piece was originally a king
+        Piece startPiece = currentView.getBoard().get(startPosition.getRow()).getSpace(startPosition.getCell()).getPiece();
+
+        if (startPiece.getType() == Piece.Type.KING){
+            colDifference = Math.abs((colDifference));
+        }
+
+
+                Message message;
 
         if (turn.hasMoves())
             message = Message.error("INVALID MOVE: Can only move once");
         else if (colDifference < 1)
-            message = Message.error("INVALID MOVE: Cannot move backwards");
+            message = Message.error("INVALID MOVE: Single pieces cannot move backwards");
         else if (rowDifference != 1 || colDifference > 1) {
             //check if the move was a jump
             if (rowDifference == 2 && colDifference == 2){
@@ -74,7 +85,7 @@ public class PostValidateMoveRoute implements Route {
                         //if they are they can't do that
                         message = Message.error("INVALID MOVE: Cannot capture your own piece");
                     } else {
-                        message = Message.info("Valid Move");
+                        message = Message.info("You captured a piece!");
                         turn.addValidMove(move);
                     }
                 } else {
