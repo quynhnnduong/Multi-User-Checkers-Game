@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -7,7 +8,17 @@ import java.util.ArrayList;
 import static com.webcheckers.model.BoardView.BOARD_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Unit Tests for {@link BoardView} Component
+ *
+ * @author  (?) ,Shubhang Mehrotra
+ */
+@Tag("Model-tier")
 public class BoardViewTest {
+
+    //friendlies
+    private Space space;
+
     /**
      * Test that the constructor works with no arg
      */
@@ -33,6 +44,11 @@ public class BoardViewTest {
             }
 
         }
+    }
+
+    @Test
+    public void testMakeMove(){
+        //adding this rn
     }
 }
 
