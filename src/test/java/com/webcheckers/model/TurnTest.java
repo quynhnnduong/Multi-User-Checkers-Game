@@ -18,22 +18,74 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TurnTest {
 
     //CuT
-    private Turn CuT = new Turn();
+    private Turn CuT;
 
-    //
+    //friendlies
+    private ArrayList<Move> validMoves;
+
+    //mocks
     private Move move;
 
     @BeforeEach
     public void setup() {
+        CuT = new Turn();
         move = mock(Move.class);
-        ArrayList<Move> validMoves = new ArrayList<>();
+        validMoves = new ArrayList<>();
     }
+
+    @Test
+    public void testHasMoves(){
+        CuT.addValidMove(move);
+        assertTrue(CuT.hasMoves());
+    }
+
+    @Test
+    public void testHasMovesFail(){
+        assertFalse(CuT.hasMoves());
+    }
+
     @Test
     public void testAddValidMove(){
+        CuT.addValidMove(move);
+        assertTrue(CuT.hasMoves());
+    }
 
+    @Test
+    public void testRemoveLastValidMove(){
+        //add moves to the list
+        CuT.addValidMove(move);
         CuT.addValidMove(move);
 
         assertTrue(CuT.hasMoves());
+
+        CuT.removeLastValidMove();
+
+        assertEquals(1, CuT.validMoves.size());
+    }
+
+    @Test
+    public void testRemoveLastValidMoveFail(){
+        CuT.removeLastValidMove();
+        assertEquals(0,CuT.validMoves.size());
+    }
+
+
+    @Test
+    public void testGetFirstMove(){
+        CuT.addValidMove(move);
+        CuT.addValidMove(move);
+        assertTrue(CuT.hasMoves());
+
+        Move firstMove = CuT.getFirstMove();
+
+       assertEquals(move, firstMove);
+    }
+
+    @Test
+    public void testGetFirstMoveFail(){
+        assertFalse(CuT.hasMoves());
+        Move firstMove =  CuT.getFirstMove();
+        assertNull(firstMove);
     }
 
 

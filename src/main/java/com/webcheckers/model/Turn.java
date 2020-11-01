@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Turn {
 
     /** An ArrayList of all the validated Moves that took place (or currently taking place) on a Player's Turn */
-    private final ArrayList<Move> validMoves = new ArrayList<>();
+     final ArrayList<Move> validMoves = new ArrayList<>();
 
     /**
      * Simply appends a validated Move to the end of validMoves.
