@@ -117,5 +117,20 @@ public class PostCheckTurnRouteTest {
         assertEquals(gson.toJson(Message.info("false")), wait);
     }
 
+    @Test
+    public void testChangeTurn5() {
+        // TODO Review this test -Sasha
+        Gson gson = new Gson();
+        when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
+        currentPlayer = session.attribute(PLAYER_ATTR);
+
+        currentPlayer = null;
+        opponent = null;
+
+        Object wait = CuT.handle(request, response);
+        assertEquals(gson.toJson(Message.info("false")), wait);
+    }
+
+    // TODO Add a test for if it is both Player's turns? This should be for catching a bug.
 
 }
