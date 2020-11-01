@@ -65,7 +65,7 @@ public class GameCenterTest {
         CuT.addGame(game);
 
         // Analyze
-        CuT.removeEndedGames();
+        CuT.removeAbandonedGames();
 
         assertEquals(CuT.getGame(id), null);
     }

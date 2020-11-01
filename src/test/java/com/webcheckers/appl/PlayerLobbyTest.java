@@ -151,21 +151,4 @@ public class PlayerLobbyTest {
         assertEquals("There are no other players available to play at this time.", CuT.getLobbyMessage());
     }
 
-    @Test
-    public void testPrintPlayers(){
-       // Setup
-        Player player1 = new Player("Player1");
-        Player player2 = new Player("Player2");
-
-        CuT.addPlayer(player1);
-        CuT.addPlayer(player2);
-
-        // Invoke
-        String actual = CuT.printPlayers();
-
-        // Analyze
-        assertEquals("Player2 Player1 ", actual);
-
-    }
-
 }

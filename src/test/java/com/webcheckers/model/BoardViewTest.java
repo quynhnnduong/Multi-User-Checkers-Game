@@ -47,7 +47,7 @@ public class BoardViewTest {
         }
     }
 
-    @Test
+//    @Test
     public void testMakeMove(){
         // Setup
         BoardView bv = new BoardView(Piece.Color.RED);
