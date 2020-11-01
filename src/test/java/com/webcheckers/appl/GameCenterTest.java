@@ -53,11 +53,24 @@ public class GameCenterTest {
         CuT.addGame(game);
 
         // Invoke
-        Game actual = CuT.getGame("1");
+        Game actual = CuT.getGame(id);
 
         // Analyze
         assertEquals(game, actual);
     }
 
+    @Test
+    public void testRemoveGame(){
+        // Set up
+        CuT.addGame(game);
 
-}
+        // Analyze
+        CuT.removeEndedGames();
+
+        assertEquals(CuT.getGame(id), null);
+    }
+
+    }
+
+
+

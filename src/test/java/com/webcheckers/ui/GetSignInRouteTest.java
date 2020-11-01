@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import spark.*;
 
 import static com.webcheckers.ui.UIProtocol.LEGIT_NAME_ATTR;
+import static com.webcheckers.ui.WebServer.SIGNIN_URL;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
