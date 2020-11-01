@@ -109,32 +109,41 @@ public class Game {
 
         // Cannot switch turns if a Player has resigned
         if (!hasPlayerResigned()) {
-            Move move = getCurrentTurn().getFirstMove();
+            //Move move = getCurrentTurn().getFirstMove();
+            //Do all the moves
+            int moves_left = getCurrentTurn().getAllMovesInTurn().size();
+            //System.out.println(" how many turns = " + getCurrentTurn().getAllMovesInTurn().size());
+            for (Move move : getCurrentTurn().getAllMovesInTurn()){
+                moves_left -= 1;
+                if (activeColor == ActiveColor.RED) {
 
-            if (activeColor == ActiveColor.RED) {
+                    if (moves_left == 0) {
+                        // Alternates activeColor
+                        activeColor = ActiveColor.WHITE;
 
-                // Alternates activeColor
-                activeColor = ActiveColor.WHITE;
+                        // Updates the Player's states
+                        redPlayer.endTurn();
+                        whitePlayer.startTurn();
+                    }
 
-                // Updates the Player's states
-                redPlayer.endTurn();
-                whitePlayer.startTurn();
+                        redView.makeMove(move);
+                        whiteView.makeMove(move.getFlippedMove());
 
-                redView.makeMove(move);
-                whiteView.makeMove(move.getFlippedMove());
+                }
+                else {
+                    if (moves_left == 0) {
+                        activeColor = ActiveColor.RED;
+                        redPlayer.startTurn();
+                        whitePlayer.endTurn();
+                    }
+                    redView.makeMove(move.getFlippedMove());
+                    whiteView.makeMove(move);
+
+                }
+
+                // A new Turn is added for the next Player's Turn
+                addTurn();
             }
-            else {
-                activeColor = ActiveColor.RED;
-
-                redPlayer.startTurn();
-                whitePlayer.endTurn();
-
-                redView.makeMove(move.getFlippedMove());
-                whiteView.makeMove(move);
-            }
-
-            // A new Turn is added for the next Player's Turn
-            addTurn();
         }
     }
 
