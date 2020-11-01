@@ -68,4 +68,24 @@ public class PlayerTest {
         CuT.startTurn();
         assertTrue(CuT.isMyTurn());
     }
+
+    @Test
+    public void player_Signed_In(){
+        CuT.signIn();
+        assertTrue(CuT.isSignedIn());
+    }
+
+    @Test
+    public void player_join_Game(){
+        CuT.startTurn();
+        CuT.joinGame(true);
+        assertTrue(CuT.inGame());
+
+    }
+
+    @Test
+    public void player_exit_Game(){
+        CuT.exitGame();
+        assertEquals( null, CuT.getOpponent());
+    }
 }
