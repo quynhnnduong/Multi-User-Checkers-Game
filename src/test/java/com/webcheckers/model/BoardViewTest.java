@@ -48,7 +48,7 @@ public class BoardViewTest {
 
     @Test
     public void testMakeMove(){
-        //adding this rn
+        //adding this
     }
 }
 
