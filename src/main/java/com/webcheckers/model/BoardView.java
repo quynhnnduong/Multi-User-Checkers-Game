@@ -102,12 +102,17 @@ public class BoardView implements Iterable<Row> {
         // Gets the Piece in focus
         Piece piece = startSpace.getPiece();
 
-        //check if the piece ends in the top row
 
 
         // Removes the Piece from the starting Space and places is on the ending Space
         startSpace.removePiece();
         endSpace.placePiece(piece);
+
+        //check if the piece ends in the top row
+        if (end.getRow() == 0 || end.getRow() == BOARD_SIZE - 1){
+            Piece newKing = endSpace.getPiece();
+            newKing.promote();
+        }
     }
 
     /**
@@ -170,13 +175,13 @@ public class BoardView implements Iterable<Row> {
         boolean jumpAvailable;
 
         //check if there even are spaces to go through
-        if (row < BOARD_SIZE - 2 && cell > 2 ) {
+        if (row > 1 && cell > 2 ) {
             forwardLeft1 = new Position(row - 1, cell - 1);
             forwardLeft2 = new Position(row - 2, cell - 2);
             forwardLeftExists  = true;
         }
 
-        if (row < BOARD_SIZE - 2 && cell < BOARD_SIZE - 2) {
+        if (row > 1 && cell < BOARD_SIZE - 2) {
             forwardRight1 = new Position(row - 1, cell + 1);
             forwardRight2 = new Position(row - 2, cell + 2);
             forwardRightExists = true;
@@ -230,6 +235,8 @@ public class BoardView implements Iterable<Row> {
             }
         }
         //check if the space diagonal to one space ahead is free
+        System.out.println(twoSpacesAhead.getRow());
+        System.out.println();
         boolean range2 = board.get(twoSpacesAhead.getRow()).getSpace(twoSpacesAhead.getCell()).getPiece() == null;
         //System.out.println(oneSpaceAhead.getRow() + " - row, " + oneSpaceAhead.getCell() + " - col, " + range1 + " - range1, " + range2 + " - range2 ");
         return range1 && range2;
