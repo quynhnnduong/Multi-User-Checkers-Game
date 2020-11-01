@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit Tests for {@link Move} Component
- * @author Sasha Persaud
+ * @author Sasha Persaud, Quynh Duong
  */
 @Tag("Model-tier")
 public class MoveTest {
@@ -49,13 +49,10 @@ public class MoveTest {
     @Test
     public void testGetFlippedMove(){
         // Setup/Invoke
-        Position newStart = new Position((7 - start.getRow()), (7 - start.getCell()));
-        Position newEnd = new Position((7 - end.getRow()), (7 - end.getCell()));
-        CuT = new Move(newStart, newEnd);
+        CuT = new Move(start, end);
 
         // Analyze
-        assertEquals(newStart, CuT.getStart());
-        assertEquals(newEnd, CuT.getEnd());
+        assertNotNull(CuT.getFlippedMove());
 
     }
 }

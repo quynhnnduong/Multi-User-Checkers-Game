@@ -9,7 +9,7 @@ import static org.mockito.Mockito.mock;
 
 /**
  * Unit Tests for {@link Row} Component
- * @author Sasha Persaud
+ * @author Sasha Persaud, Quynh Duong
  */
 @Tag("Model-tier")
 public class RowTest {
