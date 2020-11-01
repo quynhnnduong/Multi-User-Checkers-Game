@@ -11,7 +11,7 @@ import java.util.Iterator;
  * @author Joel Clyne, Dmitry Selin
  */
 
-public class BoardView implements Iterable<Row>{
+public class BoardView implements Iterable<Row> {
 
     /** The size of the checkers board (square) */
     static final int BOARD_SIZE = 8;
@@ -106,4 +106,130 @@ public class BoardView implements Iterable<Row>{
         startSpace.removePiece();
         endSpace.placePiece(piece);
     }
+
+    /**
+     * Iterates through all spaces on the player of the color params board looking for any opportunites to jump
+     * @param color - the color of the player who's board is being iterated through
+     * @return true if opportunity is found, false if not
+     */
+    public boolean checkForJumpAcrossBoard(Game.ActiveColor color){
+        //TODO check backwards when we implement piece
+
+        //check if forward left and right spaces are free for 2 spaces ahead for every space on the board
+
+        boolean startChecking = true;
+
+        for(Row row : board){
+            for (Space space : row){
+                int rowIdx = row.getIndex();
+                int cellIdx = space.getCellIdx();
+
+                //check if the space has piece
+                if (space.getPiece() == null){
+                    //dont bother checking
+                    startChecking = false;
+                //check if the pieces belong to the current player
+                } else if (space.getPiece().getColor() == Piece.Color.RED && color == Game.ActiveColor.WHITE){
+                    startChecking = false;
+                } else if (space.getPiece().getColor() == Piece.Color.WHITE && color == Game.ActiveColor.RED){
+                    startChecking = false;
+                }
+                //now, the only spaces left have pieces you own
+                if (startChecking){
+                    //System.out.println("Row = " + rowIdx + " Cell = " + cellIdx);
+                    boolean possibleMoveFound = checkForJumpOnPosition(rowIdx, cellIdx, color);
+                    if (possibleMoveFound){
+                        return true;
+                    }
+                }
+                startChecking = true;
+            }
+        }
+        //if none of the spaces have the option for a move
+        return false;
+    }
+
+    /**
+     * checks a specific space on the board to see if it is possible for a piece on that space to do a jump
+     * @param row the row of the cell
+     * @param cell the column of the cell
+     * @param color the color of the player who's board is being looked at
+     * @return true if opportunity is found, false if not
+     */
+    boolean checkForJumpOnPosition(int row, int cell, Game.ActiveColor color){
+        boolean forwardLeftExists = false;
+        Position forwardLeft1 = null;
+        Position forwardLeft2 = null;
+        boolean forwardRightExists = false;
+        Position forwardRight1 = null;
+        Position forwardRight2 = null;
+
+        boolean jumpAvailable;
+
+        //check if there even are spaces to go through
+        if (row < BOARD_SIZE - 2 && cell > 2 ) {
+            forwardLeft1 = new Position(row - 1, cell - 1);
+            forwardLeft2 = new Position(row - 2, cell - 2);
+            forwardLeftExists  = true;
+        }
+
+        if (row < BOARD_SIZE - 2 && cell < BOARD_SIZE - 2) {
+            forwardRight1 = new Position(row - 1, cell + 1);
+            forwardRight2 = new Position(row - 2, cell + 2);
+            forwardRightExists = true;
+        }
+
+        //if (row == 4 && cell == 3){
+        //    System.out.println(forwardLeftExists + " - left, " + forwardRightExists + " - right");
+        //    System.out.println("wrong move found below");
+        //}
+
+        //if the spaces are able to reached for any pair, we have to check if there is a piece there
+        if (forwardLeftExists) {
+            jumpAvailable = pieceThenEmptySpaceExists(forwardLeft1, forwardLeft2, color);
+            if (jumpAvailable) {
+                //System.out.println("found left");
+                return true;
+            }
+        }
+        if (forwardRightExists) {
+            jumpAvailable = pieceThenEmptySpaceExists(forwardRight1, forwardRight2, color);
+            if (jumpAvailable) {
+                //System.out.println("found right");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * checks if a space has a immediately diagonal neighbor of an opponents piece, and then if the space
+     * diagonal to the opponent's piece space is free (think of what a possible jump looks like in checkers)
+     * @param oneSpaceAhead the immediately diagonal neighbor of the origin space
+     * @param twoSpacesAhead the immediately diagonal neighbor of one space ahead
+     * @param playerColor the color of the player's view
+     * @return true if the jump opportunity is found, false if not
+     */
+    boolean pieceThenEmptySpaceExists(Position oneSpaceAhead, Position twoSpacesAhead, Game.ActiveColor playerColor){
+        boolean range1 = false;
+        //check if opponent's piece lies on one space ahead
+        if (board.get(oneSpaceAhead.getRow()).getSpace(oneSpaceAhead.getCell()).getPiece() != null) {
+
+            Piece firstSpacePiece = board.get(oneSpaceAhead.getRow()).getSpace(oneSpaceAhead.getCell()).getPiece();
+            //System.out.println(firstSpacePiece.getColor() + " - color of the first space piece");
+            //System.out.println(playerColor + " - the active color");
+            //System.out.println(oneSpaceAhead.getRow() + " - the row of one ahead");
+            //System.out.println(oneSpaceAhead.getCell() + " - the cell of one ahead");
+            if ((firstSpacePiece.getColor() == Piece.Color.RED && playerColor == Game.ActiveColor.WHITE) || (firstSpacePiece.getColor() == Piece.Color.WHITE && playerColor == Game.ActiveColor.RED)){
+
+                range1 = true;
+
+            }
+        }
+        //check if the space diagonal to one space ahead is free
+        boolean range2 = board.get(twoSpacesAhead.getRow()).getSpace(twoSpacesAhead.getCell()).getPiece() == null;
+        //System.out.println(oneSpaceAhead.getRow() + " - row, " + oneSpaceAhead.getCell() + " - col, " + range1 + " - range1, " + range2 + " - range2 ");
+        return range1 && range2;
+    }
+
 }

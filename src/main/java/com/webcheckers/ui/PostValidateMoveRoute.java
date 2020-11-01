@@ -38,6 +38,18 @@ public class PostValidateMoveRoute implements Route {
         int rowDifference = Math.abs(endPosition.getCell() - startPosition.getCell());
         int colDifference = startPosition.getRow() - endPosition.getRow();
 
+        BoardView redView = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getRedView();
+        BoardView whiteView = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getWhiteView();
+
+        Game.ActiveColor currentColor = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getActiveColor();
+
+        BoardView currentView;
+        if (currentColor == Game.ActiveColor.RED) {
+            currentView = redView;
+        } else {
+            currentView = whiteView;
+        }
+
         Message message;
 
         if (turn.hasMoves())
@@ -46,26 +58,19 @@ public class PostValidateMoveRoute implements Route {
             message = Message.error("INVALID MOVE: Cannot move backwards");
         else if (rowDifference != 1 || colDifference > 1) {
             //check if the move was a jump
-            //remove the captured piece
             if (rowDifference == 2 && colDifference == 2){
                 int capturedCell = (startPosition.getCell() + endPosition.getCell()) / 2;
                 int capturedRow = (startPosition.getRow() + endPosition.getRow()) / 2 ;
                 Space jumpedSpace = null;
                 //get the view of the active player's turn
-                if (gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getActiveColor() == Game.ActiveColor.RED) {
-                    jumpedSpace = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getRedView().getBoard().get(capturedRow).getSpace(capturedCell);
-                } else {
-                    jumpedSpace = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getWhiteView().getBoard().get(capturedRow).getSpace(capturedCell);
-                }
+                jumpedSpace = currentView.getBoard().get(capturedRow).getSpace(capturedCell);
                 //check if there was a piece on the jumped space
                 if (jumpedSpace.getPiece() != null) {
                     //if there was the move was a jump
-                    //now check to see if a player is trying to jump over their own piece
                     Piece.Color pieceColor = jumpedSpace.getPiece().getColor();
-                    Game.ActiveColor playerColor = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getActiveColor();
-                    System.out.println(pieceColor);
-                    System.out.println(playerColor);
-                    if ((pieceColor == Piece.Color.RED && playerColor == Game.ActiveColor.RED) || (pieceColor == Piece.Color.WHITE && playerColor == Game.ActiveColor.WHITE)) {
+                    //Game.ActiveColor playerColor = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getActiveColor();
+                    //now check to see if a player is trying to jump over their own piece
+                    if ((pieceColor == Piece.Color.RED && currentColor == Game.ActiveColor.RED) || (pieceColor == Piece.Color.WHITE && currentColor == Game.ActiveColor.WHITE)) {
                         //if they are they can't do that
                         message = Message.error("INVALID MOVE: Cannot capture your own piece");
                     } else {
@@ -80,6 +85,9 @@ public class PostValidateMoveRoute implements Route {
                 message = Message.error("INVALID MOVE: Not directly diagonal");
             }
                     //board.get(capturedRow).getSpace(capturedCell);
+        } else if(currentView.checkForJumpAcrossBoard(currentColor)){
+            // check if tbe player is able to jump and didn't
+            message = Message.error("You have an available move, so just do it");
         }
         else {
             message = Message.info("Valid Move");
