@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import static com.webcheckers.model.BoardView.BOARD_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Unit Tests for {@link BoardView} Component
@@ -48,7 +49,28 @@ public class BoardViewTest {
 
     @Test
     public void testMakeMove(){
-        //adding this
+        // Setup
+        BoardView bv = new BoardView(Piece.Color.RED);
+
+        //Invoke
+        bv.generateBoard(Piece.Color.RED);
     }
+
+    @Test
+    public void testIterator(){
+        // Setup
+        BoardView bv = new BoardView(Piece.Color.RED);
+
+        //Invoke
+        bv.generateBoard(Piece.Color.RED);
+        Position start = new Position(0,0);
+        Position end = new Position(0,0);
+        Move move = new Move(start, end);
+
+        //Analyze
+//        assertNotNull(bv.makeMove(move));
+
+    }
+
 }
 
