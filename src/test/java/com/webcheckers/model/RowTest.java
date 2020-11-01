@@ -97,7 +97,32 @@ public class RowTest {
         ArrayList<Space> row = CuT.generateRow(leadingSpaceColor, bottomColor);
 
         // Analyze
-        assertEquals(CuT.getIndex(), 0);
+        assertEquals(0, CuT.getIndex());
     }
+
+    @Test
+    public void testIterator(){
+        // Setup
+        CuT = new Row(index, leadingSpaceColor, bottomColor);
+
+        // Invoke
+        ArrayList<Space> row = CuT.generateRow(leadingSpaceColor, bottomColor);
+
+        // Analyze
+        assertNotNull(CuT.iterator());
+    }
+
+    @Test
+    public void testGetSpace(){
+        // Setup
+        CuT = new Row(index, leadingSpaceColor, bottomColor);
+
+        // Invoke
+        ArrayList<Space> spaces = CuT.generateRow(leadingSpaceColor, bottomColor);
+
+        // Analyze
+        assertNotNull(CuT.getSpace(0));
+    }
+
 
 }
