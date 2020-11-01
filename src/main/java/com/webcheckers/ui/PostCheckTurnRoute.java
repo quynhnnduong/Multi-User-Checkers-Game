@@ -16,8 +16,13 @@ public class PostCheckTurnRoute implements Route {
         Player currentPlayer = session.attribute(PLAYER_ATTR);
         Message message = Message.info("false");
 
-        if (currentPlayer.isMyTurn() || currentPlayer.getOpponent() == null)
+        if (currentPlayer.isMyTurn() || currentPlayer.getOpponent() == null) {
+            // true, true
+            // true, false
+            // false, true
+            // false, false --> message.info = false
             message = Message.info("true");
+        }
 
         return new Gson().toJson(message);
     }
