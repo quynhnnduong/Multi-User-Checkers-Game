@@ -91,15 +91,25 @@ public class PostCheckTurnRouteTest {
         assertEquals(gson.toJson(Message.info("true")), wait);
     }
 
-    //@Test
+    @Test
     public void testChangeTurn3() {
         // F, T
-        Gson gson = new Gson();
-        when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
-        currentPlayer = session.attribute(PLAYER_ATTR);
+//        Gson gson = new Gson();
+//        when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
+//        currentPlayer = session.attribute(PLAYER_ATTR);
+//
+//        currentPlayer.endTurn();
+//        opponent = null;
+//
+//        Object wait = CuT.handle(request, response);
+//        assertEquals(gson.toJson(Message.info("true")), wait);
 
-        currentPlayer.endTurn();
-        opponent = null;
+        Gson gson = new Gson();
+        currentPlayer = mock(Player.class);
+
+        when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
+        when(currentPlayer.isMyTurn()).thenReturn(false);
+        when(currentPlayer.getOpponent()).thenReturn(null);
 
         Object wait = CuT.handle(request, response);
         assertEquals(gson.toJson(Message.info("true")), wait);
