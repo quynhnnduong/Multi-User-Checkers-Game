@@ -32,11 +32,15 @@ public class PostValidateMoveRoute implements Route {
         Move move = new Gson().fromJson(moveJSON, Move.class);
         Turn turn = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getCurrentTurn();
 
-        Position startPosition = (!turn.hasMoves() ? move.getStart() : turn.getFirstMove().getStart());
+        //Position startPosition = (!turn.hasMoves() ? move.getStart() : turn.getLastMove().getStart());
+        Position startPosition = move.getStart();
         Position endPosition = move.getEnd();
 
         int rowDifference = Math.abs(endPosition.getCell() - startPosition.getCell());
         int colDifference = startPosition.getRow() - endPosition.getRow();
+
+        System.out.println("row diff v3- " + rowDifference);
+        System.out.println("col diff v3- " + colDifference);
 
 
         BoardView redView = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getRedView();
@@ -55,23 +59,39 @@ public class PostValidateMoveRoute implements Route {
 
         //used to check if the piece was originally a king
         Piece startPiece = currentView.getBoard().get(startPosition.getRow()).getSpace(startPosition.getCell()).getPiece();
+        if (startPiece == null){
+            startPiece = currentView.getPieceByPosition(turn.getLastStartPosition());
+        }
+
+        System.out.println(" start row " + startPosition.getRow() + ", start col " + startPosition.getCell());
 
         if (startPiece.getType() == Piece.Type.KING){
             colDifference = Math.abs((colDifference));
         }
 
+        Message message;
 
-                Message message;
+        //if there was no last move, then any move is ok
+        boolean canMakeMove = true;
+        //if there was a last move, then another move is only ok if the last move was a jump and you're going to jump again
+        //check if there was a last move
+        if (turn.hasMoves()){
+            canMakeMove = currentView.isLastMoveAndNextMoveJump(turn, move);
+        }
 
-        if (turn.hasMoves())
-            message = Message.error("INVALID MOVE: Can only move once");
-        else if (colDifference < 1)
+        if (!canMakeMove) {
+            //check if the last move was a jump
+            //boolean lastMoveWasJump = currentView.isMoveJump(turn);
+            message = Message.error("INVALID MOVE: You can only jump after another jump");
+        } else if (colDifference < 1)
             message = Message.error("INVALID MOVE: Single pieces cannot move backwards");
         else if (rowDifference != 1 || colDifference > 1) {
             //check if the move was a jump
             if (rowDifference == 2 && colDifference == 2){
                 int capturedCell = (startPosition.getCell() + endPosition.getCell()) / 2;
                 int capturedRow = (startPosition.getRow() + endPosition.getRow()) / 2 ;
+                //System.out.println("Captured Cell - " +capturedCell);
+                //System.out.println("Captured Row - " + capturedRow);
                 Space jumpedSpace = null;
                 //get the view of the active player's turn
                 jumpedSpace = currentView.getBoard().get(capturedRow).getSpace(capturedCell);

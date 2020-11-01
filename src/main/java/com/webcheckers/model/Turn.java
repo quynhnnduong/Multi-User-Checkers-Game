@@ -51,4 +51,16 @@ public class Turn {
         }
         return null;
     }
+
+    public Position getLastStartPosition(){
+        return getLastMove().getStart();
+    }
+
+    public Position getLastEndPosition() {
+        return getLastMove().getEnd();
+    }
+
+    public ArrayList<Move> getAllMovesInTurn(){
+        return validMoves;
+    }
 }
