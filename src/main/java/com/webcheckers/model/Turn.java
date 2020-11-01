@@ -44,4 +44,11 @@ public class Turn {
 
         return null;
     }
+
+    public Move getLastMove() {
+        if (hasMoves()) {
+            return validMoves.get(validMoves.size() - 1);
+        }
+        return null;
+    }
 }
