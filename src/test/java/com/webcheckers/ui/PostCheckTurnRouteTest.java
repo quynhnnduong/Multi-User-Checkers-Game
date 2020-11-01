@@ -14,8 +14,7 @@ import spark.TemplateEngine;
 
 import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class PostCheckTurnRouteTest {
 
@@ -48,11 +47,6 @@ public class PostCheckTurnRouteTest {
         opponent = new Player("opponent");
         currentPlayer.setOpponent(opponent);
 
-
-
-
-
-
         // create a unique CuT for each test
         CuT = new PostCheckTurnRoute();
     }
@@ -67,21 +61,61 @@ public class PostCheckTurnRouteTest {
         Gson gson = new Gson();
         Object wait = CuT.handle(request, response);
         assertEquals(gson.toJson(Message.info("false")), wait);
-
-
     }
 
-//    @Test
-    public void changeTurn() {
-        opponent.endTurn();
+    @Test
+    public void testChangeTurn1() {
+        Gson gson = new Gson();
         when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
         currentPlayer = session.attribute(PLAYER_ATTR);
-        when(currentPlayer.isMyTurn()).thenReturn(true);
-        Gson gson = new Gson();
+
+        currentPlayer.startTurn();
+        opponent = null;
+
         Object wait = CuT.handle(request, response);
         assertEquals(gson.toJson(Message.info("true")), wait);
-
-
-
     }
+
+    @Test
+    public void testChangeTurn2() {
+        Gson gson = new Gson();
+        when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
+        currentPlayer = session.attribute(PLAYER_ATTR);
+
+        currentPlayer.startTurn();
+        opponent.endTurn();
+
+        Object wait = CuT.handle(request, response);
+        assertEquals(gson.toJson(Message.info("true")), wait);
+    }
+
+    @Test
+    public void testChangeTurn3() {
+        // TODO Review this test -Sasha
+        Gson gson = new Gson();
+        when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
+        currentPlayer = session.attribute(PLAYER_ATTR);
+
+        currentPlayer.endTurn();
+        opponent.endTurn();
+
+        Object wait = CuT.handle(request, response);
+        assertEquals(gson.toJson(Message.info("false")), wait);
+    }
+
+    @Test
+    public void testChangeTurn4() {
+        // TODO Review this test -Sasha
+        Gson gson = new Gson();
+        when(session.attribute(PLAYER_ATTR)).thenReturn(currentPlayer);
+        currentPlayer = session.attribute(PLAYER_ATTR);
+
+        currentPlayer = null;
+        opponent.endTurn();
+
+        Object wait = CuT.handle(request, response);
+        assertEquals(gson.toJson(Message.info("false")), wait);
+    }
+
+
 }
