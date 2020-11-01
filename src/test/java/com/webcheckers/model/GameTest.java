@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit Tests for {@link Game} Component
- * @author Sasha Persaud, Shubhang Mehrotra
+ * @author Sasha Persaud, Shubhang Mehrotra, Quynh Duong
  */
 @Tag("Model-tier")
 public class GameTest {
@@ -24,6 +24,7 @@ public class GameTest {
     private void setUp(){
         redPlayer = new Player("RedPlayer");
         whitePlayer = new Player("WhitePlayer");
+
         id = "1234";
     }
 
@@ -46,6 +47,7 @@ public class GameTest {
         assertEquals(redPlayer, testPlayer);
     }
 
+
    @Test
     public void testGetWhitePlayer(){
         // Invoke
@@ -56,6 +58,16 @@ public class GameTest {
         assertEquals(whitePlayer, testPlayer);
     }
 
+//    @Test
+    public void testGetRedView(){
+        // Invoke
+        CuT = new Game(id,redPlayer, whitePlayer);
+        BoardView redView = CuT.getRedView();
+
+        // Analyze
+        assertEquals(redPlayer, redView);
+    }
+
     @Test
     public void testGetId(){
         // Invoke
@@ -64,5 +76,103 @@ public class GameTest {
 
         // Analyze
         assertEquals(id, testID);
+    }
+
+    @Test
+    public void testGameEnded(){
+        // Invoke
+        CuT = new Game(id, redPlayer, whitePlayer);
+        redPlayer.exitGame();
+        whitePlayer.exitGame();
+
+        //analyze
+        assertTrue(CuT.hasGameEnded());
+
+    }
+    @Test
+    public void testGameNotEnded(){
+        // Invoke
+        CuT = new Game(id, redPlayer, whitePlayer);
+        redPlayer.startTurn();
+        whitePlayer.endTurn();
+
+        //analyze
+        assertFalse(CuT.hasGameEnded());
+
+    }
+    @Test
+    public void testGameNotEnded2(){
+        // Invoke
+        CuT = new Game(id, redPlayer, whitePlayer);
+        redPlayer.startTurn();
+        whitePlayer.exitGame();
+
+        //analyze
+        assertFalse(CuT.hasGameEnded());
+
+    }
+
+    @Test
+    public void testGameNotEnded3(){
+        // Invoke
+        CuT = new Game(id, redPlayer, whitePlayer);
+        redPlayer.exitGame();
+        whitePlayer.startTurn();
+
+        //analyze
+        assertFalse(CuT.hasGameEnded());
+
+    }
+
+    @Test
+    public void testHasPlayerResigned(){
+        // Invoke
+        CuT = new Game(id, redPlayer, whitePlayer);
+        redPlayer.exitGame();
+        whitePlayer.exitGame();
+
+        //analyze
+        assertTrue(CuT.hasPlayerResigned());
+    }
+
+    @Test
+    public void testHasPlayerResigned2(){
+        // Invoke
+        CuT = new Game(id, redPlayer, whitePlayer);
+        redPlayer.exitGame();
+        whitePlayer.startTurn();
+
+        //analyze
+        assertTrue(CuT.hasPlayerResigned());
+    }
+
+    @Test
+    public void testHasPlayerResigned3(){
+        // Invoke
+        CuT = new Game(id, redPlayer, whitePlayer);
+        redPlayer.startTurn();
+        whitePlayer.exitGame();
+
+        //analyze
+        assertTrue(CuT.hasPlayerResigned());
+    }
+
+    @Test
+    public void testPlayerNotResigned(){
+        // Invoke
+        CuT = new Game(id, redPlayer, whitePlayer);
+        redPlayer.startTurn();
+        whitePlayer.endTurn();
+
+        //analyze
+        assertFalse(CuT.hasPlayerResigned());
+    }
+
+    @Test
+    public void testEndTurn(){
+        // Invoke
+        CuT = new Game(id, redPlayer, whitePlayer);
+        Move move = CuT.getCurrentTurn().getFirstMove();
+
     }
 }
