@@ -105,4 +105,15 @@ public class Row implements Iterable<Space> {
      * @return a Space corresponding to the given index
      */
     public Space getSpace(int index) { return row.get(index); }
+
+    public int getNumOfPieces(Piece.Color color) {
+        int numOfPieces = 0;
+
+        for (Space space : row) {
+            if (space.getPiece() != null && space.getPiece().getColor() == color)
+                numOfPieces++;
+        }
+
+        return numOfPieces;
+    }
 }
