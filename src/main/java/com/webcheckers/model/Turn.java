@@ -63,4 +63,14 @@ public class Turn {
     public ArrayList<Move> getAllMovesInTurn(){
         return validMoves;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder fullTurnsString = new StringBuilder();
+        for (Move move: validMoves){
+            fullTurnsString.append(move.toString());
+            fullTurnsString.append("-\n");
+        }
+        return fullTurnsString.toString();
+    }
 }
