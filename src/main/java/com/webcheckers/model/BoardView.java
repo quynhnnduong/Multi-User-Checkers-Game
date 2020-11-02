@@ -232,4 +232,13 @@ public class BoardView implements Iterable<Row> {
         return range1 && range2;
     }
 
+    public int getRemainingPieces(Piece.Color color) {
+        int pieces = 0;
+
+        for (Row row : board) {
+            pieces += row.getNumOfPieces(color);
+        }
+
+        return pieces;
+    }
 }
