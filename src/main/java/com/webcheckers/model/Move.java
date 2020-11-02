@@ -76,4 +76,14 @@ public class Move {
     public int getRowDiff(){
         return Math.abs(getEnd().getCell() - getStart().getCell());
     }
+
+    /**
+     * Returns a move as a string where the first line has the start row and cell separated by a space
+     * and the second line has the end row and cell separated by a space
+     * @return
+     */
+    @Override
+    public String toString() {
+        return start.getRow() + " " + start.getCell() + "\n" + end.getRow() + " " + end.getCell() + "\n";
+    }
 }

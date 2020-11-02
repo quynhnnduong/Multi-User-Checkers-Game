@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 
+import com.webcheckers.model.ReplaySaver;
 import com.webcheckers.ui.WebServer;
 import spark.TemplateEngine;
 import spark.template.freemarker.FreeMarkerEngine;
@@ -103,8 +104,11 @@ public final class Application {
     //Player Service
     final PlayerLobby playerLobby = new PlayerLobby(gameCenter);
 
+    //Save Replays
+    final ReplaySaver replaySaver = new ReplaySaver();
+
     // inject the game center and freemarker engine into web server
-    final WebServer webServer = new WebServer(templateEngine, gson, gameCenter, playerLobby);
+    final WebServer webServer = new WebServer(templateEngine, gson, gameCenter, playerLobby, replaySaver);
 
     // inject web server into application
     final Application app = new Application(webServer);

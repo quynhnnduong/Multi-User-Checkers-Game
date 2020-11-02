@@ -183,4 +183,16 @@ public class Game {
      * @return the ID of the Game
      */
     public String getId(){ return id; }
+
+    public ArrayList<Turn> getTurns(){
+        return turns;
+    }
+
+    public String turnsToString(){
+        StringBuilder gameTurns = new StringBuilder();
+        for (Turn turn : turns){
+            gameTurns.append(turn.toString());
+        }
+        return gameTurns.toString();
+    }
 }

@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.ReplaySaver;
 import spark.TemplateEngine;
 
 
@@ -94,6 +95,10 @@ public class WebServer {
 
   private final GameCenter gameCenter;
   private final PlayerLobby playerLobby;
+
+  //For saving game replays
+  private final ReplaySaver replaySaver;
+
   //
   // Constructor
   //
@@ -109,7 +114,7 @@ public class WebServer {
    * @throws NullPointerException
    *    If any of the parameters are {@code null}.
    */
-  public WebServer(final TemplateEngine templateEngine, final Gson gson, final GameCenter gameCenter, final PlayerLobby playerLobby) {
+  public WebServer(final TemplateEngine templateEngine, final Gson gson, final GameCenter gameCenter, final PlayerLobby playerLobby, final ReplaySaver replaySaver) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(gson, "gson must not be null");
@@ -118,6 +123,7 @@ public class WebServer {
     this.gson = gson;
     this.gameCenter = gameCenter;
     this.playerLobby = playerLobby;
+    this.replaySaver = replaySaver;
   }
 
   //
@@ -186,13 +192,13 @@ public class WebServer {
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, gameCenter, playerLobby));
 
     //Shows the game page
-    get(GAME_URL, new GetGameRoute(templateEngine, gameCenter, playerLobby));
+    get(GAME_URL, new GetGameRoute(templateEngine, gameCenter, playerLobby,replaySaver));
 
     //Sends a move for validation submission
     post(VALIDATE_URL, new PostValidateMoveRoute(gameCenter));
 
     //Enables the user to submit their turn
-    post(SUBMIT_URL, new PostSubmitTurnRoute(gameCenter));
+    post(SUBMIT_URL, new PostSubmitTurnRoute(gameCenter, replaySaver));
 
     //Waiting player checks when their turn is
     post(CHECK_URL, new PostCheckTurnRoute(gameCenter));

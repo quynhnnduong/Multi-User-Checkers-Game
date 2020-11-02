@@ -5,6 +5,7 @@ import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Position;
+import com.webcheckers.model.ReplaySaver;
 import com.webcheckers.util.Message;
 import spark.*;
 
@@ -19,13 +20,19 @@ public class PostSubmitTurnRoute implements Route {
 
     private final GameCenter gameCenter;
 
-    public PostSubmitTurnRoute(GameCenter gameCenter) { this.gameCenter = gameCenter; }
+    private final ReplaySaver replaySaver;
+
+    public PostSubmitTurnRoute(GameCenter gameCenter, ReplaySaver replaySaver) {
+        this.gameCenter = gameCenter;
+        this.replaySaver = replaySaver;
+    }
 
     @Override
     public Object handle(Request request, Response response) {
         final Session session = request.session();
 
         Game game = gameCenter.getGame(session.attribute(GAME_ID_ATTR));
+
 
 
 
