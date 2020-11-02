@@ -3,10 +3,7 @@ package com.webcheckers.ui;
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.model.BoardView;
-import com.webcheckers.model.Game;
-import com.webcheckers.model.Position;
-import com.webcheckers.model.Turn;
+import com.webcheckers.model.*;
 import com.webcheckers.util.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,6 +38,7 @@ public class PostValidateMoveRouteTest {
 
     //friendlies
     private boolean isValidMove;
+    private Move move;
 
     @BeforeEach
     public void setup() {
@@ -55,6 +53,7 @@ public class PostValidateMoveRouteTest {
         start = mock(Position.class);
         end = mock(Position.class);
         gson = new Gson();
+        move = mock(Move.class);
 
         when(request.session()).thenReturn(session);
 
@@ -82,6 +81,7 @@ public class PostValidateMoveRouteTest {
         when(turn.hasMoves()).thenReturn(true);
 
         // mock the start and end position (lines 34-35) - needed for compile not test
+        when(new Gson().fromJson(messageText, Move.class)).thenReturn(move);
         when(move.getStart()).thenReturn(start);
         when(move.getEnd()).thenReturn(end);
 
