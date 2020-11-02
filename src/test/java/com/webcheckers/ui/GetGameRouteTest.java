@@ -12,8 +12,7 @@ import spark.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Unit Test suite for {@link GetGameRoute} component
@@ -129,10 +128,9 @@ public class GetGameRouteTest {
         when(session.attribute(UIProtocol.LEGIT_OPPONENT_ATTR)).thenReturn(player2);
         when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
         when(playerLobby.getPlayer(request.queryParams("opponent"))).thenReturn(player2);
-
+        when(gameCenter.getGame("1234")).thenReturn(game);
         assertFalse(player1.inGame());
-
-//        assertNull(CuT.handle(request, response));
+        assertNull(CuT.handle(request, response));
 
 
 
