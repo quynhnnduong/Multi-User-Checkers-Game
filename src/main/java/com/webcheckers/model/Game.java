@@ -149,6 +149,14 @@ public class Game {
         return (!redPlayer.isPlayingWith(whitePlayer) || !whitePlayer.isPlayingWith(redPlayer));
     }
 
+    public Player getWinner() {
+
+        if (redView.getRemainingPieces(Piece.Color.RED) == 0 || redView.getRemainingPieces(Piece.Color.WHITE) == 0)
+            return (redView.getRemainingPieces(Piece.Color.RED) == 0 ? whitePlayer : redPlayer);
+
+        return null;
+    }
+
     /**
      * Checks if this Game has been abandoned - meaning that neither the redPlayer nor the whitePlayer
      * are opponents of each other. This indicates that this Game can be safely deleted.
