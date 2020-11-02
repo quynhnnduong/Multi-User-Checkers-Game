@@ -6,6 +6,7 @@ import com.webcheckers.appl.PlayerLobby;
 
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
+import com.webcheckers.model.Turn;
 import com.webcheckers.util.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,13 +14,14 @@ import org.junit.jupiter.api.Test;
 import spark.*;
 
 import static com.webcheckers.ui.UIProtocol.GAME_ID_ATTR;
+import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
  *  Unit Test suite for {@link PostSubmitTurnRoute} component
- * @author Quynh Duong
+ * @author Quynh Duong, Sasha Persaud
  */
 public class PostSubmitTurnRouteTest {
 
@@ -32,6 +34,8 @@ public class PostSubmitTurnRouteTest {
     private PostSubmitTurnRoute CuT;
     private GameCenter gameCenter;
     private Game game;
+    private Gson gson;
+    private Turn turn;
 
 
     /**
@@ -39,30 +43,109 @@ public class PostSubmitTurnRouteTest {
      */
     @BeforeEach
     public void setup() {
+        // Set up mocks
         request = mock(Request.class);
         session = mock(Session.class);
-        when(request.session()).thenReturn(session);
         response = mock(Response.class);
+        engine = mock(TemplateEngine.class);
         playerLobby = mock(PlayerLobby.class);
-        gameCenter = new GameCenter();
+        gameCenter = mock(GameCenter.class);
         game = mock(Game.class);
+        turn = mock(Turn.class);
 
+        // Mock methods
+        when(request.session()).thenReturn(session);
+
+        // Gson object for ...
+        gson = new Gson();
+
+        // create a unique CuT for each test
         CuT = new PostSubmitTurnRoute(gameCenter);
     }
 
 
     /**
-     * tests to make sure there are no errors when submitting a turn
+     * Test that a turn is successfully submitted if the current game exists
+     * and if moves have been made during this turn.
      */
-   // @Test
-    public void submitTurn() throws Exception {
-       Gson gson = new Gson();
-       when(session.attribute(GAME_ID_ATTR)).thenReturn("1234");
-       game = session.attribute(GAME_ID_ATTR);
+   @Test
+    public void successfulSubmitTurn() {
+       // Set up
 
+       // The current game is not null
+       when(gameCenter.getGame(session.attribute(GAME_ID_ATTR))).thenReturn(game);
+       // There have been moves made
+       when(game.getCurrentTurn()).thenReturn(turn);
+       when(game.getCurrentTurn().hasMoves()).thenReturn(true);
 
+       // Invoke
        Object submit = CuT.handle(request, response);
+
+       // Analyze
        assertEquals(gson.toJson(Message.info("Successfully Submitted Turn")), submit);
+    }
+
+    /**
+     * Test that a turn is not submitted if the current game is null
+     * and if moves have been made during this turn.
+     */
+    @Test
+    public void invalidSubmitTurn1() {
+        // Set up
+
+        // The current game is null
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR))).thenReturn(null);
+        // There have been moves made
+        when(game.getCurrentTurn()).thenReturn(turn);
+        when(game.getCurrentTurn().hasMoves()).thenReturn(true);
+
+        // Invoke
+        Object submit = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.error("Turn cannot be submitted")), submit);
+    }
+
+    /**
+     * Test that a turn is not submitted if the current game exists
+     * and if no moves have been made during this turn.
+     */
+    @Test
+    public void invalidSubmitTurn2() {
+        // Set up
+
+        // The current game is not null
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR))).thenReturn(game);
+        // There have been no moves made
+        when(game.getCurrentTurn()).thenReturn(turn);
+        when(game.getCurrentTurn().hasMoves()).thenReturn(false);
+
+        // Invoke
+        Object submit = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.error("Turn cannot be submitted")), submit);
+    }
+
+    /**
+     * Test that a turn is not submitted if the current game does not exist
+     * and if no moves have been made during this turn.
+     */
+    @Test
+    public void invalidSubmitTurn3() {
+        // Set up
+
+        // The current game is null
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR))).thenReturn(null);
+        // There have been no moves made
+        when(game.getCurrentTurn()).thenReturn(turn);
+        when(game.getCurrentTurn().hasMoves()).thenReturn(false);
+
+        // Invoke
+        Object submit = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.error("Turn cannot be submitted")), submit);
     }
 
     /**
