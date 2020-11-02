@@ -129,8 +129,9 @@ public class GetGameRouteTest {
         when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
         when(playerLobby.getPlayer(request.queryParams("opponent"))).thenReturn(player2);
         when(gameCenter.getGame("1234")).thenReturn(game);
+
         assertFalse(player1.inGame());
-        assertNull(CuT.handle(request, response));
+        CuT.handle(request, response);
 
 
 
