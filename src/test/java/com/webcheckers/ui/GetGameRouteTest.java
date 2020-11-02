@@ -9,8 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -133,8 +132,52 @@ public class GetGameRouteTest {
         assertFalse(player1.inGame());
         CuT.handle(request, response);
 
+    }
 
+    @Test
+    public void current_player_in_game(){
+        game = new Game("1234", player1, player2);
+        player1.joinGame(false);
+        playerLobby.setOpponentMatch(player1, player2);
+        gameCenter.addGame(game);
+        player2.call();
 
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        when(session.attribute(UIProtocol.GAME_ID_ATTR)).thenReturn(game.getId());
+        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
+        when(session.attribute(UIProtocol.LEGIT_OPPONENT_ATTR)).thenReturn(player2);
+        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
+        when(playerLobby.getPlayer(request.queryParams("opponent"))).thenReturn(player2);
+        when(gameCenter.getGame("1234")).thenReturn(game);
+
+        assertFalse(player1.inGame());
+        assertFalse(player1.isCalledForGame());
+        CuT.handle(request, response);
+
+    }
+
+    @Test
+    public void opponent_match_current_player(){
+        game = new Game("1234", player1, player2);
+        player1.joinGame(false);
+        playerLobby.setOpponentMatch(player1, player2);
+        gameCenter.addGame(game);
+        player2.call();
+
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        when(session.attribute(UIProtocol.GAME_ID_ATTR)).thenReturn(game.getId());
+        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
+        when(session.attribute(UIProtocol.LEGIT_OPPONENT_ATTR)).thenReturn(false);
+        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
+        when(playerLobby.getPlayer(request.queryParams("opponent"))).thenReturn(player2);
+        when(player2.getOpponent()).thenReturn(player1);
+        when(gameCenter.getGame("1234")).thenReturn(game);
+
+        assertFalse(player1.inGame());
+        assertFalse(player1.isCalledForGame());
+        CuT.handle(request, response);
     }
 
 
