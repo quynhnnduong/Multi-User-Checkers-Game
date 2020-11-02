@@ -92,7 +92,7 @@ public class GetHomeRoute implements Route {
       vm.put("playerList", playerLobby.getPlayers());
       vm.put("loggedIn", true);
       vm.put("playersMessage", playerLobby.getLobbyMessage());
-  }
+    }
 
     vm.put(LEGIT_OPPONENT_ATTR, session.attribute(LEGIT_NAME_ATTR));
 
@@ -102,7 +102,7 @@ public class GetHomeRoute implements Route {
 
     gameCenter.removeAbandonedGames();
 
-      // Render the Home Page
-      return templateEngine.render(new ModelAndView(vm, "home.ftl"));
-    }
+    // Render the Home Page
+    return templateEngine.render(new ModelAndView(vm, "home.ftl"));
+  }
 }
