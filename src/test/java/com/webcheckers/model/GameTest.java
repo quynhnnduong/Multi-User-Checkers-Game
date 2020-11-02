@@ -165,14 +165,14 @@ public class GameTest {
         whitePlayer.endTurn();
 
         //analyze
-        assertFalse(CuT.hasPlayerResigned());
+        assertTrue(CuT.hasPlayerResigned());
     }
 
     @Test
     public void testEndTurn(){
         // Invoke
         CuT = new Game(id, redPlayer, whitePlayer);
-        Move move = CuT.getCurrentTurn().getFirstMove();
+        redPlayer.startTurn();
 
     }
 }
