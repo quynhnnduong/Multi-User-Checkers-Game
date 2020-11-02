@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -53,7 +55,6 @@ public class GetGameRouteTest {
         player2 = mock(Player.class);
         player1.setOpponent(player2);
 
-        game = new Game("1234", player1, player2);
 
         // create a unique CuT for each test
         CuT = new GetGameRoute(engine, gameCenter, playerLobby);
@@ -115,13 +116,24 @@ public class GetGameRouteTest {
 
     @Test
     public void newGame(){
+        game = new Game("1234", player1, player2);
+        player1.joinGame(true);
+        playerLobby.setOpponentMatch(player1, player2);
+        gameCenter.addGame(game);
+        player2.call();
+
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
         when(session.attribute(UIProtocol.GAME_ID_ATTR)).thenReturn(game.getId());
         when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
         when(session.attribute(UIProtocol.LEGIT_OPPONENT_ATTR)).thenReturn(player2);
         when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
-//        testHelper.assertViewModelAttribute("viewMode", GetGameRoute.viewMode.PLAY);
+        when(playerLobby.getPlayer(request.queryParams("opponent"))).thenReturn(player2);
+
+        assertFalse(player1.inGame());
+
+//        assertNull(CuT.handle(request, response));
+
 
 
     }
