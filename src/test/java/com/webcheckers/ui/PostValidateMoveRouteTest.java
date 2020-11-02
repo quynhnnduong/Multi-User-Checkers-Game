@@ -9,9 +9,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
+import java.lang.reflect.Type;
+
 import static com.webcheckers.ui.UIProtocol.GAME_ID_ATTR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -54,6 +57,12 @@ public class PostValidateMoveRouteTest {
         end = mock(Position.class);
         gson = new Gson();
         move = mock(Move.class);
+        rowDiff = 0;
+        colDiff = 0;
+        redView = mock(BoardView.class);
+        whiteView = mock(BoardView.class);
+        curView = mock(BoardView.class);
+        // curColor = Game.ActiveColor.RED;
 
         when(request.session()).thenReturn(session);
 
@@ -73,7 +82,9 @@ public class PostValidateMoveRouteTest {
         String messageText = "{\"sampleMove\": { \"row\": 1,\"col\": 1}}";
         when(request.queryParams("actionData")).thenReturn(messageText);
 
-        // TODO mock a move (line 32)
+        // mock a move (line 32)
+//        when(new Gson()).thenReturn(gsonMock);
+//        when(new Gson().fromJson(messageText, Move.class)).thenReturn(move);
 
         // mock the turn (line 33)
         when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
@@ -81,13 +92,20 @@ public class PostValidateMoveRouteTest {
         when(turn.hasMoves()).thenReturn(true);
 
         // mock the start and end position (lines 34-35) - needed for compile not test
-        when(new Gson().fromJson(messageText, Move.class)).thenReturn(move);
-        when(move.getStart()).thenReturn(start);
-        when(move.getEnd()).thenReturn(end);
+//        when(move.getStart()).thenReturn(start);
+//        when(move.getEnd()).thenReturn(end);
 
-        // TODO hardcode the row/col differences - needed for compile not test
+        // hardcode the row/col differences - needed for compile not test
+//        when( Math.abs(end.getCell() - start.getCell())).thenReturn(rowDiff);
+//        when(start.getRow() - end.getRow()).thenReturn(colDiff);
 
-        // TODO mock the board views - needed for compile not test
+        // mock the board views - needed for compile not test
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getRedView()).thenReturn(redView);
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getWhiteView()).thenReturn(whiteView);
+
+        // hardcode the current color - needed for compile not test
+        curColor = Game.ActiveColor.RED;
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getActiveColor()).thenReturn(curColor);
 
         // Invoke
         Object validMessage = CuT.handle(request, response);
