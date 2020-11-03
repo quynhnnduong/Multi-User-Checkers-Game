@@ -9,6 +9,8 @@ import com.google.gson.Gson;
 
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Replay;
+import com.webcheckers.model.ReplayLoader;
 import com.webcheckers.model.ReplaySaver;
 import spark.TemplateEngine;
 
@@ -86,6 +88,10 @@ public class WebServer {
   public static final String SIGNOUT_URL = "/signout";
 
   public static final String BACKUP_URL = "/backupMove";
+
+  public static final String WATCH_REPLAY_URL ="/replay/game";
+
+  public static final String STOP_REPLAY_URL = "/replay/stopWatching";
   //
   // Attributes
   //
@@ -98,6 +104,8 @@ public class WebServer {
 
   //For saving game replays
   private final ReplaySaver replaySaver;
+
+  private final ReplayLoader replayLoader;
 
   //
   // Constructor
@@ -114,7 +122,7 @@ public class WebServer {
    * @throws NullPointerException
    *    If any of the parameters are {@code null}.
    */
-  public WebServer(final TemplateEngine templateEngine, final Gson gson, final GameCenter gameCenter, final PlayerLobby playerLobby, final ReplaySaver replaySaver) {
+  public WebServer(final TemplateEngine templateEngine, final Gson gson, final GameCenter gameCenter, final PlayerLobby playerLobby, final ReplaySaver replaySaver, final ReplayLoader replayLoader) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(gson, "gson must not be null");
@@ -124,6 +132,7 @@ public class WebServer {
     this.gameCenter = gameCenter;
     this.playerLobby = playerLobby;
     this.replaySaver = replaySaver;
+    this.replayLoader = replayLoader;
   }
 
   //
@@ -178,7 +187,7 @@ public class WebServer {
     //// code clean; using small classes.
 
     // Shows the Checkers game Home page.
-    get(HOME_URL, new GetHomeRoute(templateEngine, gameCenter, playerLobby));
+    get(HOME_URL, new GetHomeRoute(templateEngine, gameCenter, playerLobby, replayLoader));
 
     //Shows the sign-in page
     get(SIGNIN_URL, new GetSignInRoute(templateEngine));
@@ -207,6 +216,8 @@ public class WebServer {
     post(RESIGN_URL, new PostResignGame(gameCenter, playerLobby));
 
     post(BACKUP_URL, new PostBackupMove(gameCenter));
+
+    get(WATCH_REPLAY_URL, new GetReplayGameRoute(templateEngine, replayLoader));
 
     LOG.config("WebServer is initialized.");
   }

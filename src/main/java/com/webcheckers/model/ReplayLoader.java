@@ -58,6 +58,14 @@ public class ReplayLoader {
         }
     }
 
+    public Replay getReplay(String gameId){
+        return replaySaver.getReplay(gameId);
+    }
+
+    public ArrayList<Replay> getAllReplays(){
+        return new ArrayList<>(replaySaver.getAllReplays().values());
+    }
+
 
 
 

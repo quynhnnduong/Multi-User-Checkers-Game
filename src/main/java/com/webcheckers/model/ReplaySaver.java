@@ -11,9 +11,11 @@ public class ReplaySaver {
     private final HashMap<String, Replay> replays = new HashMap<>();
     //private final ArrayList<String> savedGames = new ArrayList<>();
 
+
     public void saveReplay(Game game){
         ArrayList<String> replayText = convertGameToList(game);
-        replays.put(game.getId(), new Replay(game.getId(), replayText));
+        replays.put(game.getId(), new Replay(game.getId(), replayText, game));
+
     }
 
     /**
