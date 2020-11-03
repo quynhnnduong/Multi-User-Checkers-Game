@@ -5,6 +5,8 @@ import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Position;
+import com.webcheckers.model.Piece;
+import com.webcheckers.model.Position;
 import com.webcheckers.model.ReplaySaver;
 import com.webcheckers.util.Message;
 import spark.*;
@@ -33,11 +35,7 @@ public class PostSubmitTurnRoute implements Route {
 
         Game game = gameCenter.getGame(session.attribute(GAME_ID_ATTR));
 
-
-
-
         if (game != null && game.getCurrentTurn().hasMoves()) {
-
             game.endTurn();
             return new Gson().toJson(Message.info("Successfully Submitted Turn"));
         }
