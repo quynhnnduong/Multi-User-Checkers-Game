@@ -123,8 +123,7 @@ public class GetGameRoute implements Route {
             System.out.println("GAME CREATED: " + gameID);
 
             gameCenter.addGame(game);
-            //adds a game to save it as a replay
-            replaySaver.addReplay(game);
+
 
 
             // Set currentPlayer and opponent's states to PLAYING in playerLobby and start calling opponent to the game

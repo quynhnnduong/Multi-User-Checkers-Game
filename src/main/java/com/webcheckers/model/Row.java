@@ -27,7 +27,9 @@ public class Row implements Iterable<Space> {
      */
     public Row(int index, SpaceColor leadingColor, Piece.Color bottomColor){
         this.index = index;
-        row = generateRow(leadingColor, bottomColor);
+        //row = generateRow(leadingColor, bottomColor);
+        //TODO remove debug after testing
+        row = generateDebugRow(leadingColor, bottomColor);
     }
 
     /**
@@ -115,5 +117,36 @@ public class Row implements Iterable<Space> {
         }
 
         return numOfPieces;
+    }
+
+    public ArrayList<Space> generateDebugRow(SpaceColor leadingColor, Piece.Color bottomColor) {
+        ArrayList<Space> row = new ArrayList<>();
+
+        // Determines the color of the Pieces at the top of the board based on the entered bottomColor.
+        Piece.Color topColor = (bottomColor == Piece.Color.RED ? Piece.Color.WHITE : Piece.Color.RED);
+
+        // Creates all Space objects and adds them to row
+        for (int i = 0; i < BoardView.BOARD_SIZE; i++){
+            Space newSpace = new Space(i, leadingColor);
+
+            // Places the checkers Pieces at the top 3 Rows of color topColor
+            if (index == 2 && newSpace.isValid())
+                newSpace.placePiece(new Piece(topColor));
+
+                // Places checkers Pieces at the bottom 3 Rows of color bottomColor
+            else if (index == 5 && newSpace.isValid())
+                newSpace.placePiece(new Piece(bottomColor));
+
+            // i = index of the Space
+            row.add(i, newSpace);
+
+            // Swaps colors for each alternating Space to create a checker pattern
+            if (leadingColor == SpaceColor.BLACK)
+                leadingColor = SpaceColor.WHITE;
+            else
+                leadingColor = SpaceColor.BLACK;
+        }
+
+        return row;
     }
 }

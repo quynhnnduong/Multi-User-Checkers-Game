@@ -198,7 +198,7 @@ public class WebServer {
     post(VALIDATE_URL, new PostValidateMoveRoute(gameCenter));
 
     //Enables the user to submit their turn
-    post(SUBMIT_URL, new PostSubmitTurnRoute(gameCenter, replaySaver));
+    post(SUBMIT_URL, new PostSubmitTurnRoute(gameCenter));
 
     //Waiting player checks when their turn is
     post(CHECK_URL, new PostCheckTurnRoute(gameCenter));

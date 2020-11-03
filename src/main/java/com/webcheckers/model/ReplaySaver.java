@@ -23,7 +23,7 @@ public class ReplaySaver {
      * @return
      */
     public ArrayList<String> convertGameToList(Game game){
-        return game.turnsToString();
+        return game.turnsToList();
 
         //for (String id : replays.keySet()){
         //    Game game = replays.get(id);

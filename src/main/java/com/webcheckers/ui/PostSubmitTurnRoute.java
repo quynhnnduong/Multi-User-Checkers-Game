@@ -33,6 +33,7 @@ public class PostSubmitTurnRoute implements Route {
 
 
         if (game != null && game.getCurrentTurn().hasMoves()) {
+            //add the turn's moves to the replay
 
             game.endTurn();
             return new Gson().toJson(Message.info("Successfully Submitted Turn"));
