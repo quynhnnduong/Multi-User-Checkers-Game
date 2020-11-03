@@ -130,6 +130,30 @@ public class GetGameRouteTest {
 
     }
 
+//    @Test
+    public void current_player_is_called(){
+        game = new Game("1234", player1, player2);
+        player1.joinGame(true);
+        playerLobby.setOpponentMatch(player1, player2);
+        gameCenter.addGame(game);
+        player1.call();
+
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        when(session.attribute(UIProtocol.GAME_ID_ATTR)).thenReturn("1234");
+        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
+        when(session.attribute(UIProtocol.LEGIT_OPPONENT_ATTR)).thenReturn(player2);
+        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
+        when(player1.inGame()).thenReturn(true);
+        when(gameCenter.getGame("1234")).thenReturn(game);
+
+        assertTrue(player1.inGame());
+//        assertEquals(player1.getOpponent(), player2);
+        CuT.handle(request, response);
+
+
+    }
+
     @Test
     public void opponent_match_current_player(){
         game = new Game("1234", player1, player2);
