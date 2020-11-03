@@ -22,12 +22,7 @@ public class PostSubmitTurnRoute implements Route {
 
     private final GameCenter gameCenter;
 
-    private final ReplaySaver replaySaver;
-
-    public PostSubmitTurnRoute(GameCenter gameCenter, ReplaySaver replaySaver) {
-        this.gameCenter = gameCenter;
-        this.replaySaver = replaySaver;
-    }
+    public PostSubmitTurnRoute(GameCenter gameCenter) { this.gameCenter = gameCenter; }
 
     @Override
     public Object handle(Request request, Response response) {
@@ -35,7 +30,10 @@ public class PostSubmitTurnRoute implements Route {
 
         Game game = gameCenter.getGame(session.attribute(GAME_ID_ATTR));
 
+
+
         if (game != null && game.getCurrentTurn().hasMoves()) {
+
             game.endTurn();
             return new Gson().toJson(Message.info("Successfully Submitted Turn"));
         }
