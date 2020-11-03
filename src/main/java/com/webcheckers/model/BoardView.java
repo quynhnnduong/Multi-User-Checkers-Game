@@ -242,7 +242,6 @@ public class BoardView implements Iterable<Row> {
         return range1 && range2;
     }
 
-
     /**
      * checks if the previous move in a turn and the upcoming move are both jumps
      * @param turn the turn of the current move and the previous move
@@ -254,16 +253,16 @@ public class BoardView implements Iterable<Row> {
 
         /**
          * //Debug stuff
-        System.out.println("Last move Data");
-        System.out.println("Start");
-        System.out.println("Row - " + turn.getLastMove().getStart().getRow() + " Cell - " + turn.getLastMove().getStart().getCell());
-        System.out.println("End");
-        System.out.println("Row - " + turn.getLastMove().getEnd().getRow() + " Cell - " + turn.getLastMove().getEnd().getCell());
-        System.out.println("Current move Data");
-        System.out.println("Start");
-        System.out.println("Row - " + currentMove.getStart().getRow() + " Cell - " + currentMove.getStart().getCell());
-        System.out.println("End");
-        System.out.println("Row - " + currentMove.getEnd().getRow() + " Cell - " + currentMove.getEnd().getCell());
+         System.out.println("Last move Data");
+         System.out.println("Start");
+         System.out.println("Row - " + turn.getLastMove().getStart().getRow() + " Cell - " + turn.getLastMove().getStart().getCell());
+         System.out.println("End");
+         System.out.println("Row - " + turn.getLastMove().getEnd().getRow() + " Cell - " + turn.getLastMove().getEnd().getCell());
+         System.out.println("Current move Data");
+         System.out.println("Start");
+         System.out.println("Row - " + currentMove.getStart().getRow() + " Cell - " + currentMove.getStart().getCell());
+         System.out.println("End");
+         System.out.println("Row - " + currentMove.getEnd().getRow() + " Cell - " + currentMove.getEnd().getCell());
          */
         return isMoveJump(lastMove) && isMoveJump(currentMove);
 

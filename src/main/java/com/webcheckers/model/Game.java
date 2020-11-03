@@ -188,11 +188,11 @@ public class Game {
         return turns;
     }
 
-    public String turnsToString(){
-        StringBuilder gameTurns = new StringBuilder();
+    public ArrayList<String> turnsToString(){
+        ArrayList<String> gameTurns = new ArrayList<>();
         for (Turn turn : turns){
-            gameTurns.append(turn.toString());
+            gameTurns.add(turn.toString());
         }
-        return gameTurns.toString();
+        return gameTurns;
     }
 }

@@ -8,25 +8,22 @@ import java.util.HashMap;
  */
 public class ReplaySaver {
 
-    private final HashMap<String, Game> replays = new HashMap<>();
-    private final ArrayList<String> savedGames = new ArrayList<>();
+    private final HashMap<String, Replay> replays = new HashMap<>();
+    //private final ArrayList<String> savedGames = new ArrayList<>();
 
-    public void addReplay(Game game){
-        replays.put(game.getId(), game);
+    public void saveReplay(Game game){
+        ArrayList<String> replayText = convertGameToList(game);
+        replays.put(game.getId(), new Replay(game.getId(), replayText));
     }
 
     /**
      * Converts all turns in a game into a string to be read by the replay class
      * TODO call this when the game ends
-     * @param gameId
+     * @param
      * @return
      */
-    public String convertGameToText(String gameId){
-        Game game = replays.get(gameId);
-        String gameTurns = game.turnsToString();
-        System.out.println(gameTurns);
-        savedGames.add(gameTurns);
-        return gameTurns;
+    public ArrayList<String> convertGameToList(Game game){
+        return game.turnsToString();
 
         //for (String id : replays.keySet()){
         //    Game game = replays.get(id);
@@ -42,7 +39,13 @@ public class ReplaySaver {
         //replays.get(gameId).saveTurn();
     }
 
-    public ArrayList<String> getSavedGames() {
-        return savedGames;
+    public Replay getReplay(String gameId) {
+        return replays.get(gameId);
     }
+
+    public HashMap<String, Replay> getAllReplays(){
+        return replays;
+    }
+
+
 }

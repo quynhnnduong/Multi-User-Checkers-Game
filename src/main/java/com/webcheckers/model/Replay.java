@@ -7,24 +7,31 @@ import java.util.ArrayList;
  */
 public class Replay {
 
-    private Game game;
-    private ArrayList<Turn> turns;
+
+    private ArrayList<String> turnsList;
     private String gameId;
 
-    public Replay(Game game){
-        this.game = game;
-        this.gameId = game.getId();
-        this.turns = new ArrayList<>();
+    public Replay(String gameId, ArrayList<String> turnsList){
+        this.gameId = gameId;
+        this.turnsList = new ArrayList<>();
     }
 
     /**
      * save each turn
      */
-    public void saveTurn(){
-        turns.add(game.getCurrentTurn());
-    }
+    //public void saveTurn(){
+    //    turns.add(game.getCurrentTurn());
+    //}
 
     public String getGameId() {
         return gameId;
+    }
+
+    public ArrayList<String> getTurnsList() {
+        return turnsList;
+    }
+
+    public String getTurn(int i){
+        return turnsList.get(i);
     }
 }

@@ -1,17 +1,21 @@
 package com.webcheckers.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ReplayLoader {
 
-    private ArrayList<String> replayList;
+    private HashMap<String, String> replayList;
+    private ReplaySaver replaySaver;
     private int turnNumber;
     private int turnMax;
 
+
     public ReplayLoader(ReplaySaver replaySaver){
-            this.replayList = replaySaver.getSavedGames();
+            this.replaySaver = replaySaver;
+            this.replayList = new HashMap<>();
             turnNumber = 0;
-            turnMax = replaySaver.getSavedGames().size() - 1;
+            turnMax = replaySaver.getAllReplays().size() - 1;
     }
 
     /**
@@ -38,8 +42,20 @@ public class ReplayLoader {
         return false;
     }
 
-    public String getTurn(){
-        return replayList.get(turnNumber);
+    public String getTurn(String gameId, int i){
+        return replaySaver.getReplay(gameId).getTurn(i);
+    }
+
+
+    public void printReplayById(String gameId){
+        String replayText = replayList.get(gameId);
+        for (Replay replay : replaySaver.getAllReplays().values()){
+            if (replay.getGameId().equals(gameId)){
+                for (String turn : replay.getTurnsList()){
+                    System.out.println(turn);
+                }
+            }
+        }
     }
 
 

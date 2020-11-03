@@ -123,8 +123,7 @@ public class GetGameRoute implements Route {
             System.out.println("GAME CREATED: " + gameID);
 
             gameCenter.addGame(game);
-            //adds a game to save it as a replay
-            replaySaver.addReplay(game);
+
 
             // Set currentPlayer and opponent's states to PLAYING in playerLobby and start calling opponent to the game
             currentPlayer.joinGame(true);
@@ -155,10 +154,15 @@ public class GetGameRoute implements Route {
 
             if (winner == null)
                 modeOptionsAsJSON.put("gameOverMessage", (opponent.getName() + " resigned."));
-            else if (winner.equals(currentPlayer))
+            else if (winner.equals(currentPlayer)) {
                 modeOptionsAsJSON.put("gameOverMessage", ("You captured all pieces."));
-            else
+                replaySaver.saveReplay(game);
+
+            }
+            else {
                 modeOptionsAsJSON.put("gameOverMessage", (winner.getName() + " captured all pieces."));
+                replaySaver.saveReplay(game);
+            }
 
             currentPlayer.exitGame();
             playerLobby.addPlayer(currentPlayer);
