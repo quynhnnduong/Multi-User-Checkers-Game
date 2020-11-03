@@ -102,17 +102,9 @@ public class BoardView implements Iterable<Row> {
         // Gets the Piece in focus
         Piece piece = startSpace.getPiece();
 
-
-
         // Removes the Piece from the starting Space and places is on the ending Space
         startSpace.removePiece();
         endSpace.placePiece(piece);
-
-        //check if the piece ends in the top row
-        if (end.getRow() == 0 || end.getRow() == BOARD_SIZE - 1){
-            Piece newKing = endSpace.getPiece();
-            newKing.promote();
-        }
     }
 
     /**
@@ -175,13 +167,13 @@ public class BoardView implements Iterable<Row> {
         boolean jumpAvailable;
 
         //check if there even are spaces to go through
-        if (row > 1 && cell > 2 ) {
+        if (row < BOARD_SIZE - 2 && cell > 2 ) {
             forwardLeft1 = new Position(row - 1, cell - 1);
             forwardLeft2 = new Position(row - 2, cell - 2);
             forwardLeftExists  = true;
         }
 
-        if (row > 1 && cell < BOARD_SIZE - 2) {
+        if (row < BOARD_SIZE - 2 && cell < BOARD_SIZE - 2) {
             forwardRight1 = new Position(row - 1, cell + 1);
             forwardRight2 = new Position(row - 2, cell + 2);
             forwardRightExists = true;
@@ -235,71 +227,18 @@ public class BoardView implements Iterable<Row> {
             }
         }
         //check if the space diagonal to one space ahead is free
-        System.out.println(twoSpacesAhead.getRow());
-        System.out.println();
         boolean range2 = board.get(twoSpacesAhead.getRow()).getSpace(twoSpacesAhead.getCell()).getPiece() == null;
         //System.out.println(oneSpaceAhead.getRow() + " - row, " + oneSpaceAhead.getCell() + " - col, " + range1 + " - range1, " + range2 + " - range2 ");
         return range1 && range2;
     }
 
-    /**
-     * checks if the previous move in a turn and the upcoming move are both jumps
-     * @param turn the turn of the current move and the previous move
-     * @param currentMove the move the player is currently trying to make
-     * @return true if both moves are jumps, false if otherwise
-     */
-    public boolean isLastMoveAndNextMoveJump(Turn turn, Move currentMove){
-        Move lastMove = turn.getLastMove();
+    public int getRemainingPieces(Piece.Color color) {
+        int pieces = 0;
 
-        /**
-         * //Debug stuff
-         System.out.println("Last move Data");
-         System.out.println("Start");
-         System.out.println("Row - " + turn.getLastMove().getStart().getRow() + " Cell - " + turn.getLastMove().getStart().getCell());
-         System.out.println("End");
-         System.out.println("Row - " + turn.getLastMove().getEnd().getRow() + " Cell - " + turn.getLastMove().getEnd().getCell());
-         System.out.println("Current move Data");
-         System.out.println("Start");
-         System.out.println("Row - " + currentMove.getStart().getRow() + " Cell - " + currentMove.getStart().getCell());
-         System.out.println("End");
-         System.out.println("Row - " + currentMove.getEnd().getRow() + " Cell - " + currentMove.getEnd().getCell());
-         */
-        return isMoveJump(lastMove) && isMoveJump(currentMove);
-
-
-    }
-
-    /**
-     * checks if a move is a jump
-     * @param move the move in question
-     * @return true if move is a jump, false if otherwise
-     */
-    public boolean isMoveJump(Move move){
-        int rowDifference = move.getRowDiff();
-        int colDifference = move.getColDiff();
-        Position startPosition = move.getStart();
-        Position endPosition = move.getEnd();
-
-        if (rowDifference == 2 && colDifference == 2) {
-            int capturedCell = (startPosition.getCell() + endPosition.getCell()) / 2;
-            int capturedRow = (startPosition.getRow() + endPosition.getRow()) / 2;
-            Space jumpedSpace = board.get(capturedRow).getSpace(capturedCell);;
-            //get the view of the active player's turn
-
-            //check if there was a piece on the jumped space
-            //if there was the move was a jump
-            return jumpedSpace.getPiece() != null;
+        for (Row row : board) {
+            pieces += row.getNumOfPieces(color);
         }
-        return false;
-    }
 
-    /**
-     *
-     * @param position the position on the board to get a piece from
-     * @return a piece on the board with the coordinates from position
-     */
-    public Piece getPieceByPosition(Position position){
-        return board.get(position.getRow()).getSpace(position.getCell()).getPiece();
+        return pieces;
     }
-
 }
