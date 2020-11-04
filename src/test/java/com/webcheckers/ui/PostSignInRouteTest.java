@@ -9,9 +9,11 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -69,7 +71,8 @@ public class PostSignInRouteTest {
 
         when(request.queryParams("text_field")).thenReturn("Player1");
         when(playerLobby.addPlayer(any(Player.class))).thenReturn(true);
-
+        when(playerLobby.getLobbyMessage()).thenReturn("There are no other players available to play at this time.");
+        when(session.attribute(UIProtocol.LEGIT_NAME_ATTR)).thenReturn(true);
 
         // Invoke
         CuT.handle(request, response);
@@ -87,45 +90,37 @@ public class PostSignInRouteTest {
         // testHelper.assertViewModelAttribute("playerList", );
         testHelper.assertViewModelAttribute("loggedIn", true);
         testHelper.assertViewModelAttribute("playersMessage", "There are no other players available to play at this time.");
-        testHelper.assertViewModelAttribute(UIProtocol.LEGIT_NAME_ATTR, true);
+        testHelper.assertViewModelAttribute(UIProtocol.LEGIT_OPPONENT_ATTR, true);
+        testHelper.assertViewName("home.ftl");
+    }
 
 
+    /**
+     * Test that CuT shows the SignIn view when the session is brand new.
+     */
+    // @Test
+    public void testInvalidSignIn() {
+        // Setup
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
+        when(request.queryParams("text_field")).thenReturn("");
+        when(playerLobby.addPlayer(any(Player.class))).thenReturn(false);
+        when(session.attribute(UIProtocol.LEGIT_NAME_ATTR)).thenReturn(false);
 
+        // Invoke
+        CuT.handle(request, response);
 
-//        // Set up the test
-//        final TemplateEngineTester testHelper = new TemplateEngineTester();
-//        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-//        playerLobby.addPlayer(player);
-//        session.attribute("playerlobby", playerLobby);
-//
-//        session.attribute("session_key", UIProtocol.PLAYERLOBBY_ATTR);
-//        //when(halt()).thenReturn();
-//
-//        // Invoke the test: a user signs in
-//        System.out.println("Invoking test...");
-//
-//        try {
-//            CuT.handle(request, response);
-//        } catch (HaltException he){ // generic exception
-//            System.out.println("The program did a redirect"); // assert that it is a halt exception
-//        }
-//
-//        // Analyze the results:
-//        //   * model is a non-null Map
-//        testHelper.assertViewModelExists();
-//        testHelper.assertViewModelIsaMap();
-//
-//        //   * model contains all necessary View-Model data
-//        testHelper.assertViewModelAttribute("title", "Welcome!");
-//        testHelper.assertViewModelAttribute(UIProtocol.PLAYER_ATTR, playerLobby.getPlayer(""));
-//        //   * test view name
-//        testHelper.assertViewName("home.ftl");
-//
-//        //   * verify the session
-//        //verify(session).attribute(eq(UIProtocol.PLAYERLOBBY_ATTR));
+        // Analyze
+        try {
+            CuT.handle(request, response);
+        } catch (Exception e){
+            assertTrue(e instanceof HaltException);
+        }
+
 
     }
+
 
 
 
