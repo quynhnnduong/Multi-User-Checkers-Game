@@ -34,7 +34,6 @@ public class GetSignInRouteTest {
         engine = mock(TemplateEngine.class);
 
         CuT = new GetSignInRoute(engine);
-
     }
 
     /**

@@ -40,7 +40,6 @@ public class GetSignOutRoute implements Route {
 
         LOG.finer("GetSignOutRoute is invoked.");
 
-
         return templateEngine.render(new ModelAndView(vm, "signout.ftl"));
     }
 }
