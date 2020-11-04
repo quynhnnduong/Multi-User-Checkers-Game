@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit Tests for {@link Game} Component
@@ -19,13 +21,17 @@ public class GameTest {
     private Player redPlayer;
     private Player whitePlayer;
     private String id;
+    private BoardView whiteView;
+    private BoardView redView;
+    private Game.ActiveColor activeColor;
 
     @BeforeEach
     private void setUp(){
-        redPlayer = new Player("RedPlayer");
-        whitePlayer = new Player("WhitePlayer");
+        redPlayer = mock(Player.class);
+        whitePlayer = mock(Player.class);
 
         id = "1234";
+        activeColor = Game.ActiveColor.RED;
     }
 
     @Test
@@ -49,24 +55,15 @@ public class GameTest {
 
 
    @Test
-    public void testGetWhitePlayer(){
+    public void testGetWhiteView(){
         // Invoke
         CuT = new Game(id, redPlayer, whitePlayer);
-        Player testPlayer = CuT.getWhitePlayer();
+        whiteView = CuT.getWhiteView();
 
         // Analyze
-        assertEquals(whitePlayer, testPlayer);
+        assertEquals(CuT.getWhiteView(), whiteView);
     }
 
-//    @Test
-    public void testGetRedView(){
-        // Invoke
-        CuT = new Game(id,redPlayer, whitePlayer);
-        BoardView redView = CuT.getRedView();
-
-        // Analyze
-        assertEquals(redPlayer, redView);
-    }
 
     @Test
     public void testGetId(){
@@ -79,7 +76,7 @@ public class GameTest {
     }
 
     @Test
-    public void testGameEnded(){
+    public void testGameAbandoned(){
         // Invoke
         CuT = new Game(id, redPlayer, whitePlayer);
         redPlayer.exitGame();
@@ -89,35 +86,35 @@ public class GameTest {
         assertTrue(CuT.isGameAbandoned());
 
     }
-//    @Test
-    public void testGameNotEnded(){
+    @Test
+    public void testGameNotAbandoned(){
         // Invoke
         CuT = new Game(id, redPlayer, whitePlayer);
-        redPlayer.startTurn();
-        whitePlayer.endTurn();
+        when(redPlayer.isPlayingWith(whitePlayer)).thenReturn(false);
+        when(whitePlayer.isPlayingWith(redPlayer)).thenReturn(true);
 
         //analyze
         assertFalse(CuT.isGameAbandoned());
 
     }
-//    @Test
-    public void testGameNotEnded2(){
+    @Test
+    public void testGameNotAbandoned2(){
         // Invoke
         CuT = new Game(id, redPlayer, whitePlayer);
-        redPlayer.startTurn();
-        whitePlayer.exitGame();
+        when(redPlayer.isPlayingWith(whitePlayer)).thenReturn(true);
+        when(whitePlayer.isPlayingWith(redPlayer)).thenReturn(false);
 
         //analyze
         assertFalse(CuT.isGameAbandoned());
 
     }
 
-//    @Test
-    public void testGameNotEnded3(){
+    @Test
+    public void testGameNotAbandoned3(){
         // Invoke
         CuT = new Game(id, redPlayer, whitePlayer);
-        redPlayer.exitGame();
-        whitePlayer.startTurn();
+        when(redPlayer.isPlayingWith(whitePlayer)).thenReturn(true);
+        when(whitePlayer.isPlayingWith(redPlayer)).thenReturn(true);
 
         //analyze
         assertFalse(CuT.isGameAbandoned());
@@ -128,8 +125,8 @@ public class GameTest {
     public void testHasPlayerResigned(){
         // Invoke
         CuT = new Game(id, redPlayer, whitePlayer);
-        redPlayer.exitGame();
-        whitePlayer.exitGame();
+        when(redPlayer.isPlayingWith(whitePlayer)).thenReturn(false);
+        when(whitePlayer.isPlayingWith(redPlayer)).thenReturn(false);
 
         //analyze
         assertTrue(CuT.hasPlayerResigned());
@@ -139,8 +136,8 @@ public class GameTest {
     public void testHasPlayerResigned2(){
         // Invoke
         CuT = new Game(id, redPlayer, whitePlayer);
-        redPlayer.exitGame();
-        whitePlayer.startTurn();
+        when(redPlayer.isPlayingWith(whitePlayer)).thenReturn(false);
+        when(whitePlayer.isPlayingWith(redPlayer)).thenReturn(true);
 
         //analyze
         assertTrue(CuT.hasPlayerResigned());
@@ -150,22 +147,22 @@ public class GameTest {
     public void testHasPlayerResigned3(){
         // Invoke
         CuT = new Game(id, redPlayer, whitePlayer);
-        redPlayer.startTurn();
-        whitePlayer.exitGame();
+        when(redPlayer.isPlayingWith(whitePlayer)).thenReturn(true);
+        when(whitePlayer.isPlayingWith(redPlayer)).thenReturn(false);
 
         //analyze
         assertTrue(CuT.hasPlayerResigned());
     }
 
-//    @Test
+    @Test
     public void testPlayerNotResigned(){
         // Invoke
         CuT = new Game(id, redPlayer, whitePlayer);
-        redPlayer.startTurn();
-        whitePlayer.endTurn();
+        when(redPlayer.isPlayingWith(whitePlayer)).thenReturn(true);
+        when(whitePlayer.isPlayingWith(redPlayer)).thenReturn(true);
 
         //analyze
-        assertTrue(CuT.hasPlayerResigned());
+        assertFalse(CuT.hasPlayerResigned());
     }
 
     @Test
@@ -175,4 +172,13 @@ public class GameTest {
         redPlayer.startTurn();
 
     }
+
+//    @Test
+//    public void testGetRedPlayerBoard(){
+//        // Invoke
+//        CuT = new Game(id, redPlayer, whitePlayer);
+//        redView = CuT.getRedView();
+//        whiteView = CuT.getWhiteView();
+//
+//    }
 }

@@ -152,7 +152,6 @@ public class GetGameRouteTest {
         when(gameCenter.getGame("1234")).thenReturn(game);
 
         assertTrue(player1.inGame());
-//        assertEquals(player1.getOpponent(), player2);
         CuT.handle(request, response);
 
 
@@ -198,8 +197,6 @@ public class GetGameRouteTest {
         when(playerLobby.getPlayer(request.queryParams("opponent"))).thenReturn(null);
         when(gameCenter.getGame("1234")).thenReturn(game);
 
-        assertFalse(player1.inGame());
-        CuT.handle(request, response);
     }
 
 

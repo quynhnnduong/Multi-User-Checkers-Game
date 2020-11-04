@@ -10,6 +10,7 @@ import static org.mockito.Mockito.mock;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 
 /**
@@ -68,6 +69,15 @@ public class GameCenterTest {
         CuT.removeAbandonedGames();
 
         assertEquals(CuT.getGame(id), null);
+    }
+
+    @Test
+    public void testGameNotAbandoned(){
+        // Set up
+        CuT.addGame(game);
+
+        // Analyze
+        when(game.isGameAbandoned()).thenReturn(false);
     }
 
     }
