@@ -6,6 +6,7 @@ import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.*;
 import com.webcheckers.util.Message;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
@@ -17,7 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
+@Tag("UI-tier")
 public class PostValidateMoveRouteTest {
 
     // Attributes holding mock objects

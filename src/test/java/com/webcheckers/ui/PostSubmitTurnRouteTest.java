@@ -4,11 +4,10 @@ import com.google.gson.Gson;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 
-import com.webcheckers.model.Game;
-import com.webcheckers.model.Player;
-import com.webcheckers.model.Turn;
+import com.webcheckers.model.*;
 import com.webcheckers.util.Message;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import spark.*;
@@ -16,15 +15,14 @@ import spark.*;
 import static com.webcheckers.ui.UIProtocol.GAME_ID_ATTR;
 import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  *  Unit Test suite for {@link PostSubmitTurnRoute} component
  * @author Quynh Duong, Sasha Persaud
  */
+@Tag("UI-tier")
 public class PostSubmitTurnRouteTest {
-
 
     private Request request;
     private Response response;
@@ -71,18 +69,22 @@ public class PostSubmitTurnRouteTest {
    @Test
     public void successfulSubmitTurn() {
        // Set up
+       Move move = new Move(new Position(0, 0), new Position(1, 1));
+       turn = new Turn();
+       turn.addValidMove(move);
+       BoardView board = mock(BoardView.class);
 
-       // The current game is not null
        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR))).thenReturn(game);
-       // There have been moves made
        when(game.getCurrentTurn()).thenReturn(turn);
-       when(game.getCurrentTurn().hasMoves()).thenReturn(true);
+       when(game.getActivePlayerBoard()).thenReturn(board);
+       when(board.isRequiredToJump(turn)).thenReturn(false);
+       doNothing().when(game).endTurn();
 
        // Invoke
        Object submit = CuT.handle(request, response);
 
        // Analyze
-       assertEquals(gson.toJson(Message.info("Successfully Submitted Turn")), submit);
+       assertEquals(gson.toJson(Message.info("Successfully Submitted Turn.")), submit);
     }
 
     /**
@@ -103,7 +105,7 @@ public class PostSubmitTurnRouteTest {
         Object submit = CuT.handle(request, response);
 
         // Analyze
-        assertEquals(gson.toJson(Message.error("Turn cannot be submitted")), submit);
+        assertEquals(gson.toJson(Message.error("Another jump can be made.")), submit);
     }
 
     /**
@@ -124,7 +126,7 @@ public class PostSubmitTurnRouteTest {
         Object submit = CuT.handle(request, response);
 
         // Analyze
-        assertEquals(gson.toJson(Message.error("Turn cannot be submitted")), submit);
+        assertEquals(gson.toJson(Message.error("Another jump can be made.")), submit);
     }
 
     /**
@@ -145,7 +147,7 @@ public class PostSubmitTurnRouteTest {
         Object submit = CuT.handle(request, response);
 
         // Analyze
-        assertEquals(gson.toJson(Message.error("Turn cannot be submitted")), submit);
+        assertEquals(gson.toJson(Message.error("Another jump can be made.")), submit);
     }
 
     /**
@@ -157,7 +159,7 @@ public class PostSubmitTurnRouteTest {
         Gson gson = new Gson();
         when(session.attribute(GAME_ID_ATTR)).thenReturn("1234");
         Object error = CuT.handle(request, response);
-        assertEquals(gson.toJson(Message.error("Turn cannot be submitted")), error);
+        assertEquals(gson.toJson(Message.error("Another jump can be made.")), error);
     }
 
     /**
@@ -168,6 +170,6 @@ public class PostSubmitTurnRouteTest {
         Gson gson = new Gson();
         when(session.attribute(GAME_ID_ATTR)).thenReturn(null);
         Object error = CuT.handle(request, response);
-        assertEquals(gson.toJson(Message.error("Turn cannot be submitted")), error);
+        assertEquals(gson.toJson(Message.error("Another jump can be made.")), error);
     }
 }

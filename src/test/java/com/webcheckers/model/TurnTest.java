@@ -69,5 +69,5 @@ public class TurnTest {
         assertEquals(0,CuT.validMoves.size());
     }
 
-    
+
 }
