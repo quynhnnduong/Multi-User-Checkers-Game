@@ -82,17 +82,25 @@ public class Replay {
         return maxTurns;
     }
 
-    public void executeReplayMove(Game.ActiveColor currentColor, Move move){
+    public void executeReplayMove(Game.ActiveColor currentColor, Move move, BoardView board, BoardView fakeWhite){
         Game game = getGame();
         BoardView redView = game.getRedView();
         BoardView whiteView = game.getWhiteView();
         if (currentColor == Game.ActiveColor.RED){
             //do the move on the red view
-            redView.makeMove(move);
-            whiteView.makeMove(move.getFlippedMove());
+            //redView.makeMove(move);
+            //whiteView.makeMove(move.getFlippedMove());
+            board.makeMove(move);
+            fakeWhite.makeMove(move.getFlippedMove());
         } else if (currentColor == Game.ActiveColor.WHITE){
-            whiteView.makeMove(move);
-            redView.makeMove(move.getFlippedMove());
+            //whiteView.makeMove(move);
+            //redView.makeMove(move.getFlippedMove());
+            board.makeMove(move.getFlippedMove());
+            fakeWhite.makeMove(move);
         }
+    }
+
+    public Replay makeCopy(){
+        return new Replay(gameId, turnsList, game);
     }
 }

@@ -226,6 +226,8 @@ public class WebServer {
 
     post(PREV_REPLAY_URL, new PostReplayPrevTurnRoute(templateEngine, replayLoader));
 
+    get(STOP_REPLAY_URL, new GetReplayStopWatchingRoute(templateEngine));
+
     LOG.config("WebServer is initialized.");
   }
 

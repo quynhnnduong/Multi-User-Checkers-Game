@@ -42,7 +42,7 @@ public class ReplaySaver {
     }
 
     public Replay getReplay(String gameId) {
-        return replays.get(gameId);
+        return replays.get(gameId).makeCopy();
     }
 
     public HashMap<String, Replay> getAllReplays(){

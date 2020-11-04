@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
+import static com.webcheckers.ui.UIProtocol.REPLAY_BOARD;
 
 public class GetReplayGameRoute implements Route {
 
@@ -31,11 +32,14 @@ public class GetReplayGameRoute implements Route {
         currentUser.startSpectating();
         //TODO add logic for getting the turn from the replay loader
         String gameId = request.queryParams("gameID");
+
         Replay replay = replayLoader.getReplay(gameId);
+
 
         Map<String, Object> modeOptionsAsJSON = new HashMap<>();
         BoardView redBoard = replay.getGame().getRedView();
         BoardView whiteBoard = replay.getGame().getWhiteView();
+        BoardView spectatingBoard = session.attribute(REPLAY_BOARD);
 
 
         //get the number of the current turn of the replay
@@ -45,8 +49,9 @@ public class GetReplayGameRoute implements Route {
             //set the mode options to the beginning state
             modeOptionsAsJSON.put("hasNext", true);
             modeOptionsAsJSON.put("hasPrevious", false);
-            redBoard.resetBoard();
-            whiteBoard.resetBoard();
+            //redBoard.resetBoard();
+            //whiteBoard.resetBoard();
+            spectatingBoard.resetBoard();
         } else {
             //check if there are moves left
             if (replay.getCurrentTurnNum() < replay.getMaxTurns()){
@@ -83,7 +88,7 @@ public class GetReplayGameRoute implements Route {
         vm.put("redPlayer", replay.getRed());
         vm.put("whitePlayer", replay.getWhite());
         vm.put("activeColor", Game.ActiveColor.RED);
-        vm.put("board", redBoard);
+        vm.put("board", spectatingBoard);
         //vm.put("message", )
 
         System.out.println("Reached here");

@@ -5,7 +5,7 @@ import com.webcheckers.model.*;
 import com.webcheckers.util.Message;
 import spark.*;
 
-import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
+import static com.webcheckers.ui.UIProtocol.*;
 
 public class PostReplayPrevTurnRoute implements Route {
 
@@ -37,20 +37,22 @@ public class PostReplayPrevTurnRoute implements Route {
         Game game = replay.getGame();
         BoardView redView = game.getRedView();
         BoardView whiteView = game.getWhiteView();
+        BoardView spectatorView = session.attribute(REPLAY_BOARD);
+        BoardView fakeWhite = session.attribute(REPLAY_WHITE_VIEW);
 
         //reverse it so it undoes what happened before
         Move undo = lastMove.getMove().getUndoMove();
-        replay.executeReplayMove(lastMove.getPlayerColor(), undo);
+        replay.executeReplayMove(lastMove.getPlayerColor(), undo, spectatorView, fakeWhite);
 
         //check if its a jump
         if(undo.doesMoveSkipOverSpace()){
             Game.ActiveColor currentColor = lastMove.getPlayerColor();
             //if it is place a piece back in the space that was jumped over
             if (currentColor == Game.ActiveColor.RED){
-                Space jumpedSpace = undo.getSpaceInMiddle(redView);
+                Space jumpedSpace = undo.getSpaceInMiddle(spectatorView);
                 jumpedSpace.placePiece(new Piece(Piece.Color.WHITE));
             } else if (currentColor == Game.ActiveColor.WHITE){
-                Space jumpedSpace = undo.getSpaceInMiddle(whiteView);
+                Space jumpedSpace = undo.getSpaceInMiddle(fakeWhite);
                 jumpedSpace.placePiece(new Piece(Piece.Color.RED));
             }
         }

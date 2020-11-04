@@ -8,7 +8,7 @@ import spark.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
+import static com.webcheckers.ui.UIProtocol.*;
 
 public class PostReplayNextTurnRoute implements Route {
 
@@ -38,7 +38,7 @@ public class PostReplayNextTurnRoute implements Route {
         replay.incrementTurn();
         if (replay.getCurrentTurnNum() >= 0){
             ReplayMove replayMove = replay.getCurrentTurn();
-            replay.executeReplayMove(replayMove.getPlayerColor(), replayMove.getMove());
+            replay.executeReplayMove(replayMove.getPlayerColor(), replayMove.getMove(), session.attribute(REPLAY_BOARD), session.attribute(REPLAY_WHITE_VIEW));
         }
 
         System.out.println("Over here " + replay.getCurrentTurnNum());

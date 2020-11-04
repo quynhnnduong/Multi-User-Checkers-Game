@@ -1,5 +1,7 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.model.BoardView;
+
 /**
  * A centralized protocol for accessing Route attributes. This class is a pure fabrication
  * 
@@ -18,4 +20,8 @@ public class UIProtocol {
     public static final String LEGIT_OPPONENT_ATTR = "legitOpponent";
 
     public static final String GAME_ID_ATTR = "gameID";
+
+    public static final String REPLAY_BOARD = "replayBoard";
+
+    public static final String REPLAY_WHITE_VIEW = "replayWhiteView";
 }
