@@ -43,20 +43,19 @@ public class GetSignInRouteTest {
     public void signedInView(){
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-
+        when(session.attribute(LEGIT_NAME_ATTR)).thenReturn(true);
+        
         // Invoke the test (ignore the output)
         try {
             CuT.handle(request, response);
         } catch (Exception e) {
             System.out.println("Route returned an exception during execution");
         }
+
         // Analyze the content passed into the render method
-        //   * model is a non-null Map
         testHelper.assertViewModelExists();
         testHelper.assertViewModelIsaMap();
-        //   * model contains all necessary View-Model data
         testHelper.assertViewModelAttribute(UIProtocol.LEGIT_NAME_ATTR, true);
-        //   * test view name
         testHelper.assertViewName("signIn.ftl");
     }
 

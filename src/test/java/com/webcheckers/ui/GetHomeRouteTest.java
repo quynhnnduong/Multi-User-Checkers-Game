@@ -125,8 +125,6 @@ public class GetHomeRouteTest {
 
         // Invoke
         CuT.handle(request, response);
-        
-
     }
 
 }
