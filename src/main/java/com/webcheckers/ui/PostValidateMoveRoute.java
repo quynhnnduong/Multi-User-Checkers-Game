@@ -44,7 +44,7 @@ public class PostValidateMoveRoute implements Route {
         return MoveType.INVALID;
     }
 
-    private Message validateSingleMove(Turn turn, Move move, BoardView currentBoard, Game.ActiveColor activeColor) {
+    Message validateSingleMove(Turn turn, Move move, BoardView currentBoard, Game.ActiveColor activeColor) {
         if (currentBoard.isRequiredToJump(activeColor, turn))
             return Message.error("INVALID MOVE: A jump move can be taken this turn.");
 

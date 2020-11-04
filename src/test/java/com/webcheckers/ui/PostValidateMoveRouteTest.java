@@ -14,6 +14,7 @@ import java.lang.reflect.Type;
 
 import static com.webcheckers.ui.UIProtocol.GAME_ID_ATTR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -69,26 +70,78 @@ public class PostValidateMoveRouteTest {
 
     }
 
-    // @Test
+    @Test
+    public void testValidateSingleMoveSuccessful() {
+        when(curView.isRequiredToJump(curColor, turn)).thenReturn(true);
+        Message result = CuT.validateSingleMove(turn, move, curView, curColor);
+        assertEquals(Message.error("INVALID MOVE: A jump move can be taken this turn."), result);
+    }
+
+    @Test
+    public void testValidateSingleMoveUnsuccessful() {
+        when(curView.isRequiredToJump(curColor, turn)).thenReturn(false);
+        Message result = CuT.validateSingleMove(turn, move, curView, curColor);
+        assertEquals(Message.info("Valid Move"), result);
+    }
+
+    @Test
     public void testGetMoveTypeForwardSingle() {
-        // Setup
-        when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
+        PostValidateMoveRoute.MoveType result1 = CuT.getMoveType(-1, 1);
+        PostValidateMoveRoute.MoveType result2 = CuT.getMoveType(-1, 5);
+        PostValidateMoveRoute.MoveType result3 = CuT.getMoveType(5, 1);
+        PostValidateMoveRoute.MoveType result4 = CuT.getMoveType(5, 5);
 
-        when(game.getActiveColor()).thenReturn(curColor);
-        when(game.getActivePlayerBoard()).thenReturn(curView);
+        assertEquals(PostValidateMoveRoute.MoveType.FORWARD_SINGLE, result1);
+        assertNotEquals(PostValidateMoveRoute.MoveType.FORWARD_SINGLE, result2);
+        assertNotEquals(PostValidateMoveRoute.MoveType.FORWARD_SINGLE, result3);
+        assertNotEquals(PostValidateMoveRoute.MoveType.FORWARD_SINGLE, result4);
 
-        String messageText = "{\"sampleMove\": { \"row\": 1,\"col\": 1}}";
-        when(request.queryParams("actionData")).thenReturn(messageText);
+    }
 
-        when(game.getCurrentTurn()).thenReturn(turn);
-        when(CuT.getMoveType(anyInt(), anyInt())).thenReturn(PostValidateMoveRoute.MoveType.FORWARD_SINGLE);
+    @Test
+    public void testGetMoveTypeForwardJump() {
+        PostValidateMoveRoute.MoveType result1 = CuT.getMoveType(-2, 2);
+        PostValidateMoveRoute.MoveType result2 = CuT.getMoveType(-2, 5);
+        PostValidateMoveRoute.MoveType result3 = CuT.getMoveType(5, 2);
+        PostValidateMoveRoute.MoveType result4 = CuT.getMoveType(5, 5);
 
-        // Invoke
-        Object result = CuT.handle(request, response);
+        assertEquals(PostValidateMoveRoute.MoveType.FORWARD_JUMP, result1);
+        assertNotEquals(PostValidateMoveRoute.MoveType.FORWARD_JUMP, result2);
+        assertNotEquals(PostValidateMoveRoute.MoveType.FORWARD_JUMP, result3);
+        assertNotEquals(PostValidateMoveRoute.MoveType.FORWARD_JUMP, result4);
+    }
 
-        // Analyze
-        assertEquals(gson.toJson(Message.info("Valid Move")), result);
+    @Test
+    public void testGetMoveTypeBackwardSingle() {
+        PostValidateMoveRoute.MoveType result1 = CuT.getMoveType(1, 1);
+        PostValidateMoveRoute.MoveType result2 = CuT.getMoveType(1, 5);
+        PostValidateMoveRoute.MoveType result3 = CuT.getMoveType(5, 1);
+        PostValidateMoveRoute.MoveType result4 = CuT.getMoveType(5, 5);
 
+        assertEquals(PostValidateMoveRoute.MoveType.BACKWARD_SINGLE, result1);
+        assertNotEquals(PostValidateMoveRoute.MoveType.BACKWARD_SINGLE, result2);
+        assertNotEquals(PostValidateMoveRoute.MoveType.BACKWARD_SINGLE, result3);
+        assertNotEquals(PostValidateMoveRoute.MoveType.BACKWARD_SINGLE, result4);
+    }
+
+    @Test
+    public void testGetMoveTypeBackwardJump() {
+        PostValidateMoveRoute.MoveType result1 = CuT.getMoveType(2, 2);
+        PostValidateMoveRoute.MoveType result2 = CuT.getMoveType(2, 5);
+        PostValidateMoveRoute.MoveType result3 = CuT.getMoveType(5, 2);
+        PostValidateMoveRoute.MoveType result4 = CuT.getMoveType(5, 5);
+
+        assertEquals(PostValidateMoveRoute.MoveType.BACKWARD_JUMP, result1);
+        assertNotEquals(PostValidateMoveRoute.MoveType.BACKWARD_JUMP, result2);
+        assertNotEquals(PostValidateMoveRoute.MoveType.BACKWARD_JUMP, result3);
+        assertNotEquals(PostValidateMoveRoute.MoveType.BACKWARD_JUMP, result4);
+
+    }
+
+    @Test
+    public void testGetMoveTypeInvalid() {
+        PostValidateMoveRoute.MoveType result = CuT.getMoveType(5, 5);
+        assertEquals(PostValidateMoveRoute.MoveType.INVALID, result);
     }
 
     //@Test
