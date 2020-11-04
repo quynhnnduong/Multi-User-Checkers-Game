@@ -98,10 +98,11 @@ public class BoardView implements Iterable<Row> {
 
         if (Math.abs(move.getColDifference()) == 2 && Math.abs(move.getRowDifference()) == 2) {
 
-            //remove the captured piece
+            // Gets the Position of the captured Piece
             int capturedCell = (start.getCell() + end.getCell()) / 2;
             int capturedRow = (start.getRow() + end.getRow()) / 2;
 
+            // Removes the captured Piece from the board
             board.get(capturedRow).getSpace(capturedCell).removePiece();
         }
 
@@ -176,37 +177,54 @@ public class BoardView implements Iterable<Row> {
         return false;
     }
 
-    public boolean isRequiredToJump(Turn turn) {
+    private boolean checkJumpPossibilities(Piece currentPiece, int row, int space) {
 
-        if (!turn.hasMoves() || Math.abs(turn.getLastMove().getRowDifference()) == 2) {
+        // Forward Jump
+        if (row > 1) {
+            boolean canJumpLeft = isJumpPossible(currentPiece, row, space, JumpType.FORWARD_LEFT);
+            boolean canJumpRight = isJumpPossible(currentPiece, row, space, JumpType.FORWARD_RIGHT);
+
+            if (canJumpLeft || canJumpRight)
+                return true;
+        }
+
+        // Backward Jump
+        if (currentPiece.getType() == Piece.Type.KING && row < (BOARD_SIZE - 2)) {
+            boolean canJumpLeft = isJumpPossible(currentPiece, row, space, JumpType.BACKWARD_LEFT);
+            boolean canJumpRight = isJumpPossible(currentPiece, row, space, JumpType.BACKWARD_RIGHT);
+
+            return canJumpLeft || canJumpRight;
+        }
+
+        return false;
+    }
+
+    public boolean isRequiredToJump(Game.ActiveColor activeColor, Turn turn) {
+        Piece.Color activePieceColor = (activeColor == Game.ActiveColor.RED ? Piece.Color.RED : Piece.Color.WHITE);
+
+        if (!turn.hasMoves()) {
 
             for (int row = 0; row < BOARD_SIZE; row++) {
 
                 for (int space = 0; space < BOARD_SIZE; space++) {
                     Piece currentPiece = getPiece(row, space);
 
-                    if (currentPiece != null) {
-
-                        // Forward Jump
-                        if (row > 1) {
-                            boolean canJumpLeft = isJumpPossible(currentPiece, row, space, JumpType.FORWARD_LEFT);
-                            boolean canJumpRight = isJumpPossible(currentPiece, row, space, JumpType.FORWARD_RIGHT);
-
-                            if (canJumpLeft || canJumpRight)
-                                return true;
-                        }
-
-                        // Backward Jump
-                        if (currentPiece.getType() == Piece.Type.KING && row < (BOARD_SIZE - 2)) {
-                            boolean canJumpLeft = isJumpPossible(currentPiece, row, space, JumpType.BACKWARD_LEFT);
-                            boolean canJumpRight = isJumpPossible(currentPiece, row, space, JumpType.BACKWARD_RIGHT);
-
-                            if (canJumpLeft || canJumpRight)
-                                return true;
-                        }
-                    }
+                    if (currentPiece != null && currentPiece.getColor() == activePieceColor &&
+                            checkJumpPossibilities(currentPiece, row, space))
+                        return true;
                 }
             }
+        }
+        else if (Math.abs(turn.getLastMove().getRowDifference()) == 2) {
+            Move lastMove = turn.getLastMove();
+
+            int row = lastMove.getEnd().getRow();
+            int space = lastMove.getEnd().getCell();
+
+            Piece currentPiece = getPiece(row, space);
+
+            return currentPiece != null && currentPiece.getColor() == activePieceColor &&
+                    checkJumpPossibilities(currentPiece, row, space);
         }
 
         return false;

@@ -44,8 +44,8 @@ public class PostValidateMoveRoute implements Route {
         return MoveType.INVALID;
     }
 
-    private Message validateSingleMove(Turn turn, Move move, BoardView currentBoard) {
-        if (currentBoard.isRequiredToJump(turn))
+    private Message validateSingleMove(Turn turn, Move move, BoardView currentBoard, Game.ActiveColor activeColor) {
+        if (currentBoard.isRequiredToJump(activeColor, turn))
             return Message.error("INVALID MOVE: A jump move can be taken this turn.");
 
         currentBoard.makeMove(move);
@@ -89,11 +89,11 @@ public class PostValidateMoveRoute implements Route {
         Piece currentPiece;
         Message message = null;
 
-        if (!turn.hasMoves() || currentBoard.isRequiredToJump(turn)) {
+        if (!turn.hasMoves() || currentBoard.isRequiredToJump(activeColor, turn)) {
 
             switch (moveType) {
                 case FORWARD_SINGLE:
-                    message = validateSingleMove(turn, move, currentBoard);
+                    message = validateSingleMove(turn, move, currentBoard, activeColor);
                     break;
                 case FORWARD_JUMP:
                     if (colDifference == -2)
@@ -105,7 +105,7 @@ public class PostValidateMoveRoute implements Route {
                     currentPiece = currentBoard.getPiece(move.getStart().getRow(), move.getStart().getCell());
 
                     if (currentPiece.getType() == Piece.Type.KING)
-                        message = validateSingleMove(turn, move, currentBoard);
+                        message = validateSingleMove(turn, move, currentBoard, activeColor);
                     else
                         message = Message.error("INVALID MOVE: Only kings can move backwards");
                     break;

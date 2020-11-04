@@ -27,7 +27,7 @@ public class PostSubmitTurnRoute implements Route {
 
         if (game != null && game.getCurrentTurn().hasMoves()) {
 
-            if (!game.getActivePlayerBoard().isRequiredToJump(game.getCurrentTurn())) {
+            if (!game.getActivePlayerBoard().isRequiredToJump(game.getActiveColor(), game.getCurrentTurn())) {
                 game.endTurn();
                 return new Gson().toJson(Message.info("Successfully Submitted Turn."));
             }
