@@ -7,92 +7,128 @@ import com.webcheckers.util.Message;
 import spark.*;
 
 import static com.webcheckers.ui.UIProtocol.GAME_ID_ATTR;
-import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
 
 /**
  * This class handles the /validateMove route
  * Used for allowing player moves to happen (and later validating if the move was legal)
  * Added Jump move functionality
+ *
  * @author Joel Clyne, Dmitry Selin
  */
 public class PostValidateMoveRoute implements Route {
 
     private final GameCenter gameCenter;
 
+    private enum MoveType {
+        FORWARD_SINGLE,
+        FORWARD_JUMP,
+        BACKWARD_SINGLE,
+        BACKWARD_JUMP,
+        INVALID
+    }
+
     public PostValidateMoveRoute(GameCenter gameCenter) { this.gameCenter = gameCenter; }
+
+    private MoveType getMoveType(int rowDifference, int colDifference) {
+        int absColDifference = Math.abs(colDifference);
+
+        if (rowDifference == -1 && absColDifference == 1)
+            return MoveType.FORWARD_SINGLE;
+        else if (rowDifference == -2 && absColDifference == 2)
+            return MoveType.FORWARD_JUMP;
+        else if (rowDifference == 1 && absColDifference == 1)
+            return MoveType.BACKWARD_SINGLE;
+        else if (rowDifference == 2 && absColDifference == 2)
+            return MoveType.BACKWARD_JUMP;
+
+        return MoveType.INVALID;
+    }
+
+    private Message validateSingleMove(Turn turn, Move move, BoardView currentBoard) {
+        if (currentBoard.isRequiredToJump(turn))
+            return Message.error("INVALID MOVE: A jump move can be taken this turn.");
+
+        currentBoard.makeMove(move);
+        turn.addValidMove(move);
+        return Message.info("Valid Move");
+    }
+
+    private Message validateJumpMove(Turn turn, Move move, BoardView currentBoard, BoardView.JumpType jumpType) {
+        int row = move.getStart().getRow();
+        int space = move.getStart().getCell();
+        Piece currentPiece = currentBoard.getPiece(row, space);
+
+        if (!currentBoard.isJumpPossible(currentPiece, row, space, jumpType))
+            return Message.error("INVALID MOVE: Not a valid jump move.");
+
+        currentBoard.makeMove(move);
+        turn.addValidMove(move);
+        return Message.info("Valid Move");
+    }
 
     @Override
     public Object handle(Request request, Response response) {
         final Session session = request.session();
+        Game game = gameCenter.getGame(session.attribute(GAME_ID_ATTR));
+
+        Game.ActiveColor activeColor = game.getActiveColor();
+        BoardView currentBoard = game.getActivePlayerBoard();
 
         //get the move from actionData as JSON string
         String moveJSON = request.queryParams("actionData");
 
         //convert moveJSON to move Object using Gson
         Move move = new Gson().fromJson(moveJSON, Move.class);
-        Turn turn = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getCurrentTurn();
+        Turn turn = game.getCurrentTurn();
 
-        Position startPosition = (!turn.hasMoves() ? move.getStart() : turn.getFirstMove().getStart());
-        Position endPosition = move.getEnd();
+        int rowDifference = move.getRowDifference();
+        int colDifference = move.getColDifference();
 
-        int rowDifference = Math.abs(endPosition.getCell() - startPosition.getCell());
-        int colDifference = startPosition.getRow() - endPosition.getRow();
+        MoveType moveType = getMoveType(rowDifference, colDifference);
 
-        BoardView redView = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getRedView();
-        BoardView whiteView = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getWhiteView();
+        Piece currentPiece;
+        Message message = null;
 
-        Game.ActiveColor currentColor = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getActiveColor();
+        if (!turn.hasMoves() || currentBoard.isRequiredToJump(turn)) {
 
-        BoardView currentView;
-        if (currentColor == Game.ActiveColor.RED) {
-            currentView = redView;
-        } else {
-            currentView = whiteView;
-        }
+            switch (moveType) {
+                case FORWARD_SINGLE:
+                    message = validateSingleMove(turn, move, currentBoard);
+                    break;
+                case FORWARD_JUMP:
+                    if (colDifference == -2)
+                        message = validateJumpMove(turn, move, currentBoard, BoardView.JumpType.FORWARD_LEFT);
+                    else
+                        message = validateJumpMove(turn, move, currentBoard, BoardView.JumpType.FORWARD_RIGHT);
+                    break;
+                case BACKWARD_SINGLE:
+                    currentPiece = currentBoard.getPiece(move.getStart().getRow(), move.getStart().getCell());
 
-        Message message;
+                    if (currentPiece.getType() == Piece.Type.KING)
+                        message = validateSingleMove(turn, move, currentBoard);
+                    else
+                        message = Message.error("INVALID MOVE: Only kings can move backwards");
+                    break;
+                case BACKWARD_JUMP:
+                    currentPiece = currentBoard.getPiece(move.getStart().getRow(), move.getStart().getCell());
 
-        if (turn.hasMoves())
-            message = Message.error("INVALID MOVE: Can only move once");
-        else if (colDifference < 1)
-            message = Message.error("INVALID MOVE: Cannot move backwards");
-        else if (rowDifference != 1 || colDifference > 1) {
-            //check if the move was a jump
-            if (rowDifference == 2 && colDifference == 2){
-                int capturedCell = (startPosition.getCell() + endPosition.getCell()) / 2;
-                int capturedRow = (startPosition.getRow() + endPosition.getRow()) / 2 ;
-                Space jumpedSpace = null;
-                //get the view of the active player's turn
-                jumpedSpace = currentView.getBoard().get(capturedRow).getSpace(capturedCell);
-                //check if there was a piece on the jumped space
-                if (jumpedSpace.getPiece() != null) {
-                    //if there was the move was a jump
-                    Piece.Color pieceColor = jumpedSpace.getPiece().getColor();
-                    //Game.ActiveColor playerColor = gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getActiveColor();
-                    //now check to see if a player is trying to jump over their own piece
-                    if ((pieceColor == Piece.Color.RED && currentColor == Game.ActiveColor.RED) || (pieceColor == Piece.Color.WHITE && currentColor == Game.ActiveColor.WHITE)) {
-                        //if they are they can't do that
-                        message = Message.error("INVALID MOVE: Cannot capture your own piece");
-                    } else {
-                        message = Message.info("Valid Move");
-                        turn.addValidMove(move);
+                    if (currentPiece.getType() == Piece.Type.KING) {
+
+                        if (colDifference == -2)
+                            message = validateJumpMove(turn, move, currentBoard, BoardView.JumpType.BACKWARD_LEFT);
+                        else
+                            message = validateJumpMove(turn, move, currentBoard, BoardView.JumpType.BACKWARD_RIGHT);
                     }
-                } else {
-                    message = Message.error("INVALID MOVE: Not directly diagonal");
-                }
+                    else
+                        message = Message.error("INVALID MOVE: Only kings can move backwards");
 
-            } else {
-                message = Message.error("INVALID MOVE: Not directly diagonal");
+                    break;
+                case INVALID:
+                    message = Message.error("INVALID MOVE: Not diagonal");
             }
-                    //board.get(capturedRow).getSpace(capturedCell);
-        } else if(currentView.checkForJumpAcrossBoard(currentColor)){
-            // check if tbe player is able to jump and didn't
-            message = Message.error("You have an available move, so just do it");
         }
-        else {
-            message = Message.info("Valid Move");
-            turn.addValidMove(move);
-        }
+        else
+            message = Message.error("INVALID MOVE: Can only move once");
 
         return new Gson().toJson(message);
     }

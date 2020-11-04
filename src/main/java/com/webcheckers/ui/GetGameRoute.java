@@ -134,16 +134,24 @@ public class GetGameRoute implements Route {
             session.attribute(GAME_ID_ATTR, gameID);
         }
 
+        Game game = gameCenter.getGame(session.attribute(GAME_ID_ATTR));
+
         // Checks if the currentPlayer's opponent has prematurely left the game
-        if (!opponent.inGame()) {
+        if (game.getWinner() != null || !opponent.inGame()) {
             modeOptionsAsJSON.put("isGameOver", true);
-            modeOptionsAsJSON.put("gameOverMessage", (opponent.getName() + " resigned."));
+
+            Player winner = game.getWinner();
+
+            if (winner == null)
+                modeOptionsAsJSON.put("gameOverMessage", (opponent.getName() + " resigned."));
+            else if (winner.equals(currentPlayer))
+                modeOptionsAsJSON.put("gameOverMessage", ("You captured all pieces."));
+            else
+                modeOptionsAsJSON.put("gameOverMessage", (winner.getName() + " captured all pieces."));
 
             currentPlayer.exitGame();
             playerLobby.addPlayer(currentPlayer);
         }
-
-        Game game = gameCenter.getGame(session.attribute(GAME_ID_ATTR));
 
         // Creates the HashMap to house all the freemarker components
         Map<String, Object> vm = new HashMap<>();
