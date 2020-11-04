@@ -88,7 +88,7 @@ public class GetGameRoute implements Route {
         // Checks if the opponent has not been matched with currentPlayer (should not happen)
         if (opponent == null) {
             response.redirect(WebServer.HOME_URL);
-            return halt();
+            // return halt();
         }
 
         // Logs a FINER invocation message
@@ -100,7 +100,7 @@ public class GetGameRoute implements Route {
             // Redirect and inform currentPlayer that their opponent is playing in a different game
             session.attribute(LEGIT_OPPONENT_ATTR, false);
             response.redirect(WebServer.HOME_URL);
-            return halt();
+            // return halt();
         }
 
         // Start a new game

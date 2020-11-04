@@ -44,7 +44,7 @@ public class GetSignInRouteTest {
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
         when(session.attribute(LEGIT_NAME_ATTR)).thenReturn(true);
-        
+
         // Invoke the test (ignore the output)
         try {
             CuT.handle(request, response);

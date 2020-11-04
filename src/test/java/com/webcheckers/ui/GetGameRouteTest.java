@@ -54,6 +54,7 @@ public class GetGameRouteTest {
         player1 = mock(Player.class);
         player2 = mock(Player.class);
         player1.setOpponent(player2);
+        player2.setOpponent(player1);
 
 
         // create a unique CuT for each test
@@ -117,15 +118,17 @@ public class GetGameRouteTest {
 
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        when(player1.inGame()).thenReturn(true);
+
         when(session.attribute(UIProtocol.GAME_ID_ATTR)).thenReturn(gameID);
-        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
         when(session.attribute(UIProtocol.LEGIT_OPPONENT_ATTR)).thenReturn(player2);
         when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
         when(player1.isCalledForGame()).thenReturn(true);
         when(playerLobby.getPlayer(request.queryParams("opponent"))).thenReturn(player2);
         when(gameCenter.getGame(gameID)).thenReturn(game);
+        when(player2.getOpponent()).thenReturn(player1);
 
-        assertFalse(player1.inGame());
+        assertTrue(player1.inGame());
         assertTrue(player1.isCalledForGame());
         CuT.handle(request, response);
 
