@@ -69,24 +69,5 @@ public class TurnTest {
         assertEquals(0,CuT.validMoves.size());
     }
 
-
-    @Test
-    public void testGetFirstMove(){
-        CuT.addValidMove(move);
-        CuT.addValidMove(move);
-        assertTrue(CuT.hasMoves());
-
-        Move firstMove = CuT.getFirstMove();
-
-       assertEquals(move, firstMove);
-    }
-
-    @Test
-    public void testGetFirstMoveFail(){
-        assertFalse(CuT.hasMoves());
-        Move firstMove =  CuT.getFirstMove();
-        assertNull(firstMove);
-    }
-
-
+    
 }
