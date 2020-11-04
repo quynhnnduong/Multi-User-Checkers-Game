@@ -63,11 +63,13 @@ public class Move {
     /**
      * @return the difference in columns between the start and end positions of the move
      */
-    public int getRowDifference(){ return getEnd().getRow() - getStart().getRow(); }
+    public int getRowDifference() { return getEnd().getRow() - getStart().getRow(); }
 
     /**
      *
      * @return the difference in rows between the start and end positions of the move
      */
-    public int getColDifference(){ return getEnd().getCell() - getStart().getCell(); }
+    public int getColDifference() { return getEnd().getCell() - getStart().getCell(); }
+
+    public boolean isJumpMove() { return Math.abs(getColDifference()) == 2; }
 }
