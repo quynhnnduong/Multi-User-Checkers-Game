@@ -59,4 +59,15 @@ public class Move {
 
         return new Move(newStart, newEnd);
     }
+
+    /**
+     * @return the difference in columns between the start and end positions of the move
+     */
+    public int getRowDifference(){ return getEnd().getRow() - getStart().getRow(); }
+
+    /**
+     *
+     * @return the difference in rows between the start and end positions of the move
+     */
+    public int getColDifference(){ return getEnd().getCell() - getStart().getCell(); }
 }

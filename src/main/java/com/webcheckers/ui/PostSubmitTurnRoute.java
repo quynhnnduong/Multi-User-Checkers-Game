@@ -26,10 +26,13 @@ public class PostSubmitTurnRoute implements Route {
         Game game = gameCenter.getGame(session.attribute(GAME_ID_ATTR));
 
         if (game != null && game.getCurrentTurn().hasMoves()) {
-            game.endTurn();
-            return new Gson().toJson(Message.info("Successfully Submitted Turn"));
+
+            if (!game.getActivePlayerBoard().isRequiredToJump(game.getCurrentTurn())) {
+                game.endTurn();
+                return new Gson().toJson(Message.info("Successfully Submitted Turn."));
+            }
         }
 
-        return new Gson().toJson(Message.error("Turn cannot be submitted"));
+        return new Gson().toJson(Message.error("Another jump can be made."));
     }
 }

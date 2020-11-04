@@ -109,7 +109,14 @@ public class Game {
 
         // Cannot switch turns if a Player has resigned
         if (!hasPlayerResigned()) {
-            Move move = getCurrentTurn().getFirstMove();
+
+            for (Move move : getCurrentTurn().getAllMoves()) {
+
+                if (activeColor == ActiveColor.RED)
+                    whiteView.makeMove(move.getFlippedMove());
+                else
+                    redView.makeMove(move.getFlippedMove());
+            }
 
             if (activeColor == ActiveColor.RED) {
 
@@ -119,18 +126,12 @@ public class Game {
                 // Updates the Player's states
                 redPlayer.endTurn();
                 whitePlayer.startTurn();
-
-                redView.makeMove(move);
-                whiteView.makeMove(move.getFlippedMove());
             }
             else {
                 activeColor = ActiveColor.RED;
 
                 redPlayer.startTurn();
                 whitePlayer.endTurn();
-
-                redView.makeMove(move.getFlippedMove());
-                whiteView.makeMove(move);
             }
 
             // A new Turn is added for the next Player's Turn
@@ -174,4 +175,6 @@ public class Game {
      * @return the ID of the Game
      */
     public String getId(){ return id; }
+
+    public BoardView getActivePlayerBoard() { return (activeColor == ActiveColor.RED ? redView : whiteView); }
 }

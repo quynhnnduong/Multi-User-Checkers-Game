@@ -2,7 +2,9 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameCenter;
+import com.webcheckers.model.BoardView;
 import com.webcheckers.model.Game;
+import com.webcheckers.model.Move;
 import com.webcheckers.model.Turn;
 import com.webcheckers.util.Message;
 import spark.Request;
@@ -52,7 +54,9 @@ public class PostBackupMove implements Route {
 
         // If this Player has made a valid Move this Turn - remove it
         if (currentTurn.hasMoves()) {
+            game.getActivePlayerBoard().recoverMove(currentTurn.getLastMove());
             currentTurn.removeLastValidMove();
+
             return new Gson().toJson(Message.info("Removed last valid move"));
         }
 

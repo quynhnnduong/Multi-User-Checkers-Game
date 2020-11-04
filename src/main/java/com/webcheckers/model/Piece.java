@@ -10,7 +10,7 @@ package com.webcheckers.model;
 public class Piece {
 
     /** An enumeration that distinguishes between the two types of checkers Pieces: King and Single */
-    enum Type{
+    public enum Type{
         SINGLE,
         KING
     }
@@ -51,4 +51,15 @@ public class Piece {
      * @return an enumeration of the checkers Piece's type
      */
     public Type getType(){ return type; }
+
+    public void makeKing(){
+        type = Type.KING;
+    }
+
+    public boolean sameColorAs(Piece piece) {
+        if (piece != null)
+            return this.getColor() == piece.getColor();
+
+        return false;
+    }
 }
