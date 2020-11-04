@@ -14,13 +14,11 @@ import java.lang.reflect.Type;
 
 import static com.webcheckers.ui.UIProtocol.GAME_ID_ATTR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 @Tag("UI-tier")
 public class PostValidateMoveRouteTest {
-
     // Attributes holding mock objects
     private Request request;
     private Response response;
@@ -56,29 +54,45 @@ public class PostValidateMoveRouteTest {
         turn = mock(Turn.class);
         start = mock(Position.class);
         end = mock(Position.class);
-        gson = new Gson();
         move = mock(Move.class);
         rowDiff = 0;
         colDiff = 0;
         redView = mock(BoardView.class);
         whiteView = mock(BoardView.class);
         curView = mock(BoardView.class);
-        // curColor = Game.ActiveColor.RED;
+        curColor = Game.ActiveColor.RED;
 
         when(request.session()).thenReturn(session);
 
         CuT = new PostValidateMoveRoute(gameCenter);
+        gson = new Gson();
+
     }
 
     // @Test
-    public void testIfTurnHasMoves() {
-//        String messageText = "{\"sampleMove\": { \"row\": 1,\"col\": 1}}";
-//        when(request.queryParams("actionData")).thenReturn(messageText);
-//        final TemplateEngineTester testHelper = new TemplateEngineTester();
-//        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-//        Object validMessage = CuT.handle(request, response);
-//        assertEquals(messageText, validMessage);
+    public void testGetMoveTypeForwardSingle() {
+        // Setup
+        when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
 
+        when(game.getActiveColor()).thenReturn(curColor);
+        when(game.getActivePlayerBoard()).thenReturn(curView);
+
+        String messageText = "{\"sampleMove\": { \"row\": 1,\"col\": 1}}";
+        when(request.queryParams("actionData")).thenReturn(messageText);
+
+        when(game.getCurrentTurn()).thenReturn(turn);
+        when(CuT.getMoveType(anyInt(), anyInt())).thenReturn(PostValidateMoveRoute.MoveType.FORWARD_SINGLE);
+
+        // Invoke
+        Object result = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.info("Valid Move")), result);
+
+    }
+
+    //@Test
+    public void testIfTurnHasMoves() {
         //  Set up
         String messageText = "{\"sampleMove\": { \"row\": 1,\"col\": 1}}";
         when(request.queryParams("actionData")).thenReturn(messageText);

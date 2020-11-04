@@ -82,7 +82,7 @@ public class GetHomeRoute implements Route {
       // Check if currentPlayer has been called to a game
       if (currentPlayer.inGame()) {
         response.redirect(WebServer.GAME_URL + "?opponent=" + currentPlayer.getOpponent().getName());
-        return halt();
+        // return halt();
       }
 
       if (session.attribute(GAME_ID_ATTR) != null)

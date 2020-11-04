@@ -19,7 +19,7 @@ public class PostValidateMoveRoute implements Route {
 
     private final GameCenter gameCenter;
 
-    private enum MoveType {
+    enum MoveType {
         FORWARD_SINGLE,
         FORWARD_JUMP,
         BACKWARD_SINGLE,
@@ -29,7 +29,7 @@ public class PostValidateMoveRoute implements Route {
 
     public PostValidateMoveRoute(GameCenter gameCenter) { this.gameCenter = gameCenter; }
 
-    private MoveType getMoveType(int rowDifference, int colDifference) {
+    MoveType getMoveType(int rowDifference, int colDifference) {
         int absColDifference = Math.abs(colDifference);
 
         if (rowDifference == -1 && absColDifference == 1)
