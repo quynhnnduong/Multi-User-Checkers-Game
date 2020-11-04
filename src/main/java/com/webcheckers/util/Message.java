@@ -113,4 +113,14 @@ public final class Message {
     return "{Msg " + type + " '" + text + "'}";
   }
 
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Message) {
+      Message otherMsg = (Message) obj;
+      return otherMsg.getText().equals(this.getText()) && otherMsg.getType() == this.getType();
+    }
+    return false;
+  }
+
 }

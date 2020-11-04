@@ -78,9 +78,6 @@ public class PostSignInRouteTest {
         testHelper.assertViewModelExists();
         testHelper.assertViewModelIsaMap();
         testHelper.assertViewModelAttribute("title", "Welcome!");
-
-        // TODO: check for a shallow comparison assert in TemplateEngineTester (or just get rid of it)
-
         testHelper.assertViewModelAttribute("message", Message.info("Welcome to the world of online Checkers."));
         // testHelper.assertViewModelAttribute("currentUser", );
 
