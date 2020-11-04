@@ -158,7 +158,6 @@ public class GetGameRoute implements Route {
             else if (winner.equals(currentPlayer)) {
                 modeOptionsAsJSON.put("gameOverMessage", ("You captured all pieces."));
                 replaySaver.saveReplay(game);
-
             }
             else {
                 modeOptionsAsJSON.put("gameOverMessage", (winner.getName() + " captured all pieces."));

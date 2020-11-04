@@ -13,7 +13,7 @@ public class ReplaySaver {
 
 
     public void saveReplay(Game game){
-        ArrayList<String> replayText = convertGameToList(game);
+        ArrayList<ReplayMove> replayText = convertGameToList(game);
         replays.put(game.getId(), new Replay(game.getId(), replayText, game));
 
     }
@@ -24,7 +24,7 @@ public class ReplaySaver {
      * @param
      * @return
      */
-    public ArrayList<String> convertGameToList(Game game){
+    public ArrayList<ReplayMove> convertGameToList(Game game){
         return game.turnsToList();
 
         //for (String id : replays.keySet()){

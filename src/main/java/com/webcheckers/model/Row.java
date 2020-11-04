@@ -15,7 +15,11 @@ public class Row implements Iterable<Space> {
     private final int index;
 
     /** The ArrayList that houses the eight spaces that represent a Row */
-    private final ArrayList<Space> row;
+    private ArrayList<Space> row;
+
+    private final SpaceColor leadingColor;
+
+    private final Piece.Color bottomColor;
 
     /**
      * Creates a new Row object with a specified index within a checkers
@@ -30,6 +34,9 @@ public class Row implements Iterable<Space> {
         //row = generateRow(leadingColor, bottomColor);
         //TODO remove debug after testing
         row = generateDebugRow(leadingColor, bottomColor);
+
+        this.leadingColor = leadingColor;
+        this.bottomColor = bottomColor;
     }
 
     /**
@@ -148,5 +155,17 @@ public class Row implements Iterable<Space> {
         }
 
         return row;
+    }
+
+    public Piece.Color getBottomColor() {
+        return bottomColor;
+    }
+
+    public SpaceColor getLeadingColor() {
+        return leadingColor;
+    }
+
+    public void setRow(ArrayList<Space> spaces){
+        row = spaces;
     }
 }

@@ -42,11 +42,12 @@ public class ReplayLoader {
         return false;
     }
 
-    public String getTurn(String gameId, int i){
+    public ReplayMove getTurn(String gameId, int i){
         return replaySaver.getReplay(gameId).getTurn(i);
     }
 
 
+    /**
     public void printReplayById(String gameId){
         String replayText = replayList.get(gameId);
         for (Replay replay : replaySaver.getAllReplays().values()){
@@ -57,6 +58,7 @@ public class ReplayLoader {
             }
         }
     }
+     */
 
     public Replay getReplay(String gameId){
         return replaySaver.getReplay(gameId);

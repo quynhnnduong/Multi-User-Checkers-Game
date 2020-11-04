@@ -1,10 +1,7 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
-import com.webcheckers.model.Game;
-import com.webcheckers.model.Player;
-import com.webcheckers.model.Replay;
-import com.webcheckers.model.ReplayLoader;
+import com.webcheckers.model.*;
 import spark.*;
 
 import java.util.HashMap;
@@ -36,17 +33,46 @@ public class GetReplayGameRoute implements Route {
         String gameId = request.queryParams("gameID");
         Replay replay = replayLoader.getReplay(gameId);
 
-
-        //get the current turn of the replay
-        replay.getCurrentTurn();
-
-        //set the mode options to the beginning state
         Map<String, Object> modeOptionsAsJSON = new HashMap<>();
-        modeOptionsAsJSON.put("hasNext", true);
-        modeOptionsAsJSON.put("hasPrevious", false);
+        BoardView redBoard = replay.getGame().getRedView();
+        BoardView whiteBoard = replay.getGame().getWhiteView();
+
+
+        //get the number of the current turn of the replay
+        int turnNum = replay.getCurrentTurnNum();
+
+        if (turnNum == -1){
+            //set the mode options to the beginning state
+            modeOptionsAsJSON.put("hasNext", true);
+            modeOptionsAsJSON.put("hasPrevious", false);
+            redBoard.resetBoard();
+            whiteBoard.resetBoard();
+        } else {
+            //check if there are moves left
+            if (replay.getCurrentTurnNum() < replay.getMaxTurns()){
+                modeOptionsAsJSON.put("hasNext", true);
+            } else {
+                modeOptionsAsJSON.put("hasNext", false);
+            }
+
+            if (replay.getCurrentTurnNum() > 0){
+                modeOptionsAsJSON.put("hasPrevious", true);
+            } else {
+                modeOptionsAsJSON.put("hasPrevious", false);
+            }
+        }
+
+
+
+
 
         // Creates the HashMap to house all the freemarker components
         Map<String, Object> vm = new HashMap<>();
+
+        //reset the board for both players
+
+
+
 
         // Adds all freemarker components to the ViewMarker HashMap
         vm.put("title", "Game");
@@ -57,7 +83,7 @@ public class GetReplayGameRoute implements Route {
         vm.put("redPlayer", replay.getRed());
         vm.put("whitePlayer", replay.getWhite());
         vm.put("activeColor", Game.ActiveColor.RED);
-        vm.put("board", replay.getGame().getRedView());
+        vm.put("board", redBoard);
         //vm.put("message", )
 
         System.out.println("Reached here");

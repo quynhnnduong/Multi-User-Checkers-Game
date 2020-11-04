@@ -13,6 +13,12 @@ public class Turn {
     /** An ArrayList of all the validated Moves that took place (or currently taking place) on a Player's Turn */
     private final ArrayList<Move> validMoves = new ArrayList<>();
 
+    private Game.ActiveColor playerColor;
+
+    public Turn(Game.ActiveColor playerColor){
+        this.playerColor = playerColor;
+    }
+
     /**
      * Simply appends a validated Move to the end of validMoves.
      *
@@ -72,5 +78,9 @@ public class Turn {
             fullTurnsString.append("-\n");
         }
         return fullTurnsString.toString();
+    }
+
+    public Game.ActiveColor getPlayerColor() {
+        return playerColor;
     }
 }

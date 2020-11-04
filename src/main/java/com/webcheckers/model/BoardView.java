@@ -308,4 +308,19 @@ public class BoardView implements Iterable<Row> {
         return board.get(position.getRow()).getSpace(position.getCell()).getPiece();
     }
 
+    public void resetBoard(){
+        //remove all the pieces
+        for (Row row: board){
+            for (Space space : row.getSpaces()){
+                space.removePiece();
+            }
+        }
+        //Place the pieces in the appropriate place
+        for (Row row: board){
+            //row.setRow(row.generateRow(row.getLeadingColor(), row.getBottomColor()));
+            //TODO re add regular generate row
+            row.setRow(row.generateDebugRow(row.getLeadingColor(), row.getBottomColor()));
+        }
+    }
+
 }

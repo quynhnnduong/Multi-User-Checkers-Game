@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.model.Replay;
 import com.webcheckers.model.ReplayLoader;
 import com.webcheckers.model.ReplaySaver;
 import spark.TemplateEngine;
@@ -90,6 +89,10 @@ public class WebServer {
   public static final String BACKUP_URL = "/backupMove";
 
   public static final String WATCH_REPLAY_URL ="/replay/game";
+
+  public static final String NEXT_REPLAY_URL ="/replay/nextTurn";
+
+  public static final String PREV_REPLAY_URL ="/replay/previousTurn";
 
   public static final String STOP_REPLAY_URL = "/replay/stopWatching";
   //
@@ -218,6 +221,12 @@ public class WebServer {
     post(BACKUP_URL, new PostBackupMove(gameCenter));
 
     get(WATCH_REPLAY_URL, new GetReplayGameRoute(templateEngine, replayLoader));
+
+    post(NEXT_REPLAY_URL, new PostReplayNextTurnRoute(templateEngine, replayLoader));
+
+    post(PREV_REPLAY_URL, new PostReplayNextTurnRoute(templateEngine, replayLoader));
+
+
 
     LOG.config("WebServer is initialized.");
   }

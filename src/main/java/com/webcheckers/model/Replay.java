@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Replay {
 
 
-    private ArrayList<String> turnsList;
+    private ArrayList<ReplayMove> turnsList;
     private String gameId;
     private int currentTurn;
     private int maxTurns;
@@ -16,14 +16,14 @@ public class Replay {
     private Player redPlayer;
     private Player whitePlayer;
 
-    public Replay(String gameId, ArrayList<String> turnsList, Game game){
+    public Replay(String gameId, ArrayList<ReplayMove> turnsList, Game game){
         this.gameId = gameId;
         this.turnsList = turnsList;
         maxTurns = turnsList.size() - 1;
         this.game = game;
         this.redPlayer = game.getRedPlayer();
         this.whitePlayer = game.getWhitePlayer();
-        currentTurn = 0;
+        currentTurn = -1;
 
     }
 
@@ -38,11 +38,11 @@ public class Replay {
         return gameId;
     }
 
-    public ArrayList<String> getTurnsList() {
+    public ArrayList<ReplayMove> getTurnsList() {
         return turnsList;
     }
 
-    public String getTurn(int i){
+    public ReplayMove getTurn(int i){
         return turnsList.get(i);
     }
 
@@ -58,7 +58,7 @@ public class Replay {
         }
     }
 
-    public String getCurrentTurn(){
+    public ReplayMove getCurrentTurn(){
         return turnsList.get(currentTurn);
     }
 
@@ -72,5 +72,13 @@ public class Replay {
 
     public Game getGame(){
         return game;
+    }
+
+    public int getCurrentTurnNum(){
+        return currentTurn;
+    }
+
+    public int getMaxTurns() {
+        return maxTurns;
     }
 }
