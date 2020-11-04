@@ -55,7 +55,7 @@ public class GetReplayGameRoute implements Route {
                 modeOptionsAsJSON.put("hasNext", false);
             }
 
-            if (replay.getCurrentTurnNum() > 0){
+            if (replay.getCurrentTurnNum() >= 0){
                 modeOptionsAsJSON.put("hasPrevious", true);
             } else {
                 modeOptionsAsJSON.put("hasPrevious", false);

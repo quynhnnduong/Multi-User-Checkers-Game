@@ -86,4 +86,28 @@ public class Move {
     public String toString() {
         return start.getRow() + " " + start.getCell() + "\n" + end.getRow() + " " + end.getCell() + "\n";
     }
+
+    /**
+     * gets the reverse version of a move
+     * @return
+     */
+    public Move getUndoMove(){
+        return new Move(end, start);
+    }
+
+    public boolean doesMoveSkipOverSpace(){
+        return Math.abs(getRowDiff()) == 2 && Math.abs( getColDiff()) == 2;
+    }
+
+    /**
+     * Gets the piece in the middle of a jump move
+     * @pre the move is a jump move
+     * @return
+     */
+    public Space getSpaceInMiddle(BoardView boardView){
+        int capturedCell = (start.getCell() + end.getCell()) / 2;
+        int capturedRow = (start.getRow() + end.getRow()) / 2 ;
+        Space jumpedSpace = boardView.getBoard().get(capturedRow).getSpace(capturedCell);
+        return jumpedSpace;
+            }
 }

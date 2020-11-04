@@ -81,4 +81,18 @@ public class Replay {
     public int getMaxTurns() {
         return maxTurns;
     }
+
+    public void executeReplayMove(Game.ActiveColor currentColor, Move move){
+        Game game = getGame();
+        BoardView redView = game.getRedView();
+        BoardView whiteView = game.getWhiteView();
+        if (currentColor == Game.ActiveColor.RED){
+            //do the move on the red view
+            redView.makeMove(move);
+            whiteView.makeMove(move.getFlippedMove());
+        } else if (currentColor == Game.ActiveColor.WHITE){
+            whiteView.makeMove(move);
+            redView.makeMove(move.getFlippedMove());
+        }
+    }
 }

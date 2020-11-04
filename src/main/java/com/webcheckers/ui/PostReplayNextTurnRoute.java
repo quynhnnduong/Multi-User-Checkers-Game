@@ -29,17 +29,18 @@ public class PostReplayNextTurnRoute implements Route {
     public Object handle(Request request, Response response) throws Exception {
         final Session session = request.session();
         Player currentUser = session.attribute(PLAYER_ATTR);
-        currentUser.startSpectating();
+        //currentUser.startSpectating();
         //TODO add logic for getting the turn from the replay loader
         String gameId = request.queryParams("gameID");
         Replay replay = replayLoader.getReplay(gameId);
 
         //get the next turn of the replay
         replay.incrementTurn();
-        //if (replay.getCurrentTurnNum() >= 0){
-        //    ReplayMove turn = replay.getCurrentTurn();
-        //}
-        executeReplayMove(replay);
+        if (replay.getCurrentTurnNum() >= 0){
+            ReplayMove replayMove = replay.getCurrentTurn();
+            replay.executeReplayMove(replayMove.getPlayerColor(), replayMove.getMove());
+        }
+
         System.out.println("Over here " + replay.getCurrentTurnNum());
 
 
@@ -81,19 +82,5 @@ public class PostReplayNextTurnRoute implements Route {
         return new Gson().toJson(Message.info("true"));
     }
 
-    public void executeReplayMove(Replay replay ){
-        ReplayMove replayMove = replay.getCurrentTurn();
-        Game.ActiveColor currentColor = replayMove.getPlayerColor();
-        Game game = replay.getGame();
-        BoardView redView = game.getRedView();
-        BoardView whiteView = game.getWhiteView();
-        if (currentColor == Game.ActiveColor.RED){
-            //do the move on the red view
-            redView.makeMove(replayMove.getMove());
-            whiteView.makeMove(replayMove.getMove().getFlippedMove());
-        } else if (currentColor == Game.ActiveColor.WHITE){
-            whiteView.makeMove(replayMove.getMove());
-            redView.makeMove(replayMove.getMove().getFlippedMove());
-        }
-    }
+
 }

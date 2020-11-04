@@ -13,7 +13,7 @@ public class Turn {
     /** An ArrayList of all the validated Moves that took place (or currently taking place) on a Player's Turn */
     private final ArrayList<Move> validMoves = new ArrayList<>();
 
-    private Game.ActiveColor playerColor;
+    private final Game.ActiveColor playerColor;
 
     public Turn(Game.ActiveColor playerColor){
         this.playerColor = playerColor;

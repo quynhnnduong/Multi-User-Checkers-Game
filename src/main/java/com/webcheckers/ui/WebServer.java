@@ -90,9 +90,9 @@ public class WebServer {
 
   public static final String WATCH_REPLAY_URL ="/replay/game";
 
-  public static final String NEXT_REPLAY_URL ="/replay/nextTurn";
+  public static final String NEXT_REPLAY_URL = "/replay/nextTurn";
 
-  public static final String PREV_REPLAY_URL ="/replay/previousTurn";
+  public static final String PREV_REPLAY_URL = "/replay/previousTurn";
 
   public static final String STOP_REPLAY_URL = "/replay/stopWatching";
   //
@@ -224,9 +224,7 @@ public class WebServer {
 
     post(NEXT_REPLAY_URL, new PostReplayNextTurnRoute(templateEngine, replayLoader));
 
-    post(PREV_REPLAY_URL, new PostReplayNextTurnRoute(templateEngine, replayLoader));
-
-
+    post(PREV_REPLAY_URL, new PostReplayPrevTurnRoute(templateEngine, replayLoader));
 
     LOG.config("WebServer is initialized.");
   }
