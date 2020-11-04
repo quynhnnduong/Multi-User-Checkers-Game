@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Game;
+import com.webcheckers.model.Move;
+import com.webcheckers.model.Position;
 import com.webcheckers.model.Turn;
 import com.webcheckers.util.Message;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +17,7 @@ import spark.Session;
 import spark.TemplateEngine;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.doubleThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -65,5 +68,23 @@ public class PostBackupMoveRouteTest {
 
         // Analyze
         assertEquals(gson.toJson(Message.error("No moves made this turn. Cannot backup")), result);
+    }
+
+    @Test
+    public void testValidBackupMove() {
+        // Set up
+        Move move = new Move(new Position(0, 0), new Position(1, 1));
+        turn = new Turn();
+        turn.addValidMove(move);
+
+        when(session.attribute(UIProtocol.GAME_ID_ATTR)).thenReturn("gameID");
+        when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
+        when(game.getCurrentTurn()).thenReturn(turn);
+
+        // Invoke
+        Object result = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.info("Removed last valid move")), result);
     }
 }
