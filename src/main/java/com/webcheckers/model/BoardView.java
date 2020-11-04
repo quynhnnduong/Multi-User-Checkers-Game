@@ -16,6 +16,10 @@ public class BoardView implements Iterable<Row> {
     /** The size of the checkers board (square) */
     static final int BOARD_SIZE = 8;
 
+    private int redPiecesLeft = 12;
+
+    private int whitePiecesLeft = 12;
+
     /** An ArrayList containing the Row objects that make up the checkers board */
     private final ArrayList<Row> board;
 
@@ -96,11 +100,17 @@ public class BoardView implements Iterable<Row> {
         Space startSpace = board.get(start.getRow()).getSpace(start.getCell());
         Space endSpace = board.get(end.getRow()).getSpace(end.getCell());
 
-        if (Math.abs(move.getColDifference()) == 2 && Math.abs(move.getRowDifference()) == 2) {
+        if (move.isJumpMove()) {
 
             // Gets the Position of the captured Piece
             int capturedCell = (start.getCell() + end.getCell()) / 2;
             int capturedRow = (start.getRow() + end.getRow()) / 2;
+
+            // There is now 1 less Piece of the Color of the captured Piece
+            if (getPiece(capturedRow, capturedCell).getColor() == Piece.Color.RED)
+                redPiecesLeft--;
+            else
+                whitePiecesLeft--;
 
             // Removes the captured Piece from the board
             board.get(capturedRow).getSpace(capturedCell).removePiece();
@@ -109,7 +119,8 @@ public class BoardView implements Iterable<Row> {
         // Gets the Piece in focus
         Piece piece = startSpace.getPiece();
 
-        if (end.getRow() == 0 || end.getRow() == BOARD_SIZE - 1)
+        // If the Move results in the Piece reaching any end of the board - it becomes a King
+        if (end.getRow() == 0 || end.getRow() == (BOARD_SIZE - 1))
             piece.makeKing();
 
         // Removes the Piece from the starting Space and places is on the ending Space
@@ -118,13 +129,7 @@ public class BoardView implements Iterable<Row> {
     }
 
     public int getRemainingPieces(Piece.Color color) {
-        int pieces = 0;
-
-        for (Row row : board) {
-            pieces += row.getNumOfPieces(color);
-        }
-
-        return pieces;
+        return (color == Piece.Color.RED ? redPiecesLeft : whitePiecesLeft);
     }
 
     public Piece getPiece(int row, int space) { return board.get(row).getSpace(space).getPiece(); }
@@ -215,7 +220,7 @@ public class BoardView implements Iterable<Row> {
                 }
             }
         }
-        else if (Math.abs(turn.getLastMove().getRowDifference()) == 2) {
+        else if (turn.getLastMove().isJumpMove()) {
             Move lastMove = turn.getLastMove();
 
             int row = lastMove.getEnd().getRow();
@@ -243,12 +248,17 @@ public class BoardView implements Iterable<Row> {
         endSpace.placePiece(piece);
 
         // Recover Jump
-        if (Math.abs(move.getRowDifference()) == 2) {
+        if (move.isJumpMove()) {
             int capturedCell = (start.getCell() + end.getCell()) / 2;
             int capturedRow = (start.getRow() + end.getRow()) / 2;
 
             Piece recoveredPiece =
                     new Piece((piece.getColor() == Piece.Color.RED ? Piece.Color.WHITE : Piece.Color.RED));
+
+            if (recoveredPiece.getColor() == Piece.Color.RED)
+                redPiecesLeft++;
+            else
+                whitePiecesLeft++;
 
             board.get(capturedRow).getSpace(capturedCell).placePiece(recoveredPiece);
         }
