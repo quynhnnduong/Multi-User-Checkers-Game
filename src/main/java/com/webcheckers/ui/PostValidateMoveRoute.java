@@ -53,13 +53,14 @@ public class PostValidateMoveRoute implements Route {
         return Message.info("Valid Move");
     }
 
-    private Message validateJumpMove(Turn turn, Move move, BoardView currentBoard, BoardView.JumpType jumpType) {
+    Message validateJumpMove(Turn turn, Move move, BoardView currentBoard, BoardView.JumpType jumpType) {
         int row = move.getStart().getRow();
         int space = move.getStart().getCell();
         Piece currentPiece = currentBoard.getPiece(row, space);
 
-        if (!currentBoard.isJumpPossible(currentPiece, row, space, jumpType))
+        if (!currentBoard.isJumpPossible(currentPiece, row, space, jumpType)) {
             return Message.error("INVALID MOVE: Not a valid jump move.");
+        }
 
         currentBoard.makeMove(move);
         turn.addValidMove(move);

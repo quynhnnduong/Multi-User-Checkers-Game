@@ -69,6 +69,37 @@ public class PostValidateMoveRouteTest {
         gson = new Gson();
 
     }
+    @Test
+    public void testValidateJumpMoveSuccessful() {
+        Piece piece = mock(Piece.class);
+        BoardView.JumpType jumpType = BoardView.JumpType.FORWARD_RIGHT;
+        when(move.getStart()).thenReturn(start);
+        when(start.getRow()).thenReturn(1);
+        when(start.getCell()).thenReturn(1);
+        when(curView.getPiece(1, 1)).thenReturn(piece);
+        when(curView.isJumpPossible(any(Piece.class), anyInt(), anyInt(), any(BoardView.JumpType.class))).thenReturn(true);
+
+        Message result = CuT.validateJumpMove(turn, move, curView, jumpType);
+
+        assertEquals(Message.info("Valid Move"), result);
+
+    }
+
+    @Test
+    public void testValidateJumpMoveUnsuccessful() {
+        Piece piece = mock(Piece.class);
+        BoardView.JumpType jumpType = BoardView.JumpType.FORWARD_RIGHT;
+        when(move.getStart()).thenReturn(start);
+        when(start.getRow()).thenReturn(1);
+        when(start.getCell()).thenReturn(1);
+        when(curView.getPiece(1, 1)).thenReturn(piece);
+        when(curView.isJumpPossible(any(Piece.class), anyInt(), anyInt(), any(BoardView.JumpType.class))).thenReturn(false);
+
+        Message result = CuT.validateJumpMove(turn, move, curView, jumpType);
+
+        assertEquals(Message.error("INVALID MOVE: Not a valid jump move."), result);
+
+    }
 
     @Test
     public void testValidateSingleMoveSuccessful() {
