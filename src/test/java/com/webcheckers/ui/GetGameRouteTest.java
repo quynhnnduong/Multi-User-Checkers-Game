@@ -102,31 +102,55 @@ public class GetGameRouteTest {
         assertFalse(player1.inGame());
         assertFalse(player1.isCalledForGame());
         CuT.handle(request, response);
-
     }
 
-// Failing test
-//    @Test()
+    @Test
     public void current_player_in_game(){
-        game = new Game("1234", player1, player2);
-//        player1.joinGame(true);
-        player2.joinGame(true);
+        String gameID = CuT.makeGameID(player2, player1);
+        game = new Game(gameID, player1, player2);
+        player1.joinGame(false);
         playerLobby.setOpponentMatch(player1, player2);
         gameCenter.addGame(game);
-        player2.call();
+        player1.call();
 
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-        when(session.attribute(UIProtocol.GAME_ID_ATTR)).thenReturn(game.getId());
+        when(session.attribute(UIProtocol.GAME_ID_ATTR)).thenReturn(gameID);
         when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
         when(session.attribute(UIProtocol.LEGIT_OPPONENT_ATTR)).thenReturn(player2);
         when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
-        when(player1.getOpponent()).thenReturn(player2);
+        when(player1.isCalledForGame()).thenReturn(true);
+        when(playerLobby.getPlayer(request.queryParams("opponent"))).thenReturn(player2);
+        when(gameCenter.getGame(gameID)).thenReturn(game);
+
+        assertFalse(player1.inGame());
+        assertTrue(player1.isCalledForGame());
+        CuT.handle(request, response);
+
+
+    }
+
+//    @Test
+    public void current_player_is_called(){
+        game = new Game("1234", player1, player2);
+        player1.joinGame(true);
+        playerLobby.setOpponentMatch(player1, player2);
+        gameCenter.addGame(game);
+        player1.call();
+
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        when(session.attribute(UIProtocol.GAME_ID_ATTR)).thenReturn("1234");
+        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
+        when(session.attribute(UIProtocol.LEGIT_OPPONENT_ATTR)).thenReturn(player2);
+        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
+        when(player1.inGame()).thenReturn(true);
         when(gameCenter.getGame("1234")).thenReturn(game);
 
         assertTrue(player1.inGame());
-        assertTrue(player1.isCalledForGame());
+//        assertEquals(player1.getOpponent(), player2);
         CuT.handle(request, response);
+
 
     }
 
@@ -153,6 +177,26 @@ public class GetGameRouteTest {
         CuT.handle(request, response);
     }
 
+//    @Test
+    public void opponent_not_in_game(){
+        game = new Game("1234", player1, player2);
+        player1.joinGame(false);
+        playerLobby.setOpponentMatch(player1, player2);
+        gameCenter.addGame(game);
+        player2.call();
+
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+        when(session.attribute(UIProtocol.GAME_ID_ATTR)).thenReturn(game.getId());
+        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
+        when(session.attribute(UIProtocol.LEGIT_OPPONENT_ATTR)).thenReturn(null);
+        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
+        when(playerLobby.getPlayer(request.queryParams("opponent"))).thenReturn(null);
+        when(gameCenter.getGame("1234")).thenReturn(game);
+
+        assertFalse(player1.inGame());
+        CuT.handle(request, response);
+    }
 
 
 
