@@ -1,7 +1,5 @@
 package com.webcheckers.model;
 
-import java.util.ArrayList;
-
 /**
  * A representation of the domain object, Move. This object is used when interacting with
  * individual checkers Pieces on the BoardView. A Move simply contains the starting and ending
@@ -65,14 +63,13 @@ public class Move {
     /**
      * @return the difference in columns between the start and end positions of the move
      */
-    public int getColDiff(){
-        return getStart().getRow() - getEnd().getRow();
-    }
+    public int getRowDifference(){ return getEnd().getRow() - getStart().getRow(); }
 
     /**
      *
      * @return the difference in rows between the start and end positions of the move
      */
+    public int getColDifference(){ return getEnd().getCell() - getStart().getCell(); }
     public int getRowDiff(){
         return Math.abs(getEnd().getCell() - getStart().getCell());
     }

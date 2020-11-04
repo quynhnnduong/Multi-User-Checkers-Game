@@ -3,11 +3,6 @@ package com.webcheckers.ui;
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.model.Game;
-import com.webcheckers.model.Piece;
-import com.webcheckers.model.Position;
-import com.webcheckers.model.Piece;
-import com.webcheckers.model.Position;
-import com.webcheckers.model.ReplaySaver;
 import com.webcheckers.util.Message;
 import spark.*;
 
@@ -30,15 +25,15 @@ public class PostSubmitTurnRoute implements Route {
 
         Game game = gameCenter.getGame(session.attribute(GAME_ID_ATTR));
 
-
-
         if (game != null && game.getCurrentTurn().hasMoves()) {
             //add the turn's moves to the replay
 
-            game.endTurn();
-            return new Gson().toJson(Message.info("Successfully Submitted Turn"));
+            if (!game.getActivePlayerBoard().isRequiredToJump(game.getActiveColor(), game.getCurrentTurn())) {
+                game.endTurn();
+                return new Gson().toJson(Message.info("Successfully Submitted Turn."));
+            }
         }
 
-        return new Gson().toJson(Message.error("Turn cannot be submitted"));
+        return new Gson().toJson(Message.error("Another jump can be made."));
     }
 }

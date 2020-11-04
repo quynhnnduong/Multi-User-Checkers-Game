@@ -109,41 +109,33 @@ public class Game {
 
         // Cannot switch turns if a Player has resigned
         if (!hasPlayerResigned()) {
-            //Move move = getCurrentTurn().getFirstMove();
-            //Do all the moves
-            int moves_left = getCurrentTurn().getAllMovesInTurn().size();
-            //System.out.println(" how many turns = " + getCurrentTurn().getAllMovesInTurn().size());
-            for (Move move : getCurrentTurn().getAllMovesInTurn()){
-                moves_left -= 1;
-                if (activeColor == ActiveColor.RED) {
 
-                    if (moves_left == 0) {
-                        // Alternates activeColor
-                        activeColor = ActiveColor.WHITE;
+            for (Move move : getCurrentTurn().getAllMoves()) {
 
-                        // Updates the Player's states
-                        redPlayer.endTurn();
-                        whitePlayer.startTurn();
-                    }
-
-                        redView.makeMove(move);
-                        whiteView.makeMove(move.getFlippedMove());
-
-                }
-                else {
-                    if (moves_left == 0) {
-                        activeColor = ActiveColor.RED;
-                        redPlayer.startTurn();
-                        whitePlayer.endTurn();
-                    }
+                if (activeColor == ActiveColor.RED)
+                    whiteView.makeMove(move.getFlippedMove());
+                else
                     redView.makeMove(move.getFlippedMove());
-                    whiteView.makeMove(move);
-
-                }
-
-                // A new Turn is added for the next Player's Turn
-                addTurn();
             }
+
+            if (activeColor == ActiveColor.RED) {
+
+                // Alternates activeColor
+                activeColor = ActiveColor.WHITE;
+
+                // Updates the Player's states
+                redPlayer.endTurn();
+                whitePlayer.startTurn();
+            }
+            else {
+                activeColor = ActiveColor.RED;
+
+                redPlayer.startTurn();
+                whitePlayer.endTurn();
+            }
+
+            // A new Turn is added for the next Player's Turn
+            addTurn();
         }
     }
 
@@ -183,6 +175,8 @@ public class Game {
      * @return the ID of the Game
      */
     public String getId(){ return id; }
+
+    public BoardView getActivePlayerBoard() { return (activeColor == ActiveColor.RED ? redView : whiteView); }
 
     public ArrayList<ReplayMove> turnsToList() {
         ArrayList<ReplayMove> turnList = new ArrayList<>();

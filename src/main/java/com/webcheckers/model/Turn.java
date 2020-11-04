@@ -40,21 +40,15 @@ public class Turn {
     public boolean hasMoves() { return !validMoves.isEmpty(); }
 
     /**
-     * This method returns the first Move that was validated on this Turn.
+     * This method returns the last Move that was validated on this Turn.
      *
-     * @return the first validated Move if it exists, otherwise null
+     * @return the last validated Move if it exists, otherwise null
      */
-    public Move getFirstMove() {
-        if (hasMoves())
-            return validMoves.get(0);
-
-        return null;
-    }
-
     public Move getLastMove() {
-        if (hasMoves()) {
+
+        if (hasMoves())
             return validMoves.get(validMoves.size() - 1);
-        }
+
         return null;
     }
 
@@ -83,4 +77,10 @@ public class Turn {
     public Game.ActiveColor getPlayerColor() {
         return playerColor;
     }
+    /**
+     * Simply returns the ArrayList of all the Moves made on this Turn.
+     *
+     * @return the list of Moves made on this turn
+     */
+    public ArrayList<Move> getAllMoves(){ return validMoves; }
 }

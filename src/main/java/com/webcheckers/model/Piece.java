@@ -52,7 +52,14 @@ public class Piece {
      */
     public Type getType(){ return type; }
 
-    public void promote(){
+    public void makeKing(){
         type = Type.KING;
+    }
+
+    public boolean sameColorAs(Piece piece) {
+        if (piece != null)
+            return this.getColor() == piece.getColor();
+
+        return false;
     }
 }
