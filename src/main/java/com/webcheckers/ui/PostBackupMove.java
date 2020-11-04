@@ -2,9 +2,7 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameCenter;
-import com.webcheckers.model.BoardView;
 import com.webcheckers.model.Game;
-import com.webcheckers.model.Move;
 import com.webcheckers.model.Turn;
 import com.webcheckers.util.Message;
 import spark.Request;
