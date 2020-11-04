@@ -77,7 +77,7 @@ public class PostSubmitTurnRouteTest {
        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR))).thenReturn(game);
        when(game.getCurrentTurn()).thenReturn(turn);
        when(game.getActivePlayerBoard()).thenReturn(board);
-       when(board.isRequiredToJump(turn)).thenReturn(false);
+       when(board.isRequiredToJump(Game.ActiveColor.RED, turn)).thenReturn(false);
        doNothing().when(game).endTurn();
 
        // Invoke
