@@ -16,6 +16,7 @@ public class ReplayLoader {
             this.replayList = new HashMap<>();
             turnNumber = 0;
             turnMax = replaySaver.getAllReplays().size() - 1;
+
     }
 
     /**
