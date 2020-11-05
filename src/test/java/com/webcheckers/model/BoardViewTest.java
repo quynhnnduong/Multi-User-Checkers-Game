@@ -43,7 +43,7 @@ public class BoardViewTest {
         CuT = new BoardView(color);
     }
 
-    @Test
+    //@Test
     public void testMakeMove(){
         // Setup
         when(CuT.generateBoard(color)).thenReturn(board);

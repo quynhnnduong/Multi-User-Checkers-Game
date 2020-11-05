@@ -28,7 +28,7 @@ public class TurnTest {
 
     @BeforeEach
     public void setup() {
-        CuT = new Turn();
+        CuT = new Turn(Game.ActiveColor.RED);
         move = mock(Move.class);
         validMoves = new ArrayList<>();
     }

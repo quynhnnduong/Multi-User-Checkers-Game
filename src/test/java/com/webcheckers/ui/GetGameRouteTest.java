@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 
 /**
  * Unit Test suite for {@link GetGameRoute} component
- * @author Joel Clyne
+ * @author Joel Clyne, Quynh Duong
  */
 @Tag("UI-tier")
 public class GetGameRouteTest {
@@ -113,7 +113,7 @@ public class GetGameRouteTest {
         CuT.handle(request, response);
     }
 
-  //  @Test
+  //  @Test null pointer exception
     public void current_player_in_game(){
         String gameID = CuT.makeGameID(player2, player1);
         game = new Game(gameID, player1, player2);
@@ -140,7 +140,7 @@ public class GetGameRouteTest {
 
     }
 
-//    @Test
+//    @Test //null pointer exception
     public void current_player_is_called(){
         game = new Game("1234", player1, player2);
         player1.joinGame(true);
@@ -186,7 +186,7 @@ public class GetGameRouteTest {
         CuT.handle(request, response);
     }
 
-//    @Test
+    @Test
     public void opponent_not_in_game(){
         game = new Game("1234", player1, player2);
         player1.joinGame(false);

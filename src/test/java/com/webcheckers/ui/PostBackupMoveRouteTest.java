@@ -73,7 +73,7 @@ public class PostBackupMoveRouteTest {
     public void testValidBackupMove() {
         // Set up
         Move move = new Move(new Position(0, 0), new Position(1, 1));
-        turn = new Turn();
+        turn = new Turn(Game.ActiveColor.RED);
         turn.addValidMove(move);
         BoardView board = new BoardView(Piece.Color.RED);
 

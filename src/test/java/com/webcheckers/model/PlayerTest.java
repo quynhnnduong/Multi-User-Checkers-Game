@@ -86,6 +86,6 @@ public class PlayerTest {
     @Test
     public void player_exit_Game(){
         CuT.exitGame();
-        assertEquals( null, CuT.getOpponent());
+        assertNull(CuT.getOpponent());
     }
 }

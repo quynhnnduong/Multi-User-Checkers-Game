@@ -70,7 +70,7 @@ public class PostSubmitTurnRouteTest {
     public void successfulSubmitTurn() {
        // Set up
        Move move = new Move(new Position(0, 0), new Position(1, 1));
-       turn = new Turn();
+       turn = new Turn(Game.ActiveColor.RED);
        turn.addValidMove(move);
        BoardView board = mock(BoardView.class);
 

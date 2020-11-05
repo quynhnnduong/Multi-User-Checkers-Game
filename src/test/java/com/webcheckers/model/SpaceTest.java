@@ -81,6 +81,6 @@ public class SpaceTest {
 
         space.placePiece(PIECE);
         space.removePiece();
-        assertEquals(null, space.getPiece());
+        assertNull(space.getPiece());
     }
 }
