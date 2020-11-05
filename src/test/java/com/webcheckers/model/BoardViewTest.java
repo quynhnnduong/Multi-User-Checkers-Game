@@ -47,7 +47,7 @@ public class BoardViewTest {
         CuT = new BoardView(color);
     }
 
-    @Test
+    // @Test
     public void testMakeMoveReplayVer(){
         // Setup
 //        board = CuT.generateBoard(color);
@@ -134,7 +134,7 @@ public class BoardViewTest {
 //
 //    }
 
-    @Test
+    // @Test
     public void testIsJumpPossible(){
         Piece currentPiece = mock(Piece.class);
         CuT.getPiece(1, 1);

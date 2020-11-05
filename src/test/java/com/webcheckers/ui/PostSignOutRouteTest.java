@@ -8,11 +8,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
+import static com.webcheckers.ui.UIProtocol.GAME_ID_ATTR;
 import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class PostSignOutRouteTest {
 
@@ -60,4 +61,74 @@ public class PostSignOutRouteTest {
         testHelper.assertViewModelAttribute("message", Message.info("Are you sure you want to sign out?"));
 
     }
+
+    @Test
+    public void testLoadSignOutPage2(){
+
+        // Set up
+        gameCenter = new GameCenter();
+        playerLobby = new PlayerLobby(gameCenter);
+        playerLobby.addPlayer(currentUser);
+        CuT = new PostSignOutRoute(engine, gameCenter, playerLobby);
+
+        when(session.attribute(PLAYER_ATTR)).thenReturn(currentUser);
+        when(request.queryParams("sign_out")).thenReturn("true");
+        doNothing().when(session).attribute(PLAYER_ATTR, null);
+        doNothing().when(session).attribute(GAME_ID_ATTR, null);
+        doNothing().when(response).redirect(anyString());
+
+        // Invoke
+        assertThrows(HaltException.class, () -> CuT.handle(request, response));
+
+        // Analyze
+        assertEquals(0, playerLobby.getNumOfPlayers());
+    }
+
+
+    @Test
+    public void testLoadSignOutPage3(){
+
+        // Set up
+        gameCenter = new GameCenter();
+        playerLobby = new PlayerLobby(gameCenter);
+        Player opponent = new Player("opponent");
+        playerLobby.addPlayer(currentUser);
+        CuT = new PostSignOutRoute(engine, gameCenter, playerLobby);
+
+        when(session.attribute(PLAYER_ATTR)).thenReturn(currentUser);
+        when(request.queryParams("sign_out")).thenReturn("false");
+        when(currentUser.inGame()).thenReturn(true);
+        when(currentUser.getOpponent()).thenReturn(opponent);
+        doNothing().when(response).redirect(anyString());
+
+        // Invoke
+        assertThrows(HaltException.class, () -> CuT.handle(request, response));
+
+        // Analyze
+
+    }
+
+
+    @Test
+    public void testLoadSignOutPage4(){
+
+        // Set up
+        gameCenter = new GameCenter();
+        playerLobby = new PlayerLobby(gameCenter);
+        playerLobby.addPlayer(currentUser);
+        CuT = new PostSignOutRoute(engine, gameCenter, playerLobby);
+
+        when(session.attribute(PLAYER_ATTR)).thenReturn(currentUser);
+        when(request.queryParams("sign_out")).thenReturn("false");
+        when(currentUser.inGame()).thenReturn(false);
+        doNothing().when(response).redirect(anyString());
+
+        // Invoke
+        assertThrows(HaltException.class, () -> CuT.handle(request, response));
+
+        // Analyze
+
+    }
+
+
 }
