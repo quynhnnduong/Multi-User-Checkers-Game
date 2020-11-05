@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import javafx.geometry.Pos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -47,10 +48,38 @@ public class BoardViewTest {
         CuT = new BoardView(color);
     }
 
-    // @Test
+    @Test
+    public void testMakeMove_SimpleMove(){
+        //setup
+        board = CuT.generateBoard(color);
+
+        //sample position for simple move
+        this.start = new Position(3,0);
+        this.end = new Position(4,1);
+        this.move = mock(Move.class);
+
+        when(move.isJumpMove()).thenReturn(false);
+
+        CuT.makeMove(move);
+    }
+
+    //@Test
+    public void testMakeMove_JumpMove(){
+        //setup
+        board = CuT.generateBoard(color);
+
+        //sample positions
+        Position start = new Position(3,0);
+        Position end = new Position(4,1);
+
+        when(move.isJumpMove()).thenReturn(true);
+
+    }
+
+     //@Test
     public void testMakeMoveReplayVer(){
         // Setup
-//        board = CuT.generateBoard(color);
+        board = CuT.generateBoard(color);
         when(move.getStart()).thenReturn(start);
         when(move.getEnd()).thenReturn(end);
 
@@ -139,7 +168,7 @@ public class BoardViewTest {
         Piece currentPiece = mock(Piece.class);
         CuT.getPiece(1, 1);
         when(currentPiece.sameColorAs(piece)).thenReturn(false);
-        assertEquals(CuT.getPiece(0, 0), null);
+        assertNull(CuT.getPiece(0, 0));
         assertEquals(CuT.getPiece(1, 1), piece);
 
         assertTrue(CuT.isJumpPossible(currentPiece,2, 2, BoardView.JumpType.FORWARD_LEFT));
