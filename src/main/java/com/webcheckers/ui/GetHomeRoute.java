@@ -97,15 +97,13 @@ public class GetHomeRoute implements Route {
       vm.put("currentUser", currentPlayer);
       vm.put("playerList", playerLobby.getPlayers());
       vm.put("loggedIn", true);
-      vm.put("playersMessage", playerLobby.getLobbyMessage());
     }
 
       //show all the available replays
       ArrayList<Replay> replayList = replayLoader.getAllReplays();
       vm.put("replayList", replayList);
 
-
-
+    vm.put("playersMessage", playerLobby.getLobbyMessage());
     vm.put(LEGIT_OPPONENT_ATTR, session.attribute(LEGIT_NAME_ATTR));
 
     // Resets these attributes upon each home page reload

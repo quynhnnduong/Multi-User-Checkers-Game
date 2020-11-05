@@ -20,11 +20,6 @@ public class BoardView implements Iterable<Row> {
 
     private int whitePiecesLeft = 12;
 
-    //TODO remove these for debug
-
-    private int redPiecesLeft_Debug = 4;
-    private int whitePiecesLeft_Debug = 4;
-
     /** An ArrayList containing the Row objects that make up the checkers board */
     private final ArrayList<Row> board;
 
@@ -87,7 +82,7 @@ public class BoardView implements Iterable<Row> {
      *
      * @return the board ArrayList object (ArrayList of Rows)
      */
-    public ArrayList<Row> getBoard(){ return board; }
+    public ArrayList<Row> getBoard() { return board; }
 
     /**
      * This method updates the BoardView when a new Move is made. This is done
@@ -135,7 +130,6 @@ public class BoardView implements Iterable<Row> {
 
     /**
      * Makes moves in a way that works with replay mode
-     * @param move
      */
     public void makeMoveReplayVer(Move move) {
         Position start = move.getStart();
@@ -301,20 +295,20 @@ public class BoardView implements Iterable<Row> {
             board.get(capturedRow).getSpace(capturedCell).placePiece(recoveredPiece);
         }
     }
-    public void resetBoard(){
+
+    public void resetBoard() {
+
         //remove all the pieces
         for (Row row: board){
             for (Space space : row.getSpaces()){
                 space.removePiece();
             }
         }
+
         //Place the pieces in the appropriate place
         for (Row row: board){
-            //row.setRow(row.generateRow(row.getLeadingColor(), row.getBottomColor()));
-            //TODO re add regular generate row
-            row.setRow(row.generateDebugRow(row.getLeadingColor(), row.getBottomColor()));
+            row.setRow(row.generateRow(row.getLeadingColor(), row.getBottomColor()));
         }
     }
-
 
 }
