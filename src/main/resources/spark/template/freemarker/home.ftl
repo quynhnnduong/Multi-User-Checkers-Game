@@ -12,7 +12,6 @@
 
   <h1>Web Checkers | ${title}</h1>
 
-
   <!-- Provide a navigation bar -->
   <#include "nav-bar.ftl" />
 
@@ -21,6 +20,10 @@
 
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
+
+    <#if !loggedIn>
+        ${playersMessage}
+    </#if>
 
     <#if legitOpponent == false>
       <p>That person is already playing with someone else, choose another opponent</p>

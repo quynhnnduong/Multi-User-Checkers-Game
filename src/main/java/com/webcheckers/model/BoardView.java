@@ -82,7 +82,7 @@ public class BoardView implements Iterable<Row> {
      *
      * @return the board ArrayList object (ArrayList of Rows)
      */
-    public ArrayList<Row> getBoard(){ return board; }
+    public ArrayList<Row> getBoard() { return board; }
 
     /**
      * This method updates the BoardView when a new Move is made. This is done
@@ -263,18 +263,19 @@ public class BoardView implements Iterable<Row> {
             board.get(capturedRow).getSpace(capturedCell).placePiece(recoveredPiece);
         }
     }
-    public void resetBoard(){
+
+    public void resetBoard() {
+
         //remove all the pieces
         for (Row row: board){
             for (Space space : row.getSpaces()){
                 space.removePiece();
             }
         }
+
         //Place the pieces in the appropriate place
         for (Row row: board){
-            //row.setRow(row.generateRow(row.getLeadingColor(), row.getBottomColor()));
-            //TODO re add regular generate row
-            row.setRow(row.generateDebugRow(row.getLeadingColor(), row.getBottomColor()));
+            row.setRow(row.generateRow(row.getLeadingColor(), row.getBottomColor()));
         }
     }
 
