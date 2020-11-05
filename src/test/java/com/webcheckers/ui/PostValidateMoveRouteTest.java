@@ -69,6 +69,54 @@ public class PostValidateMoveRouteTest {
         gson = new Gson();
 
     }
+
+    // @Test
+    public void testHandleInvalidForwardSingle() {
+        // Set up
+
+        // Invoke
+        Object result = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.error("INVALID MOVE: A jump move can be taken this turn.")), result);
+    }
+
+    // @Test
+    public void testIfTurnHasMoves() {
+        //  Set up
+        String messageText = "{\"sampleMove\": { \"row\": 1,\"col\": 1}}";
+        when(request.queryParams("actionData")).thenReturn(messageText);
+
+
+        // mock the turn (line 33)
+        when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getCurrentTurn()).thenReturn(turn);
+        when(turn.hasMoves()).thenReturn(true);
+
+        // mock the start and end position (lines 34-35) - needed for compile not test
+        when(move.getStart()).thenReturn(start);
+        when(move.getEnd()).thenReturn(end);
+
+        // hardcode the row/col differences - needed for compile not test
+        when( Math.abs(end.getCell() - start.getCell())).thenReturn(rowDiff);
+        when(start.getRow() - end.getRow()).thenReturn(colDiff);
+
+        // mock the board views - needed for compile not test
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getRedView()).thenReturn(redView);
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getWhiteView()).thenReturn(whiteView);
+
+        // hardcode the current color - needed for compile not test
+        curColor = Game.ActiveColor.RED;
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getActiveColor()).thenReturn(curColor);
+
+        // Invoke
+        Object validMessage = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.error("INVALID MOVE: Can only move once")), validMessage);
+
+    }
+
     @Test
     public void testValidateJumpMoveSuccessful() {
         Piece piece = mock(Piece.class);
@@ -175,42 +223,5 @@ public class PostValidateMoveRouteTest {
         assertEquals(PostValidateMoveRoute.MoveType.INVALID, result);
     }
 
-    //@Test
-    public void testIfTurnHasMoves() {
-        //  Set up
-        String messageText = "{\"sampleMove\": { \"row\": 1,\"col\": 1}}";
-        when(request.queryParams("actionData")).thenReturn(messageText);
 
-        // mock a move (line 32)
-        when(new Gson()).thenReturn(gson); // wrong
-        when(new Gson().fromJson(messageText, Move.class)).thenReturn(move);
-
-        // mock the turn (line 33)
-        when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
-        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getCurrentTurn()).thenReturn(turn);
-        when(turn.hasMoves()).thenReturn(true);
-
-        // mock the start and end position (lines 34-35) - needed for compile not test
-        when(move.getStart()).thenReturn(start);
-        when(move.getEnd()).thenReturn(end);
-
-        // hardcode the row/col differences - needed for compile not test
-        when( Math.abs(end.getCell() - start.getCell())).thenReturn(rowDiff);
-        when(start.getRow() - end.getRow()).thenReturn(colDiff);
-
-        // mock the board views - needed for compile not test
-        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getRedView()).thenReturn(redView);
-        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getWhiteView()).thenReturn(whiteView);
-
-        // hardcode the current color - needed for compile not test
-        curColor = Game.ActiveColor.RED;
-        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getActiveColor()).thenReturn(curColor);
-
-        // Invoke
-        Object validMessage = CuT.handle(request, response);
-
-        // Analyze
-        assertEquals(gson.toJson(Message.error("INVALID MOVE: Can only move once")), validMessage);
-
-    }
 }
