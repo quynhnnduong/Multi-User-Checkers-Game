@@ -80,7 +80,7 @@ public class PostValidateMoveRouteTest {
         assertEquals(gson.toJson(Message.error("INVALID MOVE: A jump move can be taken this turn.")), result);
     }
 
-   // @Test
+    @Test
     public void testIfTurnHasMoves() {
         //  Set up
         String messageText = "{\"sampleMove\": { \"row\": 1,\"col\": 1}}";
