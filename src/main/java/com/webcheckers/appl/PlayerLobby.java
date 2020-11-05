@@ -21,12 +21,6 @@ public class PlayerLobby {
     /** A site-wide GameCenter that holds the statistics and game for the app */
     private final GameCenter gameCenter;
 
-    /** A String literal used for displaying the number of Players within the PlayerLobby */
-    public static final String PLAYER_LOBBY_MSG = " player(s) in lobby";
-
-    /** A String literal used for when there are no Players currently within the PlayerLobby */
-    public static final String NO_PLAYERS_MSG = "There are no other players available to play at this time.";
-
     /**
      * Creates a new PlayerLobby by simply initializing the GameCenter object.
      *
@@ -102,14 +96,6 @@ public class PlayerLobby {
      *
      * @return a String message regarding the current state of the PlayerLobby
      */
-    public String getLobbyMessage() {
-        int numOfPlayers = getNumOfPlayers();
-
-        // The displayed number of Players will not include the current Player
-        if (numOfPlayers > 1)
-            return (--numOfPlayers + PLAYER_LOBBY_MSG);
-
-        return NO_PLAYERS_MSG;
-    }
+    public String getLobbyMessage() { return "Players Online: " + getNumOfPlayers(); }
 }
 

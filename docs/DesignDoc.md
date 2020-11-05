@@ -160,6 +160,10 @@ game.
 
 ![The StartAGame Sequence Diagram](StartAGame.png)
 
+With the latest update, the Replay portion of the UI tier has been added to the program. This allows users to view all the moves
+in a previously completed game from any other player in the session. The user can go forwards and backwards throughout all the
+moves until they are finished viewing the replay.
+ 
 ### Application Tier
 
 The Application Tier of this application consists of 3 components: Game, GameCenter, and PlayerLobby.
@@ -211,6 +215,12 @@ rather serves a representation of the people who are playing the checkers game. 
 the Move objects change the position  of pieces on the BoardView. The Move object has 2 Position objects, a denotation of 
 the row and column of a change, one for the start and end of a piece movement. 
 
+In our latest release, we added a feature to save replays of games to be viewed at a later time. The ReplaySaver class accomplishes this through 
+saving replays as Replay objects, consisting of a list of ReplayMove objects. A Move and ActiveColor object comprises a ReplayMove to
+denote who did what move. Then, the Replay Object compiles all the moves in a game, with the player who did them, and uses that to represent a 
+replay of a game. There is also a move counter to show the number of the current move in a replay. The ReplayLoader class, then accesses 
+these replays from the replay saver, and uses them to display a replay in the UI tier.
+
 ![The Model Diagram](ModelDiagram.png)
 
 ### Design Improvements
@@ -234,24 +244,7 @@ presence in the domain of the application, but would greatly improve the cohesio
 
 ### Acceptance Testing
 
-Of the 5 user stories that we have worked on, 3 of them pass all of their acceptance criteria, and the other 2 pass some
-of their acceptance criteria.
-
-Turns - Players successfully switch between turns when one finishes. Although not a bug with turns directly,
-both players see their own pieces as red.
-
-Quit Game - Players can easily quit a game by clicking the resign button or closing the window. The player still playing 
-the game doesn't know that the other person left. Also, the session of the player who was still playing can no longer see
-other players in the player lobby after they sign out once they quit a game.
-
-Sign Out - Players are taken to a sign out screen upon signing out and are no longer shown in the home page to other 
-players.
-
-Illegal Moves - The player cannot move pieces on top of other pieces, or on a white space. However, other forms of 
-Illegal moves such as moving across 2 diagonal spaces aren't prohibited.
-
-Simple Move - The player can drag and drop the selected piece to their desired space, but the change doesn't persist when
-their turn ends.
+We have passed all the user stories we set out to complete.
 
 ### Unit Testing and Code Coverage
 
