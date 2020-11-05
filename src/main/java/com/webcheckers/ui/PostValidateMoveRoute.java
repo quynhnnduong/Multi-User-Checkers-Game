@@ -34,28 +34,38 @@ public class PostValidateMoveRoute implements Route {
 
         if (rowDifference == -1 && absColDifference == 1)
             return MoveType.FORWARD_SINGLE;
+
         else if (rowDifference == -2 && absColDifference == 2)
             return MoveType.FORWARD_JUMP;
+
         else if (rowDifference == 1 && absColDifference == 1)
             return MoveType.BACKWARD_SINGLE;
+
         else if (rowDifference == 2 && absColDifference == 2)
             return MoveType.BACKWARD_JUMP;
 
         return MoveType.INVALID;
     }
 
+<<<<<<< HEAD
     Message validateSingleMove(Turn turn, Move move, BoardView currentBoard, Game.ActiveColor activeColor) {
+=======
+    private Message validateSingleMove(Turn turn, Move move, BoardView currentBoard, Game.ActiveColor activeColor) {
+
+>>>>>>> 0bd67dc65b8b969348ca5bfe64216a90b8daafa9
         if (currentBoard.isRequiredToJump(activeColor, turn))
             return Message.error("INVALID MOVE: A jump move can be taken this turn.");
 
         currentBoard.makeMove(move);
         turn.addValidMove(move);
+
         return Message.info("Valid Move");
     }
 
     Message validateJumpMove(Turn turn, Move move, BoardView currentBoard, BoardView.JumpType jumpType) {
         int row = move.getStart().getRow();
         int space = move.getStart().getCell();
+
         Piece currentPiece = currentBoard.getPiece(row, space);
 
         if (!currentBoard.isJumpPossible(currentPiece, row, space, jumpType)) {
@@ -64,22 +74,21 @@ public class PostValidateMoveRoute implements Route {
 
         currentBoard.makeMove(move);
         turn.addValidMove(move);
+
         return Message.info("Valid Move");
     }
 
     @Override
     public Object handle(Request request, Response response) {
         final Session session = request.session();
-        Game game = gameCenter.getGame(session.attribute(GAME_ID_ATTR));
-
-        Game.ActiveColor activeColor = game.getActiveColor();
-        BoardView currentBoard = game.getActivePlayerBoard();
 
         //get the move from actionData as JSON string
-        String moveJSON = request.queryParams("actionData");
-
         //convert moveJSON to move Object using Gson
-        Move move = new Gson().fromJson(moveJSON, Move.class);
+        Move move = new Gson().fromJson(request.queryParams("actionData"), Move.class);
+
+        Game game = gameCenter.getGame(session.attribute(GAME_ID_ATTR));
+        Game.ActiveColor activeColor = game.getActiveColor();
+        BoardView currentBoard = game.getActivePlayerBoard();
         Turn turn = game.getCurrentTurn();
 
         int rowDifference = move.getRowDifference();
@@ -96,24 +105,27 @@ public class PostValidateMoveRoute implements Route {
                 case FORWARD_SINGLE:
                     message = validateSingleMove(turn, move, currentBoard, activeColor);
                     break;
+
                 case FORWARD_JUMP:
                     if (colDifference == -2)
                         message = validateJumpMove(turn, move, currentBoard, BoardView.JumpType.FORWARD_LEFT);
                     else
                         message = validateJumpMove(turn, move, currentBoard, BoardView.JumpType.FORWARD_RIGHT);
                     break;
+
                 case BACKWARD_SINGLE:
                     currentPiece = currentBoard.getPiece(move.getStart().getRow(), move.getStart().getCell());
 
-                    if (currentPiece.getType() == Piece.Type.KING)
+                    if (currentPiece.isKing())
                         message = validateSingleMove(turn, move, currentBoard, activeColor);
                     else
                         message = Message.error("INVALID MOVE: Only kings can move backwards");
                     break;
+
                 case BACKWARD_JUMP:
                     currentPiece = currentBoard.getPiece(move.getStart().getRow(), move.getStart().getCell());
 
-                    if (currentPiece.getType() == Piece.Type.KING) {
+                    if (currentPiece.isKing()) {
 
                         if (colDifference == -2)
                             message = validateJumpMove(turn, move, currentBoard, BoardView.JumpType.BACKWARD_LEFT);
@@ -124,6 +136,7 @@ public class PostValidateMoveRoute implements Route {
                         message = Message.error("INVALID MOVE: Only kings can move backwards");
 
                     break;
+
                 case INVALID:
                     message = Message.error("INVALID MOVE: Not diagonal");
             }

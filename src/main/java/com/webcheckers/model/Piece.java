@@ -52,6 +52,8 @@ public class Piece {
      */
     public Type getType(){ return type; }
 
+    public boolean isKing() { return type == Type.KING; }
+
     public void makeKing(){
         type = Type.KING;
     }
