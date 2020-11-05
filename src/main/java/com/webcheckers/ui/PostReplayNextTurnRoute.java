@@ -21,7 +21,6 @@ public class PostReplayNextTurnRoute implements Route {
 
     public PostReplayNextTurnRoute(TemplateEngine templateEngine, ReplayLoader replayLoader){
         this.templateEngine = templateEngine;
-        //this.replaySaver = replaySaver;
         this.replayLoader = replayLoader;
     }
 
@@ -40,45 +39,6 @@ public class PostReplayNextTurnRoute implements Route {
             ReplayMove replayMove = replay.getCurrentTurn();
             replay.executeReplayMove(replayMove.getPlayerColor(), replayMove.getMove(), session.attribute(REPLAY_BOARD), session.attribute(REPLAY_WHITE_VIEW));
         }
-
-        System.out.println("Over here " + replay.getCurrentTurnNum());
-
-
-        /*
-        Map<String, Object> modeOptionsAsJSON = new HashMap<>();
-        //check if there are moves left
-        if (replay.getCurrentTurnNum() > replay.getMaxTurns()){
-            modeOptionsAsJSON.put("hasNext", true);
-        } else {
-            modeOptionsAsJSON.put("hasNext", false);
-        }
-
-        if (replay.getCurrentTurnNum() < 0){
-            modeOptionsAsJSON.put("hasPrevious", true);
-        } else {
-            modeOptionsAsJSON.put("hasPrevious", false);
-        }
-        BoardView redBoard = replay.getGame().getRedView();
-
-
-
-
-
-        // Creates the HashMap to house all the freemarker components
-        Map<String, Object> vm = new HashMap<>();
-
-        // Adds all freemarker components to the ViewMarker HashMap
-        vm.put("title", "Game");
-        vm.put("currentUser", currentUser);
-        vm.put("loggedIn", currentUser.isSignedIn());
-        vm.put("viewMode", GetGameRoute.viewMode.REPLAY);
-        vm.put("modeOptionsAsJSON", new Gson().toJson(modeOptionsAsJSON));
-        vm.put("redPlayer", replay.getRed());
-        vm.put("whitePlayer", replay.getWhite());
-        vm.put("activeColor", Game.ActiveColor.RED);
-        vm.put("board", redBoard);
-        */
-
         return new Gson().toJson(Message.info("true"));
     }
 

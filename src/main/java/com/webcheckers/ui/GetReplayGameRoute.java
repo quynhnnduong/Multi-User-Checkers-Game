@@ -29,28 +29,25 @@ public class GetReplayGameRoute implements Route {
         final Session session = request.session();
         Player currentUser = session.attribute(PLAYER_ATTR);
         currentUser.startSpectating();
-        //TODO add logic for getting the turn from the replay loader
         String gameId = request.queryParams("gameID");
         if (session.attribute(REPLAY_COPY) == null){
             Replay sessionReplay = replayLoader.getReplay(gameId);
             session.attribute(REPLAY_COPY, sessionReplay);
         }
         Replay replay = session.attribute(REPLAY_COPY);
-        Map<String, Object> modeOptionsAsJSON = new HashMap<>();
-        BoardView redBoard = replay.getGame().getRedView();
-        BoardView whiteBoard = replay.getGame().getWhiteView();
+
         BoardView spectatingBoard = session.attribute(REPLAY_BOARD);
 
 
         //get the number of the current turn of the replay
         int turnNum = replay.getCurrentTurnNum();
 
+
+        Map<String, Object> modeOptionsAsJSON = new HashMap<>();
         if (turnNum == -1){
             //set the mode options to the beginning state
             modeOptionsAsJSON.put("hasNext", true);
             modeOptionsAsJSON.put("hasPrevious", false);
-            //redBoard.resetBoard();
-            //whiteBoard.resetBoard();
             spectatingBoard.resetBoard();
         } else {
             //check if there are moves left
@@ -89,9 +86,6 @@ public class GetReplayGameRoute implements Route {
         vm.put("whitePlayer", replay.getWhite());
         vm.put("activeColor", Game.ActiveColor.RED);
         vm.put("board", spectatingBoard);
-        //vm.put("message", )
-
-        System.out.println("Reached here");
 
         // Render the Game Page
         return templateEngine.render(new ModelAndView(vm , "game.ftl"));
