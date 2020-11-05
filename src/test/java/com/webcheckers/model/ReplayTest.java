@@ -28,9 +28,9 @@ public class ReplayTest {
     @BeforeEach
     public void setUp() {
         gameId = "1234";
+        turnsList = mock(ArrayList.class);
         redPlayer = mock(Player.class);
         whitePlayer = mock(Player.class);
-        turnsList = mock(ArrayList.class);
         game = mock(Game.class);
         move = mock(Move.class);
         board = mock(BoardView.class);
@@ -81,4 +81,29 @@ public class ReplayTest {
         doNothing().when(board).makeMoveReplayVer(move);
         doNothing().when(fakewhite).makeMoveReplayVer(move.getFlippedMove());
     }
+
+    @Test
+    public void testGetPlayers(){
+        when(game.getRedPlayer()).thenReturn(redPlayer);
+        when(game.getWhitePlayer()).thenReturn(whitePlayer);
+        CuT = new Replay(gameId, turnsList, game);
+        assertEquals(CuT.getRed(), redPlayer);
+        assertEquals(CuT.getWhite(), whitePlayer);
+
+    }
+
+    @Test
+    public void testGetGame(){
+        CuT = new Replay(gameId, turnsList, game);
+
+        assertEquals(CuT.getGame(), game);
+    }
+
+    @Test
+    public void testGetMaxTurns(){
+        CuT = new Replay(gameId, turnsList, game);
+
+        assertEquals(CuT.getMaxTurns(), -1);
+    }
+
 }
