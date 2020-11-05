@@ -40,7 +40,6 @@ public class PostValidateMoveRouteTest {
     private PostValidateMoveRoute CuT;
 
     //friendlies
-    private boolean isValidMove;
     private Move move;
 
     @BeforeEach
@@ -81,25 +80,25 @@ public class PostValidateMoveRouteTest {
         assertEquals(gson.toJson(Message.error("INVALID MOVE: A jump move can be taken this turn.")), result);
     }
 
-    // @Test
+   // @Test
     public void testIfTurnHasMoves() {
         //  Set up
         String messageText = "{\"sampleMove\": { \"row\": 1,\"col\": 1}}";
         when(request.queryParams("actionData")).thenReturn(messageText);
 
+        // mock the start and end positions of the move
+        when(start.getRow()).thenReturn(0);
+        when(start.getCell()).thenReturn(0);
+
+        when(end.getRow()).thenReturn(1);
+        when(end.getCell()).thenReturn(1);
 
         // mock the turn (line 33)
         when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
         when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getCurrentTurn()).thenReturn(turn);
         when(turn.hasMoves()).thenReturn(true);
 
-        // mock the start and end position (lines 34-35) - needed for compile not test
-        when(move.getStart()).thenReturn(start);
-        when(move.getEnd()).thenReturn(end);
-
         // hardcode the row/col differences - needed for compile not test
-        when( Math.abs(end.getCell() - start.getCell())).thenReturn(rowDiff);
-        when(start.getRow() - end.getRow()).thenReturn(colDiff);
 
         // mock the board views - needed for compile not test
         when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getRedView()).thenReturn(redView);
