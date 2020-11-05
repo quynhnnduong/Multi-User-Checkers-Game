@@ -4,6 +4,7 @@ import javafx.geometry.Pos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.ClassUtils;
 
 import java.util.ArrayList;
 
@@ -48,32 +49,59 @@ public class BoardViewTest {
         CuT = new BoardView(color);
     }
 
-    //@Test
+    @Test
     public void testMakeMove_SimpleMove(){
         //setup
         board = CuT.generateBoard(color);
 
         //sample position for simple move
-        this.start = new Position(3,0);
+        this.start = new Position(5,0);
+        Space startSpace = new Space(0, SpaceColor.BLACK);
+        Piece piece = startSpace.getPiece();
         this.end = new Position(4,1);
+        Space endSpace = new Space(1, SpaceColor.BLACK);
         this.move = mock(Move.class);
 
         when(move.isJumpMove()).thenReturn(false);
+        when(move.getStart()).thenReturn(start);
+        when(move.getEnd()).thenReturn(end);
+
 
         CuT.makeMove(move);
+
+        assertNull(startSpace.getPiece());
+        assertEquals(endSpace.getPiece(), piece);
     }
 
     //@Test
-    public void testMakeMove_JumpMove(){
+    public void testMakeMove_JumpMove_CaptureRed(){
         //setup
         board = CuT.generateBoard(color);
 
-        //sample positions
-        Position start = new Position(3,0);
-        Position end = new Position(4,1);
+        this.start = new Position(5,0);
+        Space startSpace = new Space(0, SpaceColor.BLACK);
+        Piece piece = startSpace.getPiece();
+        this.end = new Position(3,2);
+        Space endSpace = new Space(2, SpaceColor.BLACK);
+        this.move = mock(Move.class);
+
+        int capturedCell = 1;
+        int capturedRow = 4;
+        Space capturedSpace = new Space(1, SpaceColor.BLACK);
+        Piece capturedPiece = new Piece(Piece.Color.RED);
+
 
         when(move.isJumpMove()).thenReturn(true);
 
+        when(move.getStart()).thenReturn(start);
+        when(move.getEnd()).thenReturn(end);
+
+
+        CuT.makeMove(move);
+        assertNull(capturedSpace.getPiece());
+        assertNull(startSpace.getPiece());
+        assertEquals(endSpace.getPiece(), piece);
+        assertEquals(CuT.getRemainingPieces(Piece.Color.RED), 11);
     }
 
      //@Test
@@ -148,18 +176,21 @@ public class BoardViewTest {
     @Test
     public void testGetRemainingPiecesRed(){
         CuT.generateBoard(color);
-        assertEquals(CuT.getRemainingPieces(color), 4);
+        assertEquals(CuT.getRemainingPieces(color), 12);
     }
 
     @Test
     public void testGetRemainingPiecesWhite(){
         CuT.generateBoard(color);
-        assertEquals(CuT.getRemainingPieces(Piece.Color.WHITE), 4);
+        assertEquals(CuT.getRemainingPieces(Piece.Color.WHITE), 12);
     }
 
 //    @Test
 //    public void testGetPiece(){
-//        CuT.generateBoard(color);
+//        board = CuT.generateBoard(color);
+//
+//        Space space = new Space(0, SpaceColor.BLACK);
+//
 //
 //    }
 
