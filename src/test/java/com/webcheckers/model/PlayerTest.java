@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 /**
  * Unit Tests for {@link Player} Component
@@ -31,6 +32,28 @@ public class PlayerTest {
         // Ensures that the instance variables have been initialized correctly
         assertEquals(NAME, CuT.getName());
         assertFalse(CuT.isCalledForGame());
+    }
+
+    @Test
+    public void testIsPlayingWithNull() {
+        Player otherPlayer = mock(Player.class);
+        CuT.setOpponent(otherPlayer);
+        assertFalse(CuT.isPlayingWith(null));
+    }
+
+    @Test
+    public void testIsPlayingWithValid() {
+        Player otherPlayer = mock(Player.class);
+        CuT.setOpponent(otherPlayer);
+        assertTrue(CuT.isPlayingWith(otherPlayer));
+    }
+
+    @Test
+    public void testIsPlayingWithInvalid() {
+        Player opponent = mock(Player.class);
+        Player otherPlayer = mock(Player.class);
+        CuT.setOpponent(opponent);
+        assertFalse(CuT.isPlayingWith(otherPlayer));
     }
 
     /** Tests the getName() method of Player */
@@ -87,5 +110,17 @@ public class PlayerTest {
     public void player_exit_Game(){
         CuT.exitGame();
         assertNull(CuT.getOpponent());
+    }
+
+    @Test
+    public void testStartSpectating() {
+        CuT.startSpectating();
+        assertFalse(CuT.inGame() && CuT.isCalledForGame());
+    }
+
+    @Test
+    public void testStopSpectating() {
+        CuT.stopSpectating();
+        assertTrue(CuT.isSignedIn());
     }
 }

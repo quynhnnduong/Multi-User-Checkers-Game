@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @Tag("Model-tier")
 public class PieceTest {
+    // Component under Test
+    private Piece CuT;
 
     /** The color of the checkers Piece */
     private final Piece.Color redPiece = Piece.Color.RED;
@@ -23,6 +26,10 @@ public class PieceTest {
     public Piece singleRed = new Piece(redPiece);
     public Piece singleWhite = new Piece(whitePiece);
 
+    @BeforeEach
+    public void setUp() {
+        CuT = new Piece(Piece.Color.RED);
+    }
 
     /** Tests the constructor of Space */
     @Test
@@ -48,4 +55,24 @@ public class PieceTest {
     }
 
 
+    @Test
+    public void testMakeKing() {
+        CuT.makeKing();
+        assertEquals(CuT.getType(), Piece.Type.KING);
+    }
+
+    @Test
+    public void testIsKing() {
+        assertFalse(CuT.isKing());
+        CuT.makeKing();
+        assertTrue(CuT.isKing());
+    }
+
+    @Test
+    public void testSameColorAs() {
+        assertTrue(CuT.sameColorAs(singleRed));
+        assertFalse(CuT.sameColorAs(singleWhite));
+        assertFalse(CuT.sameColorAs(null));
+
+    }
 }
