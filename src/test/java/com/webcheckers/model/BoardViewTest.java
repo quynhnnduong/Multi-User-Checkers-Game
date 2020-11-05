@@ -48,7 +48,7 @@ public class BoardViewTest {
         CuT = new BoardView(color);
     }
 
-    @Test
+    //@Test
     public void testMakeMove_SimpleMove(){
         //setup
         board = CuT.generateBoard(color);
