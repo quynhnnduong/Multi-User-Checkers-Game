@@ -133,6 +133,39 @@ public class BoardView implements Iterable<Row> {
         endSpace.placePiece(piece);
     }
 
+    /**
+     * Makes moves in a way that works with replay mode
+     * @param move
+     */
+    public void makeMoveReplayVer(Move move) {
+        Position start = move.getStart();
+        Position end = move.getEnd();
+
+        // Creates and initializes the individual board Spaces that correspond to their respective Positions
+        Space startSpace = board.get(start.getRow()).getSpace(start.getCell());
+        Space endSpace = board.get(end.getRow()).getSpace(end.getCell());
+
+        if (Math.abs(move.getColDifference()) == 2 && Math.abs(move.getRowDifference()) == 2) {
+
+            // Gets the Position of the captured Piece
+            int capturedCell = (start.getCell() + end.getCell()) / 2;
+            int capturedRow = (start.getRow() + end.getRow()) / 2;
+
+            // Removes the captured Piece from the board
+            board.get(capturedRow).getSpace(capturedCell).removePiece();
+        }
+
+        // Gets the Piece in focus
+        Piece piece = startSpace.getPiece();
+
+        if (end.getRow() == 0 || end.getRow() == BOARD_SIZE - 1)
+            piece.makeKing();
+
+        // Removes the Piece from the starting Space and places is on the ending Space
+        startSpace.removePiece();
+        endSpace.placePiece(piece);
+    }
+
     public int getRemainingPieces(Piece.Color color) {
         return (color == Piece.Color.RED ? redPiecesLeft : whitePiecesLeft);
     }

@@ -87,13 +87,13 @@ public class Replay {
             //do the move on the red view
             //redView.makeMove(move);
             //whiteView.makeMove(move.getFlippedMove());
-            board.makeMove(move);
-            fakeWhite.makeMove(move.getFlippedMove());
+            board.makeMoveReplayVer(move);
+            fakeWhite.makeMoveReplayVer(move.getFlippedMove());
         } else if (currentColor == Game.ActiveColor.WHITE){
             //whiteView.makeMove(move);
             //redView.makeMove(move.getFlippedMove());
-            board.makeMove(move.getFlippedMove());
-            fakeWhite.makeMove(move);
+            board.makeMoveReplayVer(move.getFlippedMove());
+            fakeWhite.makeMoveReplayVer(move);
         }
     }
 
