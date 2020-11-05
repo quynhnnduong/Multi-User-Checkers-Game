@@ -9,8 +9,9 @@ import spark.*;
 
 import javax.swing.*;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static spark.Spark.halt;
 
 /**
  * Unit Test suite for {@link GetReplayStopWatchingRoute} component
@@ -47,7 +48,7 @@ public class GetReplayStopWatchingRouteTest {
     }
 
     @Test
-    public void testReplayMode() {
+    public void testReplayMode() throws Exception {
         when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(currentPlayer);
         when(session.attribute(UIProtocol.REPLAY_COPY)).thenReturn(null);
         when(session.attribute(UIProtocol.REPLAY_BOARD)).thenReturn(sessionBoard);
@@ -55,7 +56,6 @@ public class GetReplayStopWatchingRouteTest {
         when(session.attribute(UIProtocol.REPLAY_WHITE_VIEW)).thenReturn(fakeBoard);
         doNothing().when(fakeBoard).resetBoard();
         doNothing().when(currentPlayer).stopSpectating();
-
         assertThrows(HaltException.class, () -> CuT.handle(request, response));
     }
 }

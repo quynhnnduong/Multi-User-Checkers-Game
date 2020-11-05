@@ -59,8 +59,6 @@ public class GetGameRouteTest {
 
         player1 = mock(Player.class);
         player2 = mock(Player.class);
-        player1.setOpponent(player2);
-        player2.setOpponent(player1);
 
 
         // create a unique CuT for each test
@@ -72,6 +70,8 @@ public class GetGameRouteTest {
     @Test
     public void newGame(){
         game = new Game("1234", player1, player2);
+        player1.setOpponent(player2);
+        player2.setOpponent(player1);
         player1.joinGame(true);
         playerLobby.setOpponentMatch(player1, player2);
         gameCenter.addGame(game);
@@ -94,6 +94,8 @@ public class GetGameRouteTest {
     @Test
     public void current_player_not_in_game(){
         game = new Game("1234", player1, player2);
+        player1.setOpponent(player2);
+        player2.setOpponent(player1);
         player1.joinGame(false);
         playerLobby.setOpponentMatch(player1, player2);
         gameCenter.addGame(game);
@@ -117,6 +119,8 @@ public class GetGameRouteTest {
     public void current_player_in_game(){
         String gameID = CuT.makeGameID(player2, player1);
         game = new Game(gameID, player1, player2);
+        player1.setOpponent(player2);
+        player2.setOpponent(player1);
         player1.joinGame(false);
         playerLobby.setOpponentMatch(player1, player2);
         gameCenter.addGame(game);
@@ -143,6 +147,8 @@ public class GetGameRouteTest {
     @Test
     public void current_player_is_called_from_Player_object(){
         game = new Game("1234", player1, player2);
+        player1.setOpponent(player2);
+        player2.setOpponent(player1);
         player1.joinGame(true);
         playerLobby.setOpponentMatch(player1, player2);
         gameCenter.addGame(game);
@@ -167,6 +173,8 @@ public class GetGameRouteTest {
     @Test
     public void opponent_match_current_player(){
         game = new Game("1234", player1, player2);
+        player1.setOpponent(player2);
+        player2.setOpponent(player1);
         player1.joinGame(false);
         playerLobby.setOpponentMatch(player1, player2);
         gameCenter.addGame(game);
@@ -189,10 +197,9 @@ public class GetGameRouteTest {
     @Test
     public void opponent_does_not_match_current_player(){
         game = new Game("1234", player1, player2);
+        player2.setOpponent(new Player("randomPlayer"));
         player1.joinGame(false);
-        playerLobby.setOpponentMatch(player1, player2);
         gameCenter.addGame(game);
-        player2.call();
 
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -200,9 +207,8 @@ public class GetGameRouteTest {
         when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
         when(session.attribute(UIProtocol.LEGIT_OPPONENT_ATTR)).thenReturn(false);
         when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
-        when(player2.getOpponent()).thenReturn(null);
+        when(player2.getOpponent()).thenReturn(new Player("randomPlayer"));
         when(gameCenter.getGame("1234")).thenReturn(game);
-
 
         assertThrows(HaltException.class, () -> CuT.handle(request, response));
     }
@@ -223,11 +229,15 @@ public class GetGameRouteTest {
         when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
         when(session.attribute(UIProtocol.LEGIT_OPPONENT_ATTR)).thenReturn(null);
         when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(player1);
-        when(playerLobby.getPlayer(request.queryParams("opponent"))).thenReturn(null);
+        when(player1.getOpponent()).thenReturn(null);
         when(gameCenter.getGame("1234")).thenReturn(game);
 
         assertThrows(HaltException.class, () -> CuT.handle(request, response));
     }
+
+
+
+
 
 
 
