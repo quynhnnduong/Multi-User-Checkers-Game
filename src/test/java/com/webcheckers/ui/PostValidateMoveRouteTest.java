@@ -13,8 +13,7 @@ import spark.*;
 import java.lang.reflect.Type;
 
 import static com.webcheckers.ui.UIProtocol.GAME_ID_ATTR;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -32,9 +31,9 @@ public class PostValidateMoveRouteTest {
     private Gson gson;
 
     private Position start, end;
-    private int rowDiff, colDiff;
-    private BoardView redView, whiteView, curView;
+    private BoardView curView;
     private Game.ActiveColor curColor;
+    private Piece piece;
 
     // Component under test (CuT)
     private PostValidateMoveRoute CuT;
@@ -55,12 +54,9 @@ public class PostValidateMoveRouteTest {
         start = mock(Position.class);
         end = mock(Position.class);
         move = mock(Move.class);
-        rowDiff = 0;
-        colDiff = 0;
-        redView = mock(BoardView.class);
-        whiteView = mock(BoardView.class);
         curView = mock(BoardView.class);
         curColor = Game.ActiveColor.RED;
+        piece = mock(Piece.class);
 
         when(request.session()).thenReturn(session);
 
@@ -69,52 +65,281 @@ public class PostValidateMoveRouteTest {
 
     }
 
-    // @Test
-    public void testHandleInvalidForwardSingle() {
-        // Set up
-
-        // Invoke
-        Object result = CuT.handle(request, response);
-
-        // Analyze
-        assertEquals(gson.toJson(Message.error("INVALID MOVE: A jump move can be taken this turn.")), result);
-    }
-
-   //  @Test
-    public void testIfTurnHasMoves() {
+    @Test
+    public void testHandle_ForwardSingle() {
         //  Set up
-        String messageText = "{\"sampleMove\": { \"row\": 1,\"col\": 1}}";
+        String messageText = "{\"start\": { \"row\": 0,\"col\": 0}, \"end\":{\"row\":-1,\"cell\":1}}";
         when(request.queryParams("actionData")).thenReturn(messageText);
 
-        // mock the start and end positions of the move
-        when(start.getRow()).thenReturn(0);
-        when(start.getCell()).thenReturn(0);
-
-        when(end.getRow()).thenReturn(1);
-        when(end.getCell()).thenReturn(1);
-
-        // mock the turn (line 33)
+        // mock the turn and board
         when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
+        when(game.getActiveColor()).thenReturn(curColor);
+        when(game.getActivePlayerBoard()).thenReturn(curView);
         when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getCurrentTurn()).thenReturn(turn);
+
+        // Set up the conditional to test True/True
         when(turn.hasMoves()).thenReturn(true);
-
-        // hardcode the row/col differences - needed for compile not test
-
-        // mock the board views - needed for compile not test
-        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getRedView()).thenReturn(redView);
-        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getWhiteView()).thenReturn(whiteView);
-
-        // hardcode the current color - needed for compile not test
-        curColor = Game.ActiveColor.RED;
-        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getActiveColor()).thenReturn(curColor);
+        when(curView.isRequiredToJump(curColor, turn)).thenReturn(true);
 
         // Invoke
         Object validMessage = CuT.handle(request, response);
 
         // Analyze
-        assertEquals(gson.toJson(Message.error("INVALID MOVE: Can only move once")), validMessage);
-
+        assertEquals(gson.toJson(Message.error("INVALID MOVE: A jump move can be taken this turn.")), validMessage);
     }
+
+    @Test
+    public void testHandle_ForwardJump() {
+        //  Set up
+        String messageText = "{\"start\": { \"row\": 0,\"col\": 0}, \"end\":{\"row\":-2,\"cell\":2}}";
+        when(request.queryParams("actionData")).thenReturn(messageText);
+
+        // mock the turn and board
+        when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
+        when(game.getActiveColor()).thenReturn(curColor);
+        when(game.getActivePlayerBoard()).thenReturn(curView);
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getCurrentTurn()).thenReturn(turn);
+
+        // Set up the conditional to test True/True
+        when(turn.hasMoves()).thenReturn(true);
+        when(curView.isRequiredToJump(curColor, turn)).thenReturn(true);
+
+        // Invoke
+        Object validMessage = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.error("INVALID MOVE: Not a valid jump move.")), validMessage);
+    }
+
+    @Test
+    public void testHandle_BackwardSingleInvalid() {
+        //  Set up
+        String messageText = "{\"start\": { \"row\": 0,\"col\": 0}, \"end\":{\"row\":1,\"cell\":1}}";
+        when(request.queryParams("actionData")).thenReturn(messageText);
+
+        // mock the turn and board
+        when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
+        when(game.getActiveColor()).thenReturn(curColor);
+        when(game.getActivePlayerBoard()).thenReturn(curView);
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getCurrentTurn()).thenReturn(turn);
+
+        // Set up the conditional to test True/True
+        when(turn.hasMoves()).thenReturn(true);
+        when(curView.isRequiredToJump(curColor, turn)).thenReturn(true);
+
+        // Set up the case conditionals
+        when(curView.getPiece(anyInt(), anyInt())).thenReturn(piece);
+        when(piece.isKing()).thenReturn(false);
+
+        // Invoke
+        Object validMessage = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.error("INVALID MOVE: Only kings can move backwards")), validMessage);
+    }
+
+    @Test
+    public void testHandle_BackwardSingleValid() {
+        //  Set up
+        String messageText = "{\"start\": { \"row\": 0,\"col\": 0}, \"end\":{\"row\":1,\"cell\":1}}";
+        when(request.queryParams("actionData")).thenReturn(messageText);
+
+        // mock the turn and board
+        when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
+        when(game.getActiveColor()).thenReturn(curColor);
+        when(game.getActivePlayerBoard()).thenReturn(curView);
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getCurrentTurn()).thenReturn(turn);
+
+        // Set up the conditional to test True/True
+        when(turn.hasMoves()).thenReturn(true);
+        when(curView.isRequiredToJump(curColor, turn)).thenReturn(true);
+
+        // Set up the case conditionals
+        when(curView.getPiece(anyInt(), anyInt())).thenReturn(piece);
+        when(piece.isKing()).thenReturn(true);
+
+        // Invoke
+        Object validMessage = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.error("INVALID MOVE: A jump move can be taken this turn.")), validMessage);
+    }
+
+    @Test
+    public void testHandle_BackwardJumpInvalid() {
+        //  Set up
+        String messageText = "{\"start\": { \"row\": 0,\"col\": 0}, \"end\":{\"row\":2,\"cell\":2}}";
+        when(request.queryParams("actionData")).thenReturn(messageText);
+
+        // mock the turn and board
+        when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
+        when(game.getActiveColor()).thenReturn(curColor);
+        when(game.getActivePlayerBoard()).thenReturn(curView);
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getCurrentTurn()).thenReturn(turn);
+
+        // Set up the conditional to test True/True
+        when(turn.hasMoves()).thenReturn(true);
+        when(curView.isRequiredToJump(curColor, turn)).thenReturn(true);
+
+        // Set up the case conditionals
+        when(curView.getPiece(anyInt(), anyInt())).thenReturn(piece);
+        when(piece.isKing()).thenReturn(false);
+
+        // Invoke
+        Object validMessage = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.error("INVALID MOVE: Only kings can move backwards")), validMessage);
+    }
+
+    @Test
+    public void testHandle_BackwardJumpValid_Right() {
+        //  Set up
+        String messageText = "{\"start\": { \"row\": 0,\"col\": 0}, \"end\":{\"row\":2,\"cell\":2}}";
+        when(request.queryParams("actionData")).thenReturn(messageText);
+
+        // mock the turn and board
+        when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
+        when(game.getActiveColor()).thenReturn(curColor);
+        when(game.getActivePlayerBoard()).thenReturn(curView);
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getCurrentTurn()).thenReturn(turn);
+
+        // Set up the conditional to test True/True
+        when(turn.hasMoves()).thenReturn(true);
+        when(curView.isRequiredToJump(curColor, turn)).thenReturn(true);
+
+        // Set up the case conditionals
+        when(curView.getPiece(anyInt(), anyInt())).thenReturn(piece);
+        when(piece.isKing()).thenReturn(true);
+
+        // Invoke
+        Object validMessage = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.error("INVALID MOVE: Not a valid jump move.")), validMessage);
+    }
+
+    @Test
+    public void testHandle_BackwardJumpValid_Left() {
+        //  Set up
+        String messageText = "{\"start\": { \"row\": 0,\"col\": 0}, \"end\":{\"row\":2,\"cell\":-2}}";
+        when(request.queryParams("actionData")).thenReturn(messageText);
+
+        // mock the turn and board
+        when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
+        when(game.getActiveColor()).thenReturn(curColor);
+        when(game.getActivePlayerBoard()).thenReturn(curView);
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getCurrentTurn()).thenReturn(turn);
+
+        // Set up the conditional to test True/True
+        when(turn.hasMoves()).thenReturn(true);
+        when(curView.isRequiredToJump(curColor, turn)).thenReturn(true);
+
+        // Set up the case conditionals
+        when(curView.getPiece(anyInt(), anyInt())).thenReturn(piece);
+        when(piece.isKing()).thenReturn(true);
+
+        // Invoke
+        Object validMessage = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.error("INVALID MOVE: Not a valid jump move.")), validMessage);
+    }
+
+    @Test
+    public void testHandle_InvalidMove() {
+        //  Set up
+        String messageText = "{\"start\": { \"row\": 0,\"col\": 0}, \"end\":{\"row\":3,\"cell\":3}}";
+        when(request.queryParams("actionData")).thenReturn(messageText);
+
+        // mock the turn and board
+        when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
+        when(game.getActiveColor()).thenReturn(curColor);
+        when(game.getActivePlayerBoard()).thenReturn(curView);
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getCurrentTurn()).thenReturn(turn);
+
+        // Set up the conditional to test True/True
+        when(turn.hasMoves()).thenReturn(true);
+        when(curView.isRequiredToJump(curColor, turn)).thenReturn(true);
+
+        // Invoke
+        Object validMessage = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.error("INVALID MOVE: Not diagonal")), validMessage);
+    }
+
+    @Test
+    public void testHandle_NoMoveMade() {
+        //  Set up
+        String messageText = "{\"start\": { \"row\": 0,\"col\": 0}, \"end\":{\"row\":3,\"cell\":3}}";
+        when(request.queryParams("actionData")).thenReturn(messageText);
+
+        // mock the turn and board
+        when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
+        when(game.getActiveColor()).thenReturn(curColor);
+        when(game.getActivePlayerBoard()).thenReturn(curView);
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getCurrentTurn()).thenReturn(turn);
+
+        // Set up the conditional to test False/True
+        when(turn.hasMoves()).thenReturn(false);
+        when(curView.isRequiredToJump(curColor, turn)).thenReturn(true);
+
+        // Invoke
+        Object validMessage = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.error("INVALID MOVE: Not diagonal")), validMessage);
+    }
+
+    @Test
+    public void testHandle_NoRequiredMove() {
+        //  Set up
+        String messageText = "{\"start\": { \"row\": 0,\"col\": 0}, \"end\":{\"row\":3,\"cell\":3}}";
+        when(request.queryParams("actionData")).thenReturn(messageText);
+
+        // mock the turn and board
+        when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
+        when(game.getActiveColor()).thenReturn(curColor);
+        when(game.getActivePlayerBoard()).thenReturn(curView);
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getCurrentTurn()).thenReturn(turn);
+
+        // Set up the conditional to test True/False
+        when(turn.hasMoves()).thenReturn(false);
+        when(curView.isRequiredToJump(curColor, turn)).thenReturn(false);
+
+        // Invoke
+        Object validMessage = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.error("INVALID MOVE: Not diagonal")), validMessage);
+    }
+
+    @Test
+    public void testHandle_NoMoveMade_NoRequiredMove() {
+        //  Set up
+        String messageText = "{\"start\": { \"row\": 0,\"col\": 0}, \"end\":{\"row\":3,\"cell\":3}}";
+        when(request.queryParams("actionData")).thenReturn(messageText);
+
+        // mock the turn and board
+        when(gameCenter.getGame(session.attribute(UIProtocol.GAME_ID_ATTR))).thenReturn(game);
+        when(game.getActiveColor()).thenReturn(curColor);
+        when(game.getActivePlayerBoard()).thenReturn(curView);
+        when(gameCenter.getGame(session.attribute(GAME_ID_ATTR)).getCurrentTurn()).thenReturn(turn);
+
+        // Set up the conditional to test False/False
+        when(turn.hasMoves()).thenReturn(false);
+        when(curView.isRequiredToJump(curColor, turn)).thenReturn(false);
+
+        // Invoke
+        Object validMessage = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.error("INVALID MOVE: Not diagonal")), validMessage);
+    }
+
+
+
 
     @Test
     public void testValidateJumpMoveSuccessful() {

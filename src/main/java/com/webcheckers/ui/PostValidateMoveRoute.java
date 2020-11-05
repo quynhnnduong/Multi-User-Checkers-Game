@@ -89,7 +89,6 @@ public class PostValidateMoveRoute implements Route {
 
         int rowDifference = move.getRowDifference();
         int colDifference = move.getColDifference();
-        System.out.println(rowDifference + " " + colDifference);
 
         MoveType moveType = getMoveType(rowDifference, colDifference);
 
