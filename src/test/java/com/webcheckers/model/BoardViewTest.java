@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.ClassUtils;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 
 import static com.webcheckers.model.BoardView.BOARD_SIZE;
@@ -202,6 +203,16 @@ public class BoardViewTest {
         assertEquals(CuT.getPiece(1, 1), piece);
 
         assertTrue(CuT.isJumpPossible(currentPiece,2, 2, BoardView.JumpType.FORWARD_LEFT));
+    }
+
+    @Test
+    public void testResetBoard(){
+        //setup
+        board = CuT.generateBoard(Piece.Color.RED);
+
+        CuT.resetBoard();
+
+        assertNotEquals(board, CuT.getBoard());
     }
 
 }

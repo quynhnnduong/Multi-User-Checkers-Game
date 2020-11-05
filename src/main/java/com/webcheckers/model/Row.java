@@ -29,7 +29,7 @@ public class Row implements Iterable<Space> {
      * @param leadingColor the first color of a Space in the Row
      * @param bottomColor the color of the Pieces found on this Row (applies to bottom and top 3 Rows)
      */
-    public Row(int index, SpaceColor leadingColor, Piece.Color bottomColor) {
+    public Row(int index, SpaceColor leadingColor, Piece.Color bottomColor){
         this.index = index;
         this.leadingColor = leadingColor;
         this.bottomColor = bottomColor;
@@ -111,7 +111,22 @@ public class Row implements Iterable<Space> {
      */
     public Space getSpace(int index) { return row.get(index); }
 
-    public Piece.Color getBottomColor() { return bottomColor; }
+//    public int getNumOfPieces(Piece.Color color) {
+//        int numOfPieces = 0;
+//
+//        for (Space space : row) {
+//            if (space.getPiece() != null && space.getPiece().getColor() == color)
+//                numOfPieces++;
+//        }
+//
+//        return numOfPieces;
+//    }
+
+    public ArrayList<Space> generateDebugRow(SpaceColor leadingColor, Piece.Color bottomColor) {
+        ArrayList<Space> row = new ArrayList<>();
+
+        // Determines the color of the Pieces at the top of the board based on the entered bottomColor.
+        Piece.Color topColor = (bottomColor == Piece.Color.RED ? Piece.Color.WHITE : Piece.Color.RED);
 
     public SpaceColor getLeadingColor() { return leadingColor; }
 

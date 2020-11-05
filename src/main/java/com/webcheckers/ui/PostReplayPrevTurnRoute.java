@@ -23,7 +23,7 @@ public class PostReplayPrevTurnRoute implements Route {
     }
 
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response){
         final Session session = request.session();
         Player currentUser = session.attribute(PLAYER_ATTR);
         //currentUser.startSpectating();
