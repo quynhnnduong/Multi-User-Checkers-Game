@@ -83,9 +83,6 @@ public class Replay {
     }
 
     public void executeReplayMove(Game.ActiveColor currentColor, Move move, BoardView board, BoardView fakeWhite){
-        Game game = getGame();
-        BoardView redView = game.getRedView();
-        BoardView whiteView = game.getWhiteView();
         if (currentColor == Game.ActiveColor.RED){
             //do the move on the red view
             //redView.makeMove(move);
