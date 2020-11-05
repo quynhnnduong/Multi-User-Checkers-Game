@@ -115,16 +115,16 @@ public class Row implements Iterable<Space> {
      */
     public Space getSpace(int index) { return row.get(index); }
 
-    public int getNumOfPieces(Piece.Color color) {
-        int numOfPieces = 0;
-
-        for (Space space : row) {
-            if (space.getPiece() != null && space.getPiece().getColor() == color)
-                numOfPieces++;
-        }
-
-        return numOfPieces;
-    }
+//    public int getNumOfPieces(Piece.Color color) {
+//        int numOfPieces = 0;
+//
+//        for (Space space : row) {
+//            if (space.getPiece() != null && space.getPiece().getColor() == color)
+//                numOfPieces++;
+//        }
+//
+//        return numOfPieces;
+//    }
 
     public ArrayList<Space> generateDebugRow(SpaceColor leadingColor, Piece.Color bottomColor) {
         ArrayList<Space> row = new ArrayList<>();
