@@ -15,6 +15,7 @@ import com.webcheckers.util.Message;
 import spark.*;
 
 import static com.webcheckers.ui.UIProtocol.*;
+import static spark.Spark.halt;
 
 /**
  * The UI Controller to GET the Home page. This class contains the handle() method that is run when the '/' or the
@@ -87,7 +88,7 @@ public class GetHomeRoute implements Route {
       // Check if currentPlayer has been called to a game
       if (currentPlayer.inGame()) {
         response.redirect(WebServer.GAME_URL + "?opponent=" + currentPlayer.getOpponent().getName());
-        // return halt();
+         return halt();
       }
 
       if (session.attribute(GAME_ID_ATTR) != null)

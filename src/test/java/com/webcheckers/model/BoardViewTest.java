@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 import static com.webcheckers.model.BoardView.BOARD_SIZE;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,6 +28,8 @@ public class BoardViewTest {
     private Piece.Color color;
     private Move move;
     private Position start, end;
+    private Space startSpace, endSpace;
+    private Piece piece;
 
     @BeforeEach
     public void setUp() {
@@ -36,6 +37,9 @@ public class BoardViewTest {
         move = mock(Move.class);
         start =  mock(Position.class);
         end =  mock(Position.class);
+        startSpace = mock(Space.class);
+        endSpace = mock(Space.class);
+        piece = mock(Piece.class);
 
         // friendlies
         color = Piece.Color.RED;
@@ -43,15 +47,20 @@ public class BoardViewTest {
         CuT = new BoardView(color);
     }
 
-    //@Test
-    public void testMakeMove(){
+    @Test
+    public void testMakeMoveReplayVer(){
         // Setup
-        when(CuT.generateBoard(color)).thenReturn(board);
+//        board = CuT.generateBoard(color);
         when(move.getStart()).thenReturn(start);
         when(move.getEnd()).thenReturn(end);
 
+
         when(start.getRow()).thenReturn(0);
         when(start.getCell()).thenReturn(0);
+
+//        when(board.get(start.getRow()).getSpace(start.getCell())).thenReturn(startSpace);
+//        when(board.get(end.getRow()).getSpace(end.getCell())).thenReturn(endSpace);
+
 
         // True/True
         when(move.getColDifference()).thenReturn(2);
@@ -59,6 +68,7 @@ public class BoardViewTest {
 
         // True/True
         when(end.getRow()).thenReturn(0);
+        when(end.getRow()).thenReturn(7);
 
 
         //Invoke
@@ -80,17 +90,16 @@ public class BoardViewTest {
      */
     @Test
     public void bv_initColors(){
-        BoardView bv = new BoardView(Piece.Color.RED);
-        bv.generateBoard(Piece.Color.RED);
+        CuT.generateBoard(Piece.Color.RED);
 
         SpaceColor leadingColor = SpaceColor.WHITE;
         for (int i = 0; i < BOARD_SIZE; i++){
             // Alternates the leading color in each Row to create a checker pattern
             if (i % 2 == 0) {
                 //check the color of the first space
-                assertEquals(SpaceColor.WHITE, bv.getBoard().get(i).getSpaces().get(0).getColor(), "Leading space was black when it should be white");
+                assertEquals(SpaceColor.WHITE, CuT.getBoard().get(i).getSpaces().get(0).getColor(), "Leading space was black when it should be white");
             } else  {
-                assertEquals(SpaceColor.BLACK, bv.getBoard().get(i).getSpaces().get(0).getColor(), "Leading space was white when it should be black");
+                assertEquals(SpaceColor.BLACK, CuT.getBoard().get(i).getSpaces().get(0).getColor(), "Leading space was white when it should be black");
             }
 
         }
@@ -99,15 +108,41 @@ public class BoardViewTest {
 
     @Test
     public void testIterator(){
-        // Setup
-        BoardView bv = new BoardView(Piece.Color.RED);
-
         //Invoke
-        bv.generateBoard(Piece.Color.RED);
+        CuT.generateBoard(Piece.Color.RED);
 
         //Analyze
-        assertNotNull(bv.iterator());
+        assertNotNull(CuT.iterator());
 
+    }
+
+    @Test
+    public void testGetRemainingPiecesRed(){
+        CuT.generateBoard(color);
+        assertEquals(CuT.getRemainingPieces(color), 4);
+    }
+
+    @Test
+    public void testGetRemainingPiecesWhite(){
+        CuT.generateBoard(color);
+        assertEquals(CuT.getRemainingPieces(Piece.Color.WHITE), 4);
+    }
+
+//    @Test
+//    public void testGetPiece(){
+//        CuT.generateBoard(color);
+//
+//    }
+
+    @Test
+    public void testIsJumpPossible(){
+        Piece currentPiece = mock(Piece.class);
+        CuT.getPiece(1, 1);
+        when(currentPiece.sameColorAs(piece)).thenReturn(false);
+        assertEquals(CuT.getPiece(0, 0), null);
+        assertEquals(CuT.getPiece(1, 1), piece);
+
+        assertTrue(CuT.isJumpPossible(currentPiece,2, 2, BoardView.JumpType.FORWARD_LEFT));
     }
 
 }
