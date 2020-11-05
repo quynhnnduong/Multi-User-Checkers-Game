@@ -69,7 +69,45 @@ public class Move {
      *
      * @return the difference in rows between the start and end positions of the move
      */
-    public int getColDifference() { return getEnd().getCell() - getStart().getCell(); }
+    public int getColDifference(){ return getEnd().getCell() - getStart().getCell(); }
+
+    public int getRowDiff(){
+        return Math.abs(getEnd().getCell() - getStart().getCell());
+    }
+
+    /**
+     * Returns a move as a string where the first line has the start row and cell separated by a space
+     * and the second line has the end row and cell separated by a space
+     * @return
+     */
+    @Override
+    public String toString() {
+        return start.getRow() + " " + start.getCell() + "\n" + end.getRow() + " " + end.getCell() + "\n";
+    }
+
+    /**
+     * gets the reverse version of a move
+     * @return
+     */
+    public Move getUndoMove(){
+        return new Move(end, start);
+    }
+
+    public boolean doesMoveSkipOverSpace(){
+        return Math.abs(getRowDiff()) == 2 && Math.abs( getColDifference()) == 2;
+    }
+
+    /**
+     * Gets the piece in the middle of a jump move
+     * @pre the move is a jump move
+     * @return
+     */
+    public Space getSpaceInMiddle(BoardView boardView){
+        int capturedCell = (start.getCell() + end.getCell()) / 2;
+        int capturedRow = (start.getRow() + end.getRow()) / 2 ;
+        Space jumpedSpace = boardView.getBoard().get(capturedRow).getSpace(capturedCell);
+        return jumpedSpace;
+            }
 
     public boolean isJumpMove() { return Math.abs(getColDifference()) == 2; }
 }

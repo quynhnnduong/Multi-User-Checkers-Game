@@ -33,7 +33,12 @@ public class Player {
 
         /** Represents the Player waiting for his/her turn -
          * a second Game state (alternates with MY_TURN)*/
-        WAITING
+        WAITING,
+
+        /** Represents someone watching a game in
+         * spectator mode or replay mode
+         */
+        SPECTATING
     }
 
     /** The name of the Player (entered when signing in) */
@@ -146,5 +151,21 @@ public class Player {
             return opponent.equals(player);
 
         return false;
+    }
+
+    /**
+     * player begins spectating replay or live game
+     */
+    public void startSpectating(){
+        state = PlayerState.SPECTATING;
+    }
+
+    /**
+     * player stops spectating replay or live game
+     * and is back on the home screen so they become signed in
+     */
+
+    public void stopSpectating(){
+        state = PlayerState.SIGNED_IN;
     }
 }

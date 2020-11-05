@@ -8,7 +8,6 @@ package com.webcheckers.ui;
  */
 public class UIProtocol {
 
-
     //the object for displaying the player (not sure why its not being used)
     public static final String PLAYER_ATTR = "player";
 
@@ -20,12 +19,9 @@ public class UIProtocol {
 
     public static final String GAME_ID_ATTR = "gameID";
 
-    // Added the RED/WHITE_ATTR keys to prevent compile errors in test code - Sasha
-    public static final String RED_ATTR = "redPlayer";
+    public static final String REPLAY_BOARD = "replayBoard";
 
-    public static final String WHITE_ATTR = "whitePlayer";
+    public static final String REPLAY_WHITE_VIEW = "replayWhiteView";
 
-
-
-
+    public static final String REPLAY_COPY = "replayCopy";
 }

@@ -47,12 +47,8 @@ public class PostValidateMoveRoute implements Route {
         return MoveType.INVALID;
     }
 
-<<<<<<< HEAD
     Message validateSingleMove(Turn turn, Move move, BoardView currentBoard, Game.ActiveColor activeColor) {
-=======
-    private Message validateSingleMove(Turn turn, Move move, BoardView currentBoard, Game.ActiveColor activeColor) {
 
->>>>>>> 0bd67dc65b8b969348ca5bfe64216a90b8daafa9
         if (currentBoard.isRequiredToJump(activeColor, turn))
             return Message.error("INVALID MOVE: A jump move can be taken this turn.");
 
@@ -146,4 +142,6 @@ public class PostValidateMoveRoute implements Route {
 
         return new Gson().toJson(message);
     }
+
+    
 }

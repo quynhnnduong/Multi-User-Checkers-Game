@@ -3,6 +3,7 @@ package com.webcheckers.ui;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 
+import com.webcheckers.model.ReplayLoader;
 import com.webcheckers.model.Player;
 import com.webcheckers.util.Message;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,6 +39,7 @@ public class GetHomeRouteTest {
     private TemplateEngine engine;
     private PlayerLobby playerLobby;
     private Player player, opponent;
+    private ReplayLoader replayLoader;
 
     /**
      * Setup new mock objects for each test.
@@ -49,14 +51,18 @@ public class GetHomeRouteTest {
         response = mock(Response.class);
         engine = mock(TemplateEngine.class);
         playerLobby = mock(PlayerLobby.class);
+        replayLoader = mock(ReplayLoader.class);
+
+        //unique CuT for each test meow if you see this
         player = mock(Player.class);
         opponent = mock(Player.class);
         gameCenter = new GameCenter();
 
+        CuT = new GetHomeRoute(engine, gameCenter, playerLobby, replayLoader);
         when(request.session()).thenReturn(session);
         when(session.attribute(PLAYER_ATTR)).thenReturn(player);
 
-        CuT = new GetHomeRoute(engine, gameCenter, playerLobby);
+        CuT = new GetHomeRoute(engine, gameCenter, playerLobby, replayLoader);
     }
 
     @Test

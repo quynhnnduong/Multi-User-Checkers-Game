@@ -5,6 +5,8 @@ import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
+import com.webcheckers.model.ReplayLoader;
+import com.webcheckers.model.ReplaySaver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -27,6 +29,8 @@ public class GetGameRouteTest {
     private GameCenter gameCenter;
     private PlayerLobby playerLobby;
     private Game game;
+    private ReplaySaver replaySaver;
+    private ReplayLoader replayLoader;
 
     // Attributes holding mock objects
     private Request request;
@@ -50,6 +54,8 @@ public class GetGameRouteTest {
         engine = mock(TemplateEngine.class);
         playerLobby = mock(PlayerLobby.class);
         gameCenter = mock(GameCenter.class);
+        replaySaver = new ReplaySaver();
+        replayLoader = new ReplayLoader(replaySaver);
 
         player1 = mock(Player.class);
         player2 = mock(Player.class);
@@ -58,7 +64,7 @@ public class GetGameRouteTest {
 
 
         // create a unique CuT for each test
-        CuT = new GetGameRoute(engine, gameCenter, playerLobby);
+        CuT = new GetGameRoute(engine, gameCenter, playerLobby, replaySaver);
     }
     /**
      * Test that the Game view will create a new game when a player initiates a game

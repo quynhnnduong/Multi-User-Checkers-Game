@@ -13,6 +13,12 @@ public class Turn {
     /** An ArrayList of all the validated Moves that took place (or currently taking place) on a Player's Turn */
      final ArrayList<Move> validMoves = new ArrayList<>();
 
+    private final Game.ActiveColor playerColor;
+
+    public Turn(Game.ActiveColor playerColor){
+        this.playerColor = playerColor;
+    }
+
     /**
      * Simply appends a validated Move to the end of validMoves.
      *
@@ -46,6 +52,31 @@ public class Turn {
         return null;
     }
 
+    public Position getLastStartPosition(){
+        return getLastMove().getStart();
+    }
+
+    public Position getLastEndPosition() {
+        return getLastMove().getEnd();
+    }
+
+    public ArrayList<Move> getAllMovesInTurn(){
+        return validMoves;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder fullTurnsString = new StringBuilder();
+        for (Move move: validMoves){
+            fullTurnsString.append(move.toString());
+            fullTurnsString.append("-\n");
+        }
+        return fullTurnsString.toString();
+    }
+
+    public Game.ActiveColor getPlayerColor() {
+        return playerColor;
+    }
     /**
      * Simply returns the ArrayList of all the Moves made on this Turn.
      *

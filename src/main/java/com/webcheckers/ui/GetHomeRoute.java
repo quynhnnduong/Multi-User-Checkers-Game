@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -8,11 +9,12 @@ import java.util.logging.Logger;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
+import com.webcheckers.model.Replay;
+import com.webcheckers.model.ReplayLoader;
 import com.webcheckers.util.Message;
 import spark.*;
 
 import static com.webcheckers.ui.UIProtocol.*;
-import static spark.Spark.halt;
 
 /**
  * The UI Controller to GET the Home page. This class contains the handle() method that is run when the '/' or the
@@ -35,6 +37,8 @@ public class GetHomeRoute implements Route {
   /** The TemplateEngine that renders all HTML .ftl files */
   private final TemplateEngine templateEngine;
 
+  private final ReplayLoader replayLoader;
+
   /** A Message that is displayed at the top of the home screen */
   public static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
 
@@ -43,10 +47,11 @@ public class GetHomeRoute implements Route {
    *
    * @param templateEngine the HTML template rendering engine
    */
-  public GetHomeRoute(final TemplateEngine templateEngine, final GameCenter gameCenter, PlayerLobby playerLobby) {
+  public GetHomeRoute(final TemplateEngine templateEngine, final GameCenter gameCenter, PlayerLobby playerLobby, final ReplayLoader replayLoader) {
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
     this.gameCenter = gameCenter;
     this.playerLobby = playerLobby;
+    this.replayLoader = replayLoader;
 
     LOG.config("GetHomeRoute is initialized.");
   }
@@ -93,6 +98,12 @@ public class GetHomeRoute implements Route {
       vm.put("loggedIn", true);
       vm.put("playersMessage", playerLobby.getLobbyMessage());
     }
+
+      //show all the available replays
+      ArrayList<Replay> replayList = replayLoader.getAllReplays();
+      vm.put("replayList", replayList);
+
+
 
     vm.put(LEGIT_OPPONENT_ATTR, session.attribute(LEGIT_NAME_ATTR));
 

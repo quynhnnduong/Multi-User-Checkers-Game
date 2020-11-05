@@ -5,6 +5,8 @@ import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
+import com.webcheckers.model.Replay;
+import com.webcheckers.model.ReplaySaver;
 import spark.*;
 
 import java.util.HashMap;
@@ -37,6 +39,9 @@ public class GetGameRoute implements Route {
     /** A site-wide GameCenter used for storing any ongoing games and global statistics */
     private final GameCenter gameCenter;
 
+    /** A site-wide ReplaySaver used for saving games as replays */
+    private final ReplaySaver replaySaver;
+
     /** An enumeration of the mode selected by the user to enter into */
     enum viewMode {
         PLAY,
@@ -49,10 +54,12 @@ public class GetGameRoute implements Route {
      *
      * @param templateEngine the HTML template rendering engine
      */
-    public GetGameRoute(final TemplateEngine templateEngine, GameCenter gameCenter, PlayerLobby playerLobby) {
+    public GetGameRoute(final TemplateEngine templateEngine, GameCenter gameCenter, PlayerLobby playerLobby, ReplaySaver replaySaver) {
+
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
         this.playerLobby = playerLobby;
         this.gameCenter = gameCenter;
+        this.replaySaver = replaySaver;
         LOG.config("GetGameRoute is initialized.");
     }
 
@@ -108,6 +115,7 @@ public class GetGameRoute implements Route {
             String gameID = makeGameID(currentPlayer, opponent);
             Game game = new Game(gameID, currentPlayer, opponent);
 
+
             // Sets
             session.attribute(LEGIT_OPPONENT_ATTR, true);
             session.attribute(GAME_ID_ATTR, gameID);
@@ -116,14 +124,17 @@ public class GetGameRoute implements Route {
 
             gameCenter.addGame(game);
 
+
+
             // Set currentPlayer and opponent's states to PLAYING in playerLobby and start calling opponent to the game
             currentPlayer.joinGame(true);
             opponent.call();
 
             // Inform PlayerLobby that currentPlayer and opponent are now playing
+            // Don't remove them so other people can play against them
             playerLobby.setOpponentMatch(currentPlayer, opponent);
-            playerLobby.removePlayer(currentPlayer);
-            playerLobby.removePlayer(opponent);
+            //playerLobby.removePlayer(currentPlayer);
+            //playerLobby.removePlayer(opponent);
         }
 
         // Check if currentPlayer was called into a game by opponent
@@ -144,10 +155,14 @@ public class GetGameRoute implements Route {
 
             if (winner == null)
                 modeOptionsAsJSON.put("gameOverMessage", (opponent.getName() + " resigned."));
-            else if (winner.equals(currentPlayer))
+            else if (winner.equals(currentPlayer)) {
                 modeOptionsAsJSON.put("gameOverMessage", ("You captured all pieces."));
-            else
+                replaySaver.saveReplay(game);
+            }
+            else {
                 modeOptionsAsJSON.put("gameOverMessage", (winner.getName() + " captured all pieces."));
+                replaySaver.saveReplay(game);
+            }
 
             currentPlayer.exitGame();
             playerLobby.addPlayer(currentPlayer);

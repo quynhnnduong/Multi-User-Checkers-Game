@@ -69,7 +69,7 @@ public class Game {
     public Player getWhitePlayer() { return whitePlayer; }
 
     /** Adds a new Turn to turns - used when it is the Player's turn */
-    private void addTurn() { turns.add(new Turn()); }
+    private void addTurn() { turns.add(new Turn(getActiveColor())); }
 
     /**
      * Returns the last Turn object in turns. This represents the Turn that the Player
@@ -177,4 +177,15 @@ public class Game {
     public String getId(){ return id; }
 
     public BoardView getActivePlayerBoard() { return (activeColor == ActiveColor.RED ? redView : whiteView); }
+
+    public ArrayList<ReplayMove> turnsToList() {
+        ArrayList<ReplayMove> turnList = new ArrayList<>();
+        for (Turn turn : turns) {
+            for (Move move: turn.getAllMovesInTurn()){
+                turnList.add(new ReplayMove(turn.getPlayerColor(), move));
+            }
+            //turnList.add(new ReplayMove(turn.getPlayerColor(), turn.get));
+        }
+        return turnList;
+    }
 }

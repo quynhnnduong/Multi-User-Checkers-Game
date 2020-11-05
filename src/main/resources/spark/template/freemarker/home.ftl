@@ -32,6 +32,7 @@
         <h1>Player Lobby</h1>
         ${playersMessage}
        <#include "player_list.ftl"/>
+      <#include "replay_button.ftl"/>
     </#if>
 
 

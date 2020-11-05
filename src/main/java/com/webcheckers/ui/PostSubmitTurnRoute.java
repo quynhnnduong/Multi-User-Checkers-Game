@@ -26,6 +26,7 @@ public class PostSubmitTurnRoute implements Route {
         Game game = gameCenter.getGame(session.attribute(GAME_ID_ATTR));
 
         if (game != null && game.getCurrentTurn().hasMoves()) {
+            //add the turn's moves to the replay
 
             if (!game.getActivePlayerBoard().isRequiredToJump(game.getActiveColor(), game.getCurrentTurn())) {
                 game.endTurn();

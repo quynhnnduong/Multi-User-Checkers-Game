@@ -2,6 +2,9 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.BoardView;
+import com.webcheckers.model.Game;
+import com.webcheckers.model.Piece;
 import com.webcheckers.model.Player;
 import spark.*;
 
@@ -70,6 +73,11 @@ public class PostSignInRoute implements Route {
 
         session.attribute(PLAYER_ATTR, currentPlayer);
         session.attribute(LEGIT_NAME_ATTR, true);
+
+        //give them their own replay board
+        session.attribute(REPLAY_BOARD, new BoardView(Piece.Color.RED));
+        session.attribute(REPLAY_WHITE_VIEW, new BoardView(Piece.Color.WHITE));
+
         currentPlayer.signIn();
 
         vm.put("title", "Welcome!");
