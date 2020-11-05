@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +9,8 @@ import java.util.ArrayList;
 import static com.webcheckers.model.BoardView.BOARD_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit Tests for {@link BoardView} Component
@@ -19,6 +22,52 @@ public class BoardViewTest {
 
     //friendlies
     private Space space;
+    private ArrayList<Row> board;
+
+    // Component Under Test
+    private BoardView CuT;
+    private Piece.Color color;
+    private Move move;
+    private Position start, end;
+
+    @BeforeEach
+    public void setUp() {
+        // mocks
+        move = mock(Move.class);
+        start =  mock(Position.class);
+        end =  mock(Position.class);
+
+        // friendlies
+        color = Piece.Color.RED;
+        board = new ArrayList<>();
+        CuT = new BoardView(color);
+    }
+
+    @Test
+    public void testMakeMove(){
+        // Setup
+        when(CuT.generateBoard(color)).thenReturn(board);
+        when(move.getStart()).thenReturn(start);
+        when(move.getEnd()).thenReturn(end);
+
+        when(start.getRow()).thenReturn(0);
+        when(start.getCell()).thenReturn(0);
+
+        // True/True
+        when(move.getColDifference()).thenReturn(2);
+        when(move.getRowDifference()).thenReturn(2);
+
+        // True/True
+        when(end.getRow()).thenReturn(0);
+
+
+        //Invoke
+        CuT.makeMove(move);
+
+        //Analyze
+
+
+    }
 
     /**
      * Test that the constructor works with no arg
@@ -47,21 +96,6 @@ public class BoardViewTest {
         }
     }
 
-//    @Test
-    public void testMakeMove(){
-        // Setup
-        BoardView bv = new BoardView(Piece.Color.RED);
-
-        //Invoke
-        bv.generateBoard(Piece.Color.RED);
-        Position start = new Position(0,0);
-        Position end = new Position(0,0);
-        Move move = new Move(start, end);
-
-        //Analyze
-
-
-    }
 
     @Test
     public void testIterator(){
