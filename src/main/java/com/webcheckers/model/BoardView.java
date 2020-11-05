@@ -16,14 +16,9 @@ public class BoardView implements Iterable<Row> {
     /** The size of the checkers board (square) */
     static final int BOARD_SIZE = 8;
 
-    //private int redPiecesLeft = 12;
+    private int redPiecesLeft = 12;
 
-    //private int whitePiecesLeft = 12;
-
-    //TODO remove these for debug
-
-    private int redPiecesLeft = 4;
-    private int whitePiecesLeft = 4;
+    private int whitePiecesLeft = 12;
 
     /** An ArrayList containing the Row objects that make up the checkers board */
     private final ArrayList<Row> board;
@@ -135,7 +130,6 @@ public class BoardView implements Iterable<Row> {
 
     /**
      * Makes moves in a way that works with replay mode
-     * @param move
      */
     public void makeMoveReplayVer(Move move) {
         Position start = move.getStart();
