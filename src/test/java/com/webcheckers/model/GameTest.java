@@ -29,6 +29,8 @@ public class GameTest {
     private void setUp(){
         redPlayer = mock(Player.class);
         whitePlayer = mock(Player.class);
+//        redView = mock(BoardView.class);
+//        whiteView = mock(BoardView.class);
 
         id = "1234";
         activeColor = Game.ActiveColor.RED;
@@ -166,19 +168,24 @@ public class GameTest {
     }
 
     @Test
-    public void testEndTurn(){
-        // Invoke
+    public void testGetCurrentTurn(){
         CuT = new Game(id, redPlayer, whitePlayer);
-        redPlayer.startTurn();
+        Turn getTurn = CuT.getCurrentTurn();
 
+        assertEquals(getTurn, CuT.getCurrentTurn());
     }
 
 //    @Test
-//    public void testGetRedPlayerBoard(){
-//        // Invoke
-//        CuT = new Game(id, redPlayer, whitePlayer);
-//        redView = CuT.getRedView();
-//        whiteView = CuT.getWhiteView();
-//
-//    }
+    public void testGetWinner(){
+        // Invoke
+        CuT = new Game(id, redPlayer, whitePlayer);
+        redView = CuT.getRedView();
+        whiteView = CuT.getWhiteView();
+//        when(redView.getRemainingPieces(Piece.Color.RED)).thenReturn(0);
+//        when(redView.getRemainingPieces(Piece.Color.WHITE)).thenReturn(0);
+
+        assertEquals(CuT.getWinner(), CuT.getWhitePlayer());
+
+    }
+
 }

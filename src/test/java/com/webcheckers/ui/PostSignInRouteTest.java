@@ -13,6 +13,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -98,7 +99,7 @@ public class PostSignInRouteTest {
     /**
      * Test that CuT shows the SignIn view when the session is brand new.
      */
-    // @Test
+     @Test
     public void testInvalidSignIn() {
         // Setup
         final TemplateEngineTester testHelper = new TemplateEngineTester();
@@ -108,15 +109,7 @@ public class PostSignInRouteTest {
         when(playerLobby.addPlayer(any(Player.class))).thenReturn(false);
         when(session.attribute(UIProtocol.LEGIT_NAME_ATTR)).thenReturn(false);
 
-        // Invoke
-        CuT.handle(request, response);
-
-        // Analyze
-        try {
-            CuT.handle(request, response);
-        } catch (Exception e){
-            assertTrue(e instanceof HaltException);
-        }
+        assertThrows(HaltException.class, () -> CuT.handle(request, response));
 
 
     }

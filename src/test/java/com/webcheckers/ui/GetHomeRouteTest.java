@@ -100,7 +100,7 @@ public class GetHomeRouteTest {
         doNothing().when(response).redirect(anyString());
 
         // Invoke
-        CuT.handle(request, response);
+        assertThrows(HaltException.class, () -> CuT.handle(request, response));
 
     }
 
