@@ -7,8 +7,7 @@ import spark.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.webcheckers.ui.UIProtocol.PLAYER_ATTR;
-import static com.webcheckers.ui.UIProtocol.REPLAY_BOARD;
+import static com.webcheckers.ui.UIProtocol.*;
 
 public class GetReplayGameRoute implements Route {
 
@@ -32,10 +31,11 @@ public class GetReplayGameRoute implements Route {
         currentUser.startSpectating();
         //TODO add logic for getting the turn from the replay loader
         String gameId = request.queryParams("gameID");
-
-        Replay replay = replayLoader.getReplay(gameId);
-
-
+        if (session.attribute(REPLAY_COPY) == null){
+            Replay sessionReplay = replayLoader.getReplay(gameId);
+            session.attribute(REPLAY_COPY, sessionReplay);
+        }
+        Replay replay = session.attribute(REPLAY_COPY);
         Map<String, Object> modeOptionsAsJSON = new HashMap<>();
         BoardView redBoard = replay.getGame().getRedView();
         BoardView whiteBoard = replay.getGame().getWhiteView();

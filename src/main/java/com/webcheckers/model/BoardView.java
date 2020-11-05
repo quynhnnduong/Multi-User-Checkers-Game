@@ -252,6 +252,7 @@ public class BoardView implements Iterable<Row> {
 
             board.get(capturedRow).getSpace(capturedCell).placePiece(recoveredPiece);
         }
+    }
     public void resetBoard(){
         //remove all the pieces
         for (Row row: board){

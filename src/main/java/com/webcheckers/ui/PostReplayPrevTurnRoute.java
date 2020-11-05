@@ -29,7 +29,7 @@ public class PostReplayPrevTurnRoute implements Route {
         //currentUser.startSpectating();
         //TODO add logic for getting the turn from the replay loader
         String gameId = request.queryParams("gameID");
-        Replay replay = replayLoader.getReplay(gameId);
+        Replay replay = session.attribute(REPLAY_COPY);
 
         //get the last move
         ReplayMove lastMove = replay.getCurrentTurn();

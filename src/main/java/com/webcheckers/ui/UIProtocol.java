@@ -24,4 +24,6 @@ public class UIProtocol {
     public static final String REPLAY_BOARD = "replayBoard";
 
     public static final String REPLAY_WHITE_VIEW = "replayWhiteView";
+
+    public static final String REPLAY_COPY = "replayCopy";
 }

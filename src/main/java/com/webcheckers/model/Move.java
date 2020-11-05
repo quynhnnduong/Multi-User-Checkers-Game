@@ -93,7 +93,7 @@ public class Move {
     }
 
     public boolean doesMoveSkipOverSpace(){
-        return Math.abs(getRowDiff()) == 2 && Math.abs( getColDiff()) == 2;
+        return Math.abs(getRowDiff()) == 2 && Math.abs( getColDifference()) == 2;
     }
 
     /**

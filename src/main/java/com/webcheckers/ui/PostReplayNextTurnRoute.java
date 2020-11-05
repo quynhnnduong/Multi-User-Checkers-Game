@@ -32,7 +32,7 @@ public class PostReplayNextTurnRoute implements Route {
         //currentUser.startSpectating();
         //TODO add logic for getting the turn from the replay loader
         String gameId = request.queryParams("gameID");
-        Replay replay = replayLoader.getReplay(gameId);
+        Replay replay = session.attribute(REPLAY_COPY);
 
         //get the next turn of the replay
         replay.incrementTurn();
