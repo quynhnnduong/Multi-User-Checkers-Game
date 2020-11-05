@@ -29,7 +29,7 @@ public class PostReplayPrevTurnRouteTest {
     private Session session;
     private ReplayLoader replayLoader;
     private Replay replay;
-    private ReplayMove replayMove;
+    private ReplayMove lastMove;
     private String gameId;
     private Player currentPlayer;
     private Game game;
@@ -37,7 +37,8 @@ public class PostReplayPrevTurnRouteTest {
     private BoardView whiteView;
     private BoardView spectatorView;
     private BoardView fakeWhite;
-    private Move move;
+    private Move move, undoMove;
+    private Space space;
     private Gson gson;
 
 
@@ -54,13 +55,15 @@ public class PostReplayPrevTurnRouteTest {
         engine = mock(TemplateEngine.class);
         replayLoader = mock(ReplayLoader.class);
         replay = mock(Replay.class);
-        replayMove = mock(ReplayMove.class);
+        lastMove = mock(ReplayMove.class);
         game = mock(Game.class);
         redView = mock(BoardView.class);
         whiteView = mock(BoardView.class);
         spectatorView = mock(BoardView.class);
         fakeWhite = mock(BoardView.class);
         move = mock(Move.class);
+        undoMove = mock(Move.class);
+        space = mock(Space.class);
 
         gameId = "1234";
         currentPlayer = mock(Player.class);
@@ -69,41 +72,96 @@ public class PostReplayPrevTurnRouteTest {
         CuT = new PostReplayPrevTurnRoute(engine, replayLoader);
     }
 
-//    @Test
-    public void prevReplayTurn() throws Exception {
-        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(currentPlayer);
-        when(request.queryParams("1234")).thenReturn(gameId);
+    @Test
+    public void testHandle() {
+        // Set up
+        when(request.queryParams("gameID")).thenReturn(gameId);
         when(session.attribute(UIProtocol.REPLAY_COPY)).thenReturn(replay);
-        when(replay.getCurrentTurn()).thenReturn(replayMove);
+
+        when(replay.getCurrentTurn()).thenReturn(lastMove);
         when(replay.getGame()).thenReturn(game);
-        when(game.getRedView()).thenReturn(redView);
-        when(game.getWhiteView()).thenReturn(whiteView);
         when(session.attribute(UIProtocol.REPLAY_BOARD)).thenReturn(spectatorView);
         when(session.attribute(REPLAY_WHITE_VIEW)).thenReturn(fakeWhite);
-        Move undo = replayMove.getMove().getUndoMove();
-        doNothing().when(replay).executeReplayMove(Game.ActiveColor.RED, undo, spectatorView, fakeWhite);
-        when(move.doesMoveSkipOverSpace()).thenReturn(false);
+
+        when(lastMove.getMove()).thenReturn(move);
+        when(move.getUndoMove()).thenReturn(undoMove);
+        when(lastMove.getPlayerColor()).thenReturn(Game.ActiveColor.RED);
+
+        // test if it is a jump
+        when(undoMove.doesMoveSkipOverSpace()).thenReturn(true);
+
+        // test if the color is red
+        when(undoMove.getSpaceInMiddle(spectatorView)).thenReturn(space);
+        doNothing().when(space).placePiece(any(Piece.class));
+
         doNothing().when(replay).decrementTurn();
 
-//        assertEquals(gson.toJson(Message.info("true")), CuT.handle(request, response));
+        // Invoke
+        Object result = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.info("true")), result);
 
     }
+
     @Test
-    public void jumpMove() throws Exception {
-        when(session.attribute(UIProtocol.PLAYER_ATTR)).thenReturn(currentPlayer);
-        when(request.queryParams("1234")).thenReturn(gameId);
+    public void testHandle2() {
+        // Set up
+        when(request.queryParams("gameID")).thenReturn(gameId);
         when(session.attribute(UIProtocol.REPLAY_COPY)).thenReturn(replay);
-        when(replay.getCurrentTurn()).thenReturn(replayMove);
+
+        when(replay.getCurrentTurn()).thenReturn(lastMove);
         when(replay.getGame()).thenReturn(game);
-        when(game.getRedView()).thenReturn(redView);
-        when(game.getWhiteView()).thenReturn(whiteView);
         when(session.attribute(UIProtocol.REPLAY_BOARD)).thenReturn(spectatorView);
         when(session.attribute(REPLAY_WHITE_VIEW)).thenReturn(fakeWhite);
-        when(move.doesMoveSkipOverSpace()).thenReturn(true);
-        when(replayMove.getPlayerColor()).thenReturn(Game.ActiveColor.RED);
 
-//        assertNull(CuT.handle(request, response));
+        when(lastMove.getMove()).thenReturn(move);
+        when(move.getUndoMove()).thenReturn(undoMove);
+        when(lastMove.getPlayerColor()).thenReturn(Game.ActiveColor.WHITE);
 
+        // test if it is a jump
+        when(undoMove.doesMoveSkipOverSpace()).thenReturn(true);
+
+        // test if the color is white
+        when(undoMove.getSpaceInMiddle(fakeWhite)).thenReturn(space);
+        doNothing().when(space).placePiece(any(Piece.class));
+
+        doNothing().when(replay).decrementTurn();
+
+        // Invoke
+        Object result = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.info("true")), result);
 
     }
+
+    @Test
+    public void testHandle3() {
+        // Set up
+        when(request.queryParams("gameID")).thenReturn(gameId);
+        when(session.attribute(UIProtocol.REPLAY_COPY)).thenReturn(replay);
+
+        when(replay.getCurrentTurn()).thenReturn(lastMove);
+        when(replay.getGame()).thenReturn(game);
+        when(session.attribute(UIProtocol.REPLAY_BOARD)).thenReturn(spectatorView);
+        when(session.attribute(REPLAY_WHITE_VIEW)).thenReturn(fakeWhite);
+
+        when(lastMove.getMove()).thenReturn(move);
+        when(move.getUndoMove()).thenReturn(undoMove);
+        when(lastMove.getPlayerColor()).thenReturn(Game.ActiveColor.RED);
+
+        // test if it is not a jump
+        when(undoMove.doesMoveSkipOverSpace()).thenReturn(false);
+
+        doNothing().when(replay).decrementTurn();
+
+        // Invoke
+        Object result = CuT.handle(request, response);
+
+        // Analyze
+        assertEquals(gson.toJson(Message.info("true")), result);
+
+    }
+
 }
