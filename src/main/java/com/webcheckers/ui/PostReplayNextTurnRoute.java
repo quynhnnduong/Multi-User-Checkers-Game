@@ -10,27 +10,18 @@ import java.util.Map;
 
 import static com.webcheckers.ui.UIProtocol.*;
 
+/**
+ * Handles moving to the next turn of a replay
+ * @author Joel Clyne
+ */
 public class PostReplayNextTurnRoute implements Route {
 
-    /** The Template Engine that generates the '.ftl' pages */
-    private final TemplateEngine templateEngine;
-
-    //private final ReplaySaver replaySaver;
-
-    private final ReplayLoader replayLoader;
-
     public PostReplayNextTurnRoute(TemplateEngine templateEngine, ReplayLoader replayLoader){
-        this.templateEngine = templateEngine;
-        this.replayLoader = replayLoader;
     }
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
         final Session session = request.session();
-        Player currentUser = session.attribute(PLAYER_ATTR);
-        //currentUser.startSpectating();
-        //TODO add logic for getting the turn from the replay loader
-        String gameId = request.queryParams("gameID");
         Replay replay = session.attribute(REPLAY_COPY);
 
         //get the next turn of the replay

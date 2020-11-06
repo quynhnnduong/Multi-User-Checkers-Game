@@ -4,17 +4,30 @@ import java.util.ArrayList;
 
 /**
  * Stores a game as a replay with its id and turns
+ * @author Joel Clyne
  */
 public class Replay {
 
+    //The list of all the moves taken in the replay
+    private final ArrayList<ReplayMove> turnsList;
 
-    private ArrayList<ReplayMove> turnsList;
-    private String gameId;
+    //The id of the game the replay represents
+    private final String gameId;
+
+    //The currentTurn being shown in the replay
     private int currentTurn;
-    private int maxTurns;
-    private Game game;
-    private Player redPlayer;
-    private Player whitePlayer;
+
+    //The amount of moves in the replay
+    private final int maxTurns;
+
+    //The game the replay shows
+    private final Game game;
+
+    //The red player in the replay
+    private final Player redPlayer;
+
+    //The white player in the replay
+    private final Player whitePlayer;
 
     public Replay(String gameId, ArrayList<ReplayMove> turnsList, Game game){
         this.gameId = gameId;
@@ -27,23 +40,8 @@ public class Replay {
 
     }
 
-    /**
-     * save each turn
-     */
-    //public void saveTurn(){
-    //    turns.add(game.getCurrentTurn());
-    //}
-
     public String getGameId() {
         return gameId;
-    }
-
-    public ArrayList<ReplayMove> getTurnsList() {
-        return turnsList;
-    }
-
-    public ReplayMove getTurn(int i){
-        return turnsList.get(i);
     }
 
     public void incrementTurn(){
@@ -82,21 +80,28 @@ public class Replay {
         return maxTurns;
     }
 
+    /**
+     * Executes a move in the replay
+     * @param currentColor the color of the player who did the move
+     * @param move the move that was done
+     * @param board the spectator's board
+     * @param fakeWhite the "white player" board hidden to the spectator
+     */
     public void executeReplayMove(Game.ActiveColor currentColor, Move move, BoardView board, BoardView fakeWhite){
         if (currentColor == Game.ActiveColor.RED){
             //do the move on the red view
-            //redView.makeMove(move);
-            //whiteView.makeMove(move.getFlippedMove());
             board.makeMoveReplayVer(move);
             fakeWhite.makeMoveReplayVer(move.getFlippedMove());
         } else if (currentColor == Game.ActiveColor.WHITE){
-            //whiteView.makeMove(move);
-            //redView.makeMove(move.getFlippedMove());
             board.makeMoveReplayVer(move.getFlippedMove());
             fakeWhite.makeMoveReplayVer(move);
         }
     }
 
+    /**
+     * Makes a copy of the current replay
+     * @return a copy of this replay
+     */
     public Replay makeCopy(){
         return new Replay(gameId, turnsList, game);
     }

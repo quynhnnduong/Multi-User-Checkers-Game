@@ -7,36 +7,25 @@ import spark.*;
 
 import static com.webcheckers.ui.UIProtocol.*;
 
+
+/**
+ * Handles moving to the next previous of a replay
+ * @author Joel Clyne
+ */
 public class PostReplayPrevTurnRoute implements Route {
 
-    /** The Template Engine that generates the '.ftl' pages */
-    private final TemplateEngine templateEngine;
-
-    //private final ReplaySaver replaySaver;
-
-    private final ReplayLoader replayLoader;
 
     public PostReplayPrevTurnRoute(TemplateEngine templateEngine, ReplayLoader replayLoader){
-        this.templateEngine = templateEngine;
-        //this.replaySaver = replaySaver;
-        this.replayLoader = replayLoader;
     }
 
     @Override
     public Object handle(Request request, Response response){
         final Session session = request.session();
-        Player currentUser = session.attribute(PLAYER_ATTR);
-        //currentUser.startSpectating();
-        //TODO add logic for getting the turn from the replay loader
-        String gameId = request.queryParams("gameID");
         Replay replay = session.attribute(REPLAY_COPY);
 
         //get the last move
         ReplayMove lastMove = replay.getCurrentTurn();
 
-        Game game = replay.getGame();
-        BoardView redView = game.getRedView();
-        BoardView whiteView = game.getWhiteView();
         BoardView spectatorView = session.attribute(REPLAY_BOARD);
         BoardView fakeWhite = session.attribute(REPLAY_WHITE_VIEW);
 

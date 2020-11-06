@@ -3,25 +3,31 @@ package com.webcheckers.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Manages Loading Replays for use with the replay mode view
+ * @author Joel Clyne
+ */
 public class ReplayLoader {
 
-    private HashMap<String, String> replayList;
-    private ReplaySaver replaySaver;
+    //The class that manages the saving of all the replays
+    private final ReplaySaver replaySaver;
+
+    //The current turn of the replay being displayed
     private int turnNumber;
-    private int turnMax;
+
+    //The maximum amount of turns
+    private final int turnMax;
 
 
     public ReplayLoader(ReplaySaver replaySaver){
             this.replaySaver = replaySaver;
-            this.replayList = new HashMap<>();
             turnNumber = 0;
             turnMax = replaySaver.getAllReplays().size() - 1;
 
     }
 
-    /**
-     * returns true if successful, false on fail
-     * @return
+    /**Increments the currently loaded replay's turn by 1
+     * @return true if successful, false on fail
      */
     public boolean incrementTurn(){
         if (turnNumber != turnMax) {
@@ -31,9 +37,8 @@ public class ReplayLoader {
         return false;
     }
 
-    /**
-     * returns true if successful, false on fail
-     * @return
+    /**Decrements the currently loaded replay's turn by 1
+     * @return true if successful, false on fail
      */
     public boolean decrementTurn(){
         if (turnNumber != 0) {
@@ -43,28 +48,19 @@ public class ReplayLoader {
         return false;
     }
 
-    public ReplayMove getTurn(String gameId, int i){
-        return replaySaver.getReplay(gameId).getTurn(i);
-    }
-
-
     /**
-    public void printReplayById(String gameId){
-        String replayText = replayList.get(gameId);
-        for (Replay replay : replaySaver.getAllReplays().values()){
-            if (replay.getGameId().equals(gameId)){
-                for (String turn : replay.getTurnsList()){
-                    System.out.println(turn);
-                }
-            }
-        }
-    }
+     * gets the replay of the specified gameId
+     * @param gameId the gameID of the desired replay object
+     * @return a replay object with the gameID
      */
-
     public Replay getReplay(String gameId){
         return replaySaver.getReplay(gameId);
     }
 
+    /**
+     * Gets all the saved replays
+     * @return all the saved replays
+     */
     public ArrayList<Replay> getAllReplays(){
         return new ArrayList<>(replaySaver.getAllReplays().values());
     }

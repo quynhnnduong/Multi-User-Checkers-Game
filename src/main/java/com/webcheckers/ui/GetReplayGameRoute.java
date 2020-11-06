@@ -9,18 +9,19 @@ import java.util.Map;
 
 import static com.webcheckers.ui.UIProtocol.*;
 
+/**
+ * The class that handles displaying the program for the replay view
+ */
 public class GetReplayGameRoute implements Route {
 
     /** The Template Engine that generates the '.ftl' pages */
     private final TemplateEngine templateEngine;
 
-    //private final ReplaySaver replaySaver;
-
+    /** The loader for the replays */
     private final ReplayLoader replayLoader;
 
     public GetReplayGameRoute(TemplateEngine templateEngine, ReplayLoader replayLoader){
         this.templateEngine = templateEngine;
-        //this.replaySaver = replaySaver;
         this.replayLoader = replayLoader;
     }
 
@@ -30,18 +31,19 @@ public class GetReplayGameRoute implements Route {
         Player currentUser = session.attribute(PLAYER_ATTR);
         currentUser.startSpectating();
         String gameId = request.queryParams("gameID");
+
+        //if the user isn't already viewing a replay, make them view the replay of the gameID
         if (session.attribute(REPLAY_COPY) == null){
             Replay sessionReplay = replayLoader.getReplay(gameId);
             session.attribute(REPLAY_COPY, sessionReplay);
         }
         Replay replay = session.attribute(REPLAY_COPY);
 
+        //They're going to use the blank spectating board to watch the replay
         BoardView spectatingBoard = session.attribute(REPLAY_BOARD);
-
 
         //get the number of the current turn of the replay
         int turnNum = replay.getCurrentTurnNum();
-
 
         Map<String, Object> modeOptionsAsJSON = new HashMap<>();
         if (turnNum == -1){
@@ -64,17 +66,8 @@ public class GetReplayGameRoute implements Route {
             }
         }
 
-
-
-
-
         // Creates the HashMap to house all the freemarker components
         Map<String, Object> vm = new HashMap<>();
-
-        //reset the board for both players
-
-
-
 
         // Adds all freemarker components to the ViewMarker HashMap
         vm.put("title", "Game");
