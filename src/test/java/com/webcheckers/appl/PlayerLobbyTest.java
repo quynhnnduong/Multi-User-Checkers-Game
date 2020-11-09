@@ -142,13 +142,13 @@ public class PlayerLobbyTest {
         String actualMessage = CuT.getLobbyMessage();
 
         // Analyze
-        assertEquals("1 player(s) in lobby", actualMessage);
+        assertEquals("Players Online: 2", actualMessage);
     }
 
     @Test
     public void testGetLobbyMessageNoPlayers(){
         // Invoke and Analyze with no one in the lobby
-        assertEquals("There are no other players available to play at this time.", CuT.getLobbyMessage());
+        assertEquals("Players Online: 0", CuT.getLobbyMessage());
     }
 
 }
