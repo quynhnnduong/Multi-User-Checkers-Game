@@ -308,3 +308,26 @@ from the main sequence. Ideally, this number should be as low as possible to ind
 program were located close to the main sequence. 
             
 ### Recommendations for Improvement
+
+Improve the Stability of the Model and Application Tiers
+    Ideally, all packages should be either highly stable or highly unstable. This way, there are
+    only classes that are reliably resistant to change or classes that are reliably prone to change.
+    There is less opportunity for a flaw in the logic when the classes prone to change are dependent
+    on classes that are concrete and invariable.
+    
+Improve the Essential Cyclomatic Complexity of Select Model Tier Classes
+    The BoardView class had multiple classes that were weak with respect to each complexity 
+    metric (cyclomatic, essential cyclomatic, and design).
+    The essential cyclomatic complexity should be improved first because a low result in this
+    indicates that the function or class was structured in such a way that is difficult to maintain,
+    and/or is not modular. Functions with low ev(G) values are also difficult to refactor into 
+    smaller pieces of logic and is therefore incredibly difficult to test. 
+    In the case of the isJumpPossible() function, there was a large switch operation. There was a 
+    base condition that could be executed and contained before the switch; however, the method was
+    structured to distribute this logic throughout the cases. It could not be easily broken down for 
+    testing. This structure also makes it more difficult to refactor the method to have a lower 
+    cyclomatic complexity (less nested conditionals with compound boolean cases), which hindered the 
+    ability to thoroughly test each path the large function could take. Rewriting this function 
+    would improve multiple complexities and the test coverage of this class.
+
+    
