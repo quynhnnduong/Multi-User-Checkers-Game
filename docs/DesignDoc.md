@@ -32,19 +32,21 @@ ability to sign in, play a game of checkers, and sign out at will.
 | VO | Value Object |
 | PR | Player |
 | OP | Opponent |
+| PL | Player Lobby |
+| APP | Application |
 
 
 ## Requirements
 
-This section describes the features of the application.
+This section describes the features of the APP.
 
 Users must be able to sign in to the website with a username of their choice. After signing in, users must be able to
-choose an opponent for a checkers game. The program must connect the two players together and set up a WebCheckers
-game in accordance to the American Rules. The application must display all the components and information of the 
-checkers board, just as if it was viewable in real-life. The players must be able to resign from the game at any point. 
-If no player resigns, the game continues until the end until a winner is determined. Some additional modifications that 
-are also to be made are: AI Opponent and Replay Mode. Instead of selecting a human opponent, a player would have the 
-ability to face an AI with a difficulty setting. Additionally, players would be able to save their previous games and
+choose an OP for a checkers game. The program must connect the two PRs together and set up a WebCheckers
+game in accordance to the American Rules. The APP must display all the components and information of the 
+checkers board, just as if it was viewable in real-life. The PRs must be able to resign from the game at any point. 
+If no PR resigns, the game continues until the end until a winner is determined. Some additional modifications that 
+are also to be made are: AI Opponent and Replay Mode. Instead of selecting a human opponent, a PR would have the 
+ability to face an AI with a difficulty setting. Additionally, PRs would be able to save their previous games and
 play them back through a Replay Mode from the home screen.
 
 ### Definition of MVP
@@ -64,7 +66,7 @@ play them back through a Replay Mode from the home screen.
 
 ### Roadmap of Enhancements
 
-* Sign-In - Users are given the ability to sign in to the application with a username of their choice.
+* Sign-In - Users are given the ability to sign in to the APP with a username of their choice.
 * Start a Game - Users are able to start a checkers game.
 * Connection - Major Server/Client communication is defined.
 * Game Logic - Rules and processes for the checkers game are defined.
@@ -74,21 +76,21 @@ play them back through a Replay Mode from the home screen.
 
 ## Application Domain
 
-This section describes the application domain.
+This section describes the APP domain.
 
 ![The WebCheckers Domain Model](WebCheckers-Domain-Model.png)
 
-The Player (user) is represented on the domain model as an entity that plays the checkers game and takes turns making 
+The PR is represented on the domain model as an entity that plays the checkers game and takes turns making 
 moves that could either be a simple, single-jump, or multiple-jump move. Each move is performed by a Piece that is on 
 the checkers board via a checkers square (or Space). Each checkers game contains one board with 64 checker squares and 
 24 Pieces. The Checkers Game domain entity keeps track of the current state of the game (red won, white won, ongoing). 
 Additionally, the Checkers Game can save the game (once finished), to be replayed back. An AI Opponent has all the same 
-functions as a human player (with the exception being autonomy), therefore, the AI Opponent also interacts withe 
+functions as a human PR (with the exception being autonomy), therefore, the AI Opponent also interacts withe 
 Checkers Game in a similar way as a human would. AI Opponents range in difficulty (Easy, Medium, Hard).
 
 ## Architecture and Design
 
-This section describes the application architecture.
+This section describes the APP architecture.
 
 ### Summary
 
@@ -96,7 +98,7 @@ The following Tiers/Layers model shows a high-level view of the webapp's archite
 
 ![The Tiers & Layers of the Architecture](architecture-tiers-and-layers.png)
 
-As a web application, the user interacts with the system using a browser. The client-side of the UI is composed of HTML 
+As a web APP, the user interacts with the system using a browser. The client-side of the UI is composed of HTML 
 pages with some minimal CSS for styling the page.  There is also some JavaScript that has been provided to the team by 
 the architect. The server-side tiers include the UI Tier that is composed of UI Controllers and Views. Controllers are 
 built using the Spark framework and View are built using the FreeMarker framework.  The Application and Model tiers are 
@@ -105,7 +107,7 @@ built using plain-old Java objects (POJOs). Details of the components within the
 ### Overview of User Interface
 
 This section describes the web interface flow; this is how the user views and interacts
-with the WebCheckers application.
+with the WebCheckers APP.
 
 ![The WebCheckers Web Interface Statechart](web-interface-placeholder.png)
 
@@ -119,21 +121,21 @@ sign out tab, they'll be directed to a page that'll ask them to confirm their ch
 they'll be directed back to the sign-in page. If, instead they choose to stay signed in, they'll return to their "myHome"
 page. 
 
-On the myHome page, they will now see a list of all the players in the lobby (except themselves). Next to each
+On the myHome page, they will now see a list of all the PRs in the lobby (except themselves). Next to each
 user's name, there is a button to start a game with that user. If the user chooses to initiate a checkers game with 
-another currently logged in player, they will click the "Start a Game" button near their desired opponent's name. The 
-selected opponent will go to the GetGameRoute when their browser detects that someone chose to play they in a game. If 
-opponent is not already in a game, both users will be directed to a view of the game. This view includes a checkers board 
-with pieces pre-placed on the board. There will be an Info Panel at the top left that will highlight the player whose 
-turn it is, and a Control Panel that will allow the players to undo a move, submit their move, or resign the game.
+another currently logged in PR, they will click the "Start a Game" button near their desired OP's name. The 
+selected OP will go to the GetGameRoute when their browser detects that someone chose to play they in a game. If 
+OP is not already in a game, both users will be directed to a view of the game. This view includes a checkers board 
+with pieces pre-placed on the board. There will be an Info Panel at the top left that will highlight the PR whose 
+turn it is, and a Control Panel that will allow the PRs to undo a move, submit their move, or resign the game.
 
-From here, a standard game of checkers will be played until one player wins or resigns. After the game ends, the users will 
-be returned to their respective myHome tabs. They'll be able to repeat the process and either choose a new opponent 
+From here, a standard game of checkers will be played until one PR wins or resigns. After the game ends, the users will 
+be returned to their respective myHome tabs. They'll be able to repeat the process and either choose a new OP 
 or sign out.
 
 ### UI Tier
 
-The most important aspect of any application for the user is the UI Tier. The User only sees and interacts with what is 
+The most important aspect of any APP for the user is the UI Tier. The User only sees and interacts with what is 
 on their screen, so it is of utmost importance for it to be top-notch! The UI Tier at the server side is nothing more 
 than just text on a black screen, but that text is able to understand and respond to the user for an overall enjoyable
 experience.
@@ -141,74 +143,72 @@ experience.
 The tier begins with the WebServer class, which initialises the View Elements of the website by calling the appropriate 
 HTTP Protocol handling class through Dependency Injection. What that means in English, is that WebServer is the stage 
 upon which the game is set. The first class to be greet the user is the class that handles the Home page of the Online 
-WebCheckers. The "GetHomeRoute" class is invoked and the user is able to interact with the Home Page. 
+WebCheckers. The "GetHomeRoute" class is invoked, and the user is able to interact with the Home Page. 
 
-When at the Home Page, the user has the ability to see the number of players online and currently playing the game, 
+When at the Home Page, the user has the ability to see the number of PRs online and currently playing the game, 
 and can join them by using the Sign In option.
 
 ![The Home Page](HomePage.png) 
 
 Once they decide to Sign In, the WebServer then serves the SignIn page, handled by the "GetSignIn" class, to the user. 
-Here the user has the ability to Log in using a valid name, which is checked by the application, and can then join the 
-Player Lobby.
+Here the user has the ability to Log in using a valid name, which is checked by the APP, and can then join the 
+PL.
 
 ![The Player Lobby](PlayerLobby.png)  
 
-The Player lobby lets a player choose their opponent to play against, with clicking on the "Start A Game" button. 
-Once the button is pressed, the Application begins to form a game session for the players and the users can now play the 
-game.
+The PL lets a PR choose their OP to play against, with clicking on the "Start A Game" button. 
+Once the button is pressed, the APP begins to form a game session for the PRs, and the users can now play the game.
 
 ![The StartAGame Sequence Diagram](StartAGame.png)
 
-With the latest update, the Replay portion of the UI tier has been added to the program. This allows users to view all the moves
-in a previously completed game from any other player in the session. The user can go forwards and backwards throughout all the
-moves until they are finished viewing the replay.
+With the latest update, the Replay portion of the UI tier has been added to the program. This allows users to view all 
+the moves in a previously completed game from any other PR in the session. The user can go forwards and backwards 
+throughout all the moves until they are finished viewing the replay.
  
 ### Application Tier
 
-The Application Tier of this application consists of 3 components: Game, GameCenter, and PlayerLobby.
-A Game object represents a game event in the application. It contains a "redPlayer" (a Player object that 
+The Application Tier of this APP consists of 3 components: Game, GameCenter, and PL.
+A Game object represents a game event in the APP. It contains a "redPlayer" (a Player object that 
 represents the user who interacts with the red pieces on the checker board), a "whitePlayer" (a Player object that
 represents the user who interacts with the white pieces on the checker board), and an "id" (a unique number used to 
-identify Game objects across multiple user sessions). The GameCenter component holds a PlayerLobby object, 
-"playerLobby", which is a collection of all the users logged into the webapp across all games. PlayerLobby contains 
-a structure "players" (a HashMap that maps each Player object to their name), and a GameCenter "gameCenter" that
-ties the lobby to a single GameCenter.
+identify Game objects across multiple user sessions). The GameCenter component holds a PL object, "playerLobby", which 
+is a collection of all the users logged into the webapp across all games. PL contains a structure "players" (a HashMap 
+that maps each PR object to their name), and a GameCenter "gameCenter" that ties the lobby to a single GameCenter.
 
 ![The Game Static Diagram](Game.png)
 
-When the application starts up, a GameCenter and a PlayerLobby are both also constructed. These both store 
-application-wide data. When players sign-in to the checkers app, they are added to the PlayerLobby HashMap. The names
-listed in the Player Lobby are the names saved in the PlayerLobby object. This is the main responsibility of the
-PlayerLobby: to hold a record of all the Player objects, and for ease of display, their names as Strings. Once a user 
-can see the other signed-in users in the lobby, they can choose one to play a game against. Once the "Start a Game" 
-button is pressed and the request is validated, a new Game object is created. This Game object is responsible for 
-representing a checker game and it's players. Therefore, the user who initiates the game is assigned at the red player
-and the user that was chosen by the first user is then added to the game as the white player. Both users' Player object
-representations are held in the Game object, as well as the unique id that allows the application to differentiate 
-different games as well as to tie users in different sessions to the same game.
+When the APP starts up, a GameCenter and a PL are both also constructed. These both store 
+application-wide data. When PRs sign-in to the checkers app, they are added to the PL HashMap. The names
+listed in the PL are the names saved in the PL object. This is the main responsibility of the PL: to hold a record of 
+all the PR objects, and for ease of display, their names as Strings. Once a user can see the other signed-in users in 
+the lobby, they can choose one to play a game against. Once the "Start a Game" button is pressed, and the request is 
+validated, a new Game object is created. This Game object is responsible for representing a checker game, and it's PRs. 
+Therefore, the user who initiates the game is assigned at the red PR, and the user that was chosen by the first user is 
+then added to the game as the white PR. Both users' PR object representations are held in the Game object, and the 
+unique id that allows the APP to differentiate different games as well as to tie users in different sessions to 
+the same game.
 
 Currently, the GameCenter is not used in full as designed. When multiple games are being held, all the Game instances 
-and players will be held in the application-wide gameCenter. The gameCenter will then keep track of the wins and 
-losses across the application, the number of users and games, and other features like saved games or the all-time user
+and PRs will be held in the application-wide gameCenter. The gameCenter will then keep track of the wins and 
+losses across the APP, the number of users and games, and other features like saved games or the all-time user
 with the highest number of wins. Currently, the design implemented does not include these planned responsibilities
 of the GameCenter class.
 
 ### Model Tier
 
 The Model Tier provides the game logic for the system. It takes the input from the UI tier and applies it to the inner
-workings of the games. It brings the different attributes of the players and checkers game into one tier where they dictate
-how both the game and player select work. 
+workings of the games. It brings the different attributes of the PRs and checkers game into one tier where they dictate
+how both the game and PR select work. 
 
-For the most important part of any game, the people who play it, there is the player object. It holds various booleans determining 
-what play states they are in, how they relate to their opponents, and the unique attributes each player has. 
+For the most important part of any game, the people who play it, there is the PR object. It holds various booleans determining 
+what play states they are in, how they relate to their OPs, and the unique attributes each PR has. 
 
-The players need a checkerboard to play on. That's where BoardView comes in. BoardView acts as a representation of a checkerboard
+The PR need a checkerboard to play on. That's where BoardView comes in. BoardView acts as a representation of a checkerboard
 comprised of 8 rows of spaces. The spaces on each row have a color, and an indicator of whether there is a piece on it. 
 These keep track of the board in the current game state.
 
 Speaking of the pieces, the Piece class represents a checker piece including what color it is and if it is a king. Through
-the UI tier, the players move these pieces across the BoardView until someone wins. 
+the UI tier, the PRs move these pieces across the BoardView until someone wins. 
 
 In order to maintain the good practice of High Cohesion and Low Coupling, the Player class does not directly interact with the BoardView, but 
 rather serves a representation of the people who are playing the checkers game. The inputs from the UI are converted to 
@@ -217,7 +217,7 @@ the row and column of a change, one for the start and end of a piece movement.
 
 In our latest release, we added a feature to save replays of games to be viewed at a later time. The ReplaySaver class accomplishes this through 
 saving replays as Replay objects, consisting of a list of ReplayMove objects. A Move and ActiveColor object comprises a ReplayMove to
-denote who did what move. Then, the Replay Object compiles all the moves in a game, with the player who did them, and uses that to represent a 
+denote who did what move. Then, the Replay Object compiles all the moves in a game, with the PR who did them, and uses that to represent a 
 replay of a game. There is also a move counter to show the number of the current move in a replay. The ReplayLoader class, then accesses 
 these replays from the replay saver, and uses them to display a replay in the UI tier.
 
@@ -225,7 +225,7 @@ these replays from the replay saver, and uses them to display a replay in the UI
 
 ### Design Improvements
 
-The main design improvements there are still to be made within the WebCheckers application stem from the UI and Model
+The main design improvements there are still to be made within the WebCheckers APP stem from the UI and Model
 tiers. The Model tier is extensive and complicated by nature - it is the job of the developers to simplify this
 component, which can definitely be done. Currently, the Player class has some overlapping functionality with the Game
 class, which can be separated to conform to the Single-Responsibility Principle. 
@@ -238,7 +238,7 @@ would create greater cohesion throughout the program.
 A final design improvement can be made within the UI tier. Many 
 handle() methods are simply too large to be read without extensive documentation - this situation would be a perfect
 place to include several Pure Fabrications - these classes or methods would serve as 'helper' constructs that have no
-presence in the domain of the application, but would greatly improve the cohesion and readability of the program.
+presence in the domain of the APP, but would greatly improve the cohesion and readability of the program.
 
 ## Testing
 
@@ -250,64 +250,61 @@ We have passed all the user stories we set out to complete.
 
 Our Unit Testing strategy was to start with the Model classes then work our way up to the UI classes. This way,
 we could incrementally test our code and use less mocks classes in the UI tests, allowing us to simulate the
-exact behavior of the UI classes as they are used when the web application is run. 
+exact behavior of the UI classes as they are used when the web APP is run. 
 
-Our code coverage is currently 100% for the application tier, 90% for the model tier and 35% for the UI tier. Our 
-code coverage targets were 95-100% for the Model and Application tiers and 75-80% for the UI tier. This is because 
-the tests for the Model and Application Tier were central to the business logic of the web application. We held testing
-to a higher standard for the classes in these tiers because they are essential for many of the features of the 
-application.
+Our code coverage is currently 100% for the APP tier, 90% for the model tier and 35% for the UI tier. Our 
+code coverage targets were 95-100% for the Model and APP tiers and 75-80% for the UI tier. This is because 
+the tests for the Model and APP Tier were central to the business logic of the web APP. We held testing
+to a higher standard for the classes in these tiers because they are essential for many of the features of the APP.
 
-We reached our targets for both Model and Application tier, but in our results for the UI tier were an outlier.
-As a team, we struggled with testing the Routes, and some tests are absent. In the next release of the Checkers Web 
-Application, these will be implemented.
+We reached our targets for both Model and APP tier, but in our results for the UI tier were an outlier. As a team, we 
+struggled with testing the Routes, and some tests are absent. In the next release of the Checkers Web APP, these will 
+be implemented.
 
 ### Analysis of Code Metrics
 
-Chiadamber-Kemeber Metric
+####Chiadamber-Kemeber Metric
 
-Complexity Metric
+####Complexity Metric
 
-Javadoc Coverage Metric
+####Javadoc Coverage Metric
 
-Line of Code Metric
+####Line of Code Metric
 
-Martin Package Metric
-    Afferent Coupling: 
-        The amount of incoming dependencies to a class; a measurement of the 
-        sensitivity of remaining classes to changes made in a given class.
-        The Model tier had the highest afferent coupling count at 38. Many Model
-        tier classes build upon each other, i.e. a Turn object depends on a Move
-        object, which in turn depends on 2 Position objects. The high reliance of
-        classes within this package on other classes within this package suggests 
-        a tendency to expanding a single class's usability while resisting 
-        modification of the class's functionality.      
-    Efferent Coupling: 
-        The number of classes in a given package which depend on classes in other
-        packages. The UI tier had a 104 efferent coupling rating, which was a large
-        outlier. Our UI tier is designed to conduct application and game logic in
-        the route handlers, which requires direct dependency on classes in the model 
-        and application tiers.
-    Abstractness: 
-        The degree of abstraction of a package. Each tier measured an abstraction 
-        of 0, meaning no abstraction was implemented in our design. This indicates 
-        that the classes in each of our packages are highly dependent on other 
-        packages.
-    Instability:       
-        The relative susceptibility of a class to changes. The UI tier has a high 
-        instability of 1 while the Model and Application tiers have median 
-        instabilities. A high instability means the UI tier has many outgoing 
-        dependencies; therefore, it is more susceptible to change. This may again be 
-        explained by our design: the UI classes have varying behaviors that are reliant 
-        on the state of the many Model and Application package classes which are 
-        manipulated during the Checkers Application control flow. A median instability 
-        means the Model and Application classes are neither resistant nor susceptible to
-        change. This a flaw in our design as it is preferred for components of a 
-        program to be either highly stable or highly unstable.
-    Normalized Distance from Main Sequence:
-        The balance between stability and abstractness. All three of our main
-        packages measured a median value for distance from the main sequence.
-        Ideally, this number should be as low as possible to indicate that the 
-        components of our program were located close to the main sequence. 
+####Martin Package Metric
+    
+#####Afferent Coupling: 
+
+The amount of incoming dependencies to a class; a measurement of the sensitivity of remaining classes to changes made 
+in a given class. The Model tier had the highest afferent coupling count at 38. Many Model tier classes build upon 
+each other, i.e. a Turn object depends on a Move object, which in turn depends on 2 Position objects. The high reliance 
+of classes within this package on other classes within this package suggests a tendency to expanding a single class's 
+usability while resisting modification of the class's functionality.      
+
+#####Efferent Coupling: 
+
+The number of classes in a given package which depend on classes in other packages. The UI tier had a 104 efferent 
+coupling rating, which was a large outlier. Our UI tier is designed to conduct APP and game logic in the route 
+handlers, which requires direct dependency on classes in the model and APP tiers.
+
+#####Abstractness:
+
+The degree of abstraction of a package. Each tier measured an abstraction of 0, meaning no abstraction was implemented 
+in our design. This indicates that the classes in each of our packages are highly dependent on other packages.
+
+#####Instability:  
+     
+The relative susceptibility of a class to changes. The UI tier has a high instability of 1 while the Model and APP tiers 
+have median instabilities. A high instability means the UI tier has many outgoing dependencies; therefore, it is more 
+susceptible to change. This may again be explained by our design: the UI classes have varying behaviors that are reliant 
+on the state of the many Model and APP package classes which are manipulated during the Checkers APP control flow. A 
+median instability means the Model and APP classes are neither resistant nor susceptible to change. This a flaw in our 
+design as it is preferred for components of a program to be either highly stable or highly unstable.
+        
+#####Normalized Distance from Main Sequence:
+
+The balance between stability and abstractness. All three of our main packages measured a median value for distance 
+from the main sequence. Ideally, this number should be as low as possible to indicate that the components of our 
+program were located close to the main sequence. 
             
 ### Recommendations for Improvement
