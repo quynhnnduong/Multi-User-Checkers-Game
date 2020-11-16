@@ -15,9 +15,9 @@ geometry: margin=1in
 ## Executive Summary
 
 The Online WebCheckers project is a Web-based application which aims to provide its users with the functionality to play 
-checkers online and in real-time, against any other online player. 
-To achieve the functionality, the system has been designed on Spark Framework with a FreeMarker Template. 
-The bedrock of the application is formed of Java, Javascript, HTML and CSS.
+checkers online and in real-time, against any other online player. To achieve the functionality, the system has been 
+designed on Spark Framework with a FreeMarker Template. The bedrock of the application is formed of Java, Javascript, 
+HTML and CSS.
 
 ### Purpose
 
@@ -35,34 +35,30 @@ ability to sign in, play a game of checkers, and sign out at will.
 | PL | Player Lobby |
 | APP | Application |
 
-
 ## Requirements
 
 This section describes the features of the APP.
 
 Users must be able to sign in to the website with a username of their choice. After signing in, users must be able to
-choose an OP for a checkers game. The program must connect the two PRs together and set up a WebCheckers
-game in accordance to the American Rules. The APP must display all the components and information of the 
-checkers board, just as if it was viewable in real-life. The PRs must be able to resign from the game at any point. 
-If no PR resigns, the game continues until the end until a winner is determined. Some additional modifications that 
-are also to be made are: AI Opponent and Replay Mode. Instead of selecting a human opponent, a PR would have the 
-ability to face an AI with a difficulty setting. Additionally, PRs would be able to save their previous games and
-play them back through a Replay Mode from the home screen.
+choose an OP for a checkers game. The program must connect the two PRs together and set up a WebCheckers game in 
+accordance to the American Rules. The APP must display all the components and information of the checkers board, just as 
+if it was viewable in real-life. The PRs must be able to resign from the game at any point. If no PR resigns, the game 
+continues until a winner is determined. An additional modification that is also to be made is Replay Mode - PRs would be 
+able to save their previous games and play them back through a Replay Mode from the home screen.
 
 ### Definition of MVP
 
-* Users can sign in with a unique name of their choice.
-* Two users can play a game of Checkers according to the American Rules.
-* Users can sign-out/resign at any point, which would end the game.
+The MPV of this APP entails that the program has the following features: users can sign in with a unique name of their 
+choice, two users can play a game of Checkers according to the American Rules, and users can sign-out/resign at any 
+point, which would end the game. Additionally, an essential, but non-MVP feature that is to be implemented is Replay
+Mode - which would allow users to replay previously played checkers games from their home screen.
 
 ### MVP Features
 
 * Connection - Server/Client logic
 * Display - Graphical Display of the state of the game
 * Possible Moves - Checkers game logic
-* AI Opponent - Artificial intelligence opponent creation
 * Replay Mode - Save and replay previously played checkers games
-
 
 ### Roadmap of Enhancements
 
@@ -71,7 +67,6 @@ play them back through a Replay Mode from the home screen.
 * Connection - Major Server/Client communication is defined.
 * Game Logic - Rules and processes for the checkers game are defined.
 * Display - Basic graphical/visual components are created to display information regarding the game.
-* AI Component - All components for a fully-functioning AI checkers opponent are created.
 * Replay Mode - Allows users to save and replay previously played games
 
 ## Application Domain
@@ -84,9 +79,7 @@ The PR is represented on the domain model as an entity that plays the checkers g
 moves that could either be a simple, single-jump, or multiple-jump move. Each move is performed by a Piece that is on 
 the checkers board via a checkers square (or Space). Each checkers game contains one board with 64 checker squares and 
 24 Pieces. The Checkers Game domain entity keeps track of the current state of the game (red won, white won, ongoing). 
-Additionally, the Checkers Game can save the game (once finished), to be replayed back. An AI Opponent has all the same 
-functions as a human PR (with the exception being autonomy), therefore, the AI Opponent also interacts withe 
-Checkers Game in a similar way as a human would. AI Opponents range in difficulty (Easy, Medium, Hard).
+Additionally, the Checkers Game can save the game (once finished), to be replayed back.
 
 ## Architecture and Design
 
@@ -115,11 +108,11 @@ The user will begin their checkers experience on the Home page. They'll see "Wel
 They will click the button and go to the sign-in page which has a text box and a submit button to enter their name.
 If the user enters an invalid name, they'll stay on the sign in page and be prompted to enter a new name. 
 
-Once the user enters and submits a valid name, they will go back to the Home page, which will be updated now that the user is 
-logged into the system. There will be a navigation bar with the tabs "myHome" and "sign out". If the user selects the 
-sign out tab, they'll be directed to a page that'll ask them to confirm their choice. If they choose to sign out, 
-they'll be directed back to the sign-in page. If, instead they choose to stay signed in, they'll return to their "myHome"
-page. 
+Once the user enters and submits a valid name, they will go back to the Home page, which will be updated now that the 
+user is logged into the system. There will be a navigation bar with the tabs "myHome" and "sign out". If the user 
+selects the sign out tab, they'll be directed to a page that'll ask them to confirm their choice. If they choose to sign 
+out, they'll be directed back to the sign-in page. If, instead they choose to stay signed in, they'll return to their 
+"myHome" page. 
 
 On the myHome page, they will now see a list of all the PRs in the lobby (except themselves). Next to each
 user's name, there is a button to start a game with that user. If the user chooses to initiate a checkers game with 
@@ -200,26 +193,27 @@ The Model Tier provides the game logic for the system. It takes the input from t
 workings of the games. It brings the different attributes of the PRs and checkers game into one tier where they dictate
 how both the game and PR select work. 
 
-For the most important part of any game, the people who play it, there is the PR object. It holds various booleans determining 
-what play states they are in, how they relate to their OPs, and the unique attributes each PR has. 
+For the most important part of any game, the people who play it, there is the PR object. It holds various booleans 
+determining what play states they are in, how they relate to their OPs, and the unique attributes each PR has. 
 
-The PR need a checkerboard to play on. That's where BoardView comes in. BoardView acts as a representation of a checkerboard
-comprised of 8 rows of spaces. The spaces on each row have a color, and an indicator of whether there is a piece on it. 
-These keep track of the board in the current game state.
+The PR need a checkerboard to play on. That's where BoardView comes in. BoardView acts as a representation of a 
+checkerboard comprised of 8 rows of spaces. The spaces on each row have a color, and an indicator of whether there is a 
+piece on it. These keep track of the board in the current game state.
 
-Speaking of the pieces, the Piece class represents a checker piece including what color it is and if it is a king. Through
-the UI tier, the PRs move these pieces across the BoardView until someone wins. 
+Speaking of the pieces, the Piece class represents a checker piece including what color it is and if it is a king. 
+Through the UI tier, the PRs move these pieces across the BoardView until someone wins. 
 
-In order to maintain the good practice of High Cohesion and Low Coupling, the Player class does not directly interact with the BoardView, but 
-rather serves a representation of the people who are playing the checkers game. The inputs from the UI are converted to 
-the Move objects change the position  of pieces on the BoardView. The Move object has 2 Position objects, a denotation of 
-the row and column of a change, one for the start and end of a piece movement. 
+In order to maintain the good practice of High Cohesion and Low Coupling, the Player class does not directly interact 
+with the BoardView, but rather serves a representation of the people who are playing the checkers game. The inputs from 
+the UI are converted to the Move objects change the position  of pieces on the BoardView. The Move object has 2 Position 
+objects, a denotation of the row and column of a change, one for the start and end of a piece movement. 
 
-In our latest release, we added a feature to save replays of games to be viewed at a later time. The ReplaySaver class accomplishes this through 
-saving replays as Replay objects, consisting of a list of ReplayMove objects. A Move and ActiveColor object comprises a ReplayMove to
-denote who did what move. Then, the Replay Object compiles all the moves in a game, with the PR who did them, and uses that to represent a 
-replay of a game. There is also a move counter to show the number of the current move in a replay. The ReplayLoader class, then accesses 
-these replays from the replay saver, and uses them to display a replay in the UI tier.
+In our latest release, we added a feature to save replays of games to be viewed at a later time. The ReplaySaver class 
+accomplishes this through saving replays as Replay objects, consisting of a list of ReplayMove objects. A Move and 
+ActiveColor object comprises a ReplayMove to denote who did what move. Then, the Replay Object compiles all the moves in 
+a game, with the PR who did them, and uses that to represent a replay of a game. There is also a move counter to show 
+the number of the current move in a replay. The ReplayLoader class, then accesses these replays from the replay saver, 
+and uses them to display a replay in the UI tier.
 
 ![The Model Diagram](ModelDiagram.png)
 
@@ -309,25 +303,21 @@ program were located close to the main sequence.
             
 ### Recommendations for Improvement
 
-Improve the Stability of the Model and Application Tiers
-    Ideally, all packages should be either highly stable or highly unstable. This way, there are
-    only classes that are reliably resistant to change or classes that are reliably prone to change.
-    There is less opportunity for a flaw in the logic when the classes prone to change are dependent
-    on classes that are concrete and invariable.
-    
-Improve the Essential Cyclomatic Complexity of Select Model Tier Classes
-    The BoardView class had multiple classes that were weak with respect to each complexity 
-    metric (cyclomatic, essential cyclomatic, and design).
-    The essential cyclomatic complexity should be improved first because a low result in this
-    indicates that the function or class was structured in such a way that is difficult to maintain,
-    and/or is not modular. Functions with low ev(G) values are also difficult to refactor into 
-    smaller pieces of logic and is therefore incredibly difficult to test. 
-    In the case of the isJumpPossible() function, there was a large switch operation. There was a 
-    base condition that could be executed and contained before the switch; however, the method was
-    structured to distribute this logic throughout the cases. It could not be easily broken down for 
-    testing. This structure also makes it more difficult to refactor the method to have a lower 
-    cyclomatic complexity (less nested conditionals with compound boolean cases), which hindered the 
-    ability to thoroughly test each path the large function could take. Rewriting this function 
-    would improve multiple complexities and the test coverage of this class.
+####Improve the Stability of the Model and Application Tiers
 
+Ideally, all packages should be either highly stable or highly unstable. This way, there are only classes that are 
+reliably resistant to change or classes that are reliably prone to change. There is less opportunity for a flaw in the 
+logic when the classes prone to change are dependent on classes that are concrete and invariable.
     
+####Improve the Essential Cyclomatic Complexity of Select Model Tier Classes
+
+The BoardView class had multiple classes that were weak with respect to each complexity metric (cyclomatic, essential 
+cyclomatic, and design). The essential cyclomatic complexity should be improved first because a low result in this 
+indicates that the function or class was structured in such a way that is difficult to maintain, and/or is not modular. 
+Functions with low ev(G) values are also difficult to refactor into smaller pieces of logic and is therefore incredibly 
+difficult to test. In the case of the isJumpPossible() function, there was a large switch operation. There was a base 
+condition that could be executed and contained before the switch; however, the method was structured to distribute this 
+logic throughout the cases. It could not be easily broken down for testing. This structure also makes it more difficult 
+to refactor the method to have a lower cyclomatic complexity (less nested conditionals with compound boolean cases), 
+which hindered the ability to thoroughly test each path the large function could take. Rewriting this function would 
+improve multiple complexities and the test coverage of this class.
