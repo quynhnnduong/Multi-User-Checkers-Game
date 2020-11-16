@@ -262,4 +262,52 @@ We reached our targets for both Model and Application tier, but in our results f
 As a team, we struggled with testing the Routes, and some tests are absent. In the next release of the Checkers Web 
 Application, these will be implemented.
 
+### Analysis of Code Metrics
 
+Chiadamber-Kemeber Metric
+
+Complexity Metric
+
+Javadoc Coverage Metric
+
+Line of Code Metric
+
+Martin Package Metric
+    Afferent Coupling: 
+        The amount of incoming dependencies to a class; a measurement of the 
+        sensitivity of remaining classes to changes made in a given class.
+        The Model tier had the highest afferent coupling count at 38. Many Model
+        tier classes build upon each other, i.e. a Turn object depends on a Move
+        object, which in turn depends on 2 Position objects. The high reliance of
+        classes within this package on other classes within this package suggests 
+        a tendency to expanding a single class's usability while resisting 
+        modification of the class's functionality.      
+    Efferent Coupling: 
+        The number of classes in a given package which depend on classes in other
+        packages. The UI tier had a 104 efferent coupling rating, which was a large
+        outlier. Our UI tier is designed to conduct application and game logic in
+        the route handlers, which requires direct dependency on classes in the model 
+        and application tiers.
+    Abstractness: 
+        The degree of abstraction of a package. Each tier measured an abstraction 
+        of 0, meaning no abstraction was implemented in our design. This indicates 
+        that the classes in each of our packages are highly dependent on other 
+        packages.
+    Instability:       
+        The relative susceptibility of a class to changes. The UI tier has a high 
+        instability of 1 while the Model and Application tiers have median 
+        instabilities. A high instability means the UI tier has many outgoing 
+        dependencies; therefore, it is more susceptible to change. This may again be 
+        explained by our design: the UI classes have varying behaviors that are reliant 
+        on the state of the many Model and Application package classes which are 
+        manipulated during the Checkers Application control flow. A median instability 
+        means the Model and Application classes are neither resistant nor susceptible to
+        change. This a flaw in our design as it is preferred for components of a 
+        program to be either highly stable or highly unstable.
+    Normalized Distance from Main Sequence:
+        The balance between stability and abstractness. All three of our main
+        packages measured a median value for distance from the main sequence.
+        Ideally, this number should be as low as possible to indicate that the 
+        components of our program were located close to the main sequence. 
+            
+### Recommendations for Improvement
