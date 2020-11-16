@@ -257,6 +257,8 @@ be implemented.
 
 ### Analysis of Code Metrics
 
+
+
 ####Chiadamber-Kemeber Metric
 
 ####Complexity Metric
@@ -266,6 +268,8 @@ be implemented.
 ####Line of Code Metric
 
 ####Martin Package Metric
+
+![The Martin Package Metric](MartinPackageMetric.png)
     
 #####Afferent Coupling: 
 
