@@ -259,7 +259,7 @@ be implemented.
 
 
 
-###Chiadamber-Kemeber Metric
+### Chiadamber-Kemeber Metric
 
 ![The Chiadamber - Kemeber Metric ](Chidamber-Kemerer-Metrics.png)
 
@@ -295,7 +295,7 @@ The count of the difference between the method pairs that are not similar and th
 class. The average lack of cohesion in methods is 1.11 which suggests the class is more cohesive.
 
 
-###Complexity Metrics
+### Complexity Metrics
 
 Average Operation Complexity:
 
@@ -321,7 +321,7 @@ The amount of dependencies a module relies on. The higher the design complexity,
 
 
 
-###Javadoc Coverage Metric
+### Javadoc Coverage Metric
 
 ![The Javadoc Coverage Metric ](JavadocCoverageComplexity.png)
 
@@ -335,13 +335,13 @@ coverage in our application and model tier. For the model tier, we had a lower j
 
 
 
-###Line of Code Metric
+### Line of Code Metric
 
 ![The Lines of Code Metrics ](LinesOfCodeMetrics.png)
 
 
 
-###Martin Package Metric
+### Martin Package Metric
 
 ![The Martin Package Metric](MartinPackageMetric.png)
     
