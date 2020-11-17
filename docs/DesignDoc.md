@@ -261,6 +261,34 @@ be implemented.
 
 ####Chiadamber-Kemeber Metric
 
+![The Chiadamber - Kemeber Metric ](Chiadamber-Kemeber-Metric.png)
+
+#####Weighted methods per class
+The weighted sum of complexities of all the methods in a class. The average weighted methods per class is 6.64. This means
+that our WMC is relatively low and it is less prone to errors.
+
+#####Depth of inheritance tree
+The maximum length of inheritance from a given class to its "root" class. The average depth of inheritance is 1.00 which
+means that we have a lower design complexity and this correlates to our WMC value.
+
+#####Number of children
+The number of immediate subclasses. The average number of children is 0.00 which means our project has a low use of
+inheritance.
+
+#####Coupling between object classes
+The number of object classes to which it is coupled. The average coupling between object classes is 9.59. This means that
+there are high coupling in some classes such as Game and BoardView class. Which is why it was harder to test these
+classes.
+
+#####Response for a class
+The set of methods that will be involved in a response to a message to an object of this class. The larger the number
+of methods that can be invoked from a class, the greater the complexity of the class and the harder it is to test.
+
+#####Lack of cohesion in methods
+The count of the difference between the method pairs that are not similar and those that are similar within a given
+class. The average lack of cohesion in methods is 1.11 which suggests the class is more cohesive.
+
+
 ####Complexity Metrics
 
 #####Average Operation Complexity
@@ -283,7 +311,21 @@ The amount of dependencies a module relies on. The higher the design complexity,
 
 ####Javadoc Coverage Metric
 
+![The Javadoc Coverage Metric ](JavadocCoverageComplexity.png)
+
+There were no violations for this test. Our average method javadoc lines of code was 2.07 with outliers ranging from
+0-11. For the class metrics, our average class javadoc field coverage was 17.25% with outliers ranging from 0-100,
+average for lines of code was 16.24 with outliers ranging from 0-76 and average for method coverage was 46.01% with
+outliers ranging from 0-100. For the package metric, our average javadoc class coverage was 83.78%, javadoc field
+coverage was 17.25%, javadoc lines of code was 240.40, and method coverage was 46.01%. For module metrics, the javadoc
+lines of code was 1202. For the project metrics, the javadoc class coverage was 84.85%. Overall, we had high javadoc
+coverage in our application and model tier. For the model tier, we had a lower javadoc coverage.
+
 ####Line of Code Metric
+
+![The Lines of Code Metrics ](LinesOfCodeMetrics.png)
+
+
 
 ####Martin Package Metric
 
