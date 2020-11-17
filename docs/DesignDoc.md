@@ -403,3 +403,17 @@ logic throughout the cases. It could not be easily broken down for testing. This
 to refactor the method to have a lower cyclomatic complexity (less nested conditionals with compound boolean cases), 
 which hindered the ability to thoroughly test each path the large function could take. Rewriting this function would 
 improve multiple complexities and the test coverage of this class.
+
+Improve Coupling Between Object Classes:
+
+Some of the classes in the model tier had a significantly high CBO average. This is due to the fact these classes are
+interacting and accessing too many variables from other classes. The two classes with the highest CBO count are Game and
+BoardView classes. Some of the improvements that would help with this issue are de-coupling Game and BoardView. Also,
+limit the BoardView dependencies. It would be better to create an abstraction in BoardView by only having it interacts
+with Row, Space, Piece, and Player. Game class should only interacts with Player and Turn rather than having many
+unnecessary interactions with BoardView.
+
+Improve Javadoc Coverage:
+
+Overall, we had 100% for application tier so that doesn't need more documentations. However, the UI and model tier are
+low coverage. Therefore, we could add more javadocs to both of the model and UI tier to increase the coverage.
