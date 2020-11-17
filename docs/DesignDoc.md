@@ -4,12 +4,13 @@ geometry: margin=1in
 # PROJECT Design Documentation
 
 ## Team Information
+
 * Team name: s2a-Momo
 * Team members
   * Shubhang Mehrotra (sm9943)
   * Joel Clyne (jmc4514)
   * Sasha Persaud (srp4581)
-  * Quynh Duong (quynhnnduong)
+  * Quynh Duong
   * Dmitry Selin (des3358)
 
 ## Executive Summary
@@ -183,7 +184,7 @@ the same game.
 
 Currently, the GameCenter is not used in full as designed. When multiple games are being held, all the Game instances 
 and PRs will be held in the application-wide gameCenter. The gameCenter will then keep track of the wins and 
-losses across the APP, the number of users and games, and other features like saved games or the all-time user
+losses across the APP, the number of users and games, and other features like saved games, or the all-time user
 with the highest number of wins. Currently, the design implemented does not include these planned responsibilities
 of the GameCenter class.
 
@@ -224,15 +225,14 @@ tiers. The Model tier is extensive and complicated by nature - it is the job of 
 component, which can definitely be done. Currently, the Player class has some overlapping functionality with the Game
 class, which can be separated to conform to the Single-Responsibility Principle. 
 
-Additionally, the Game class could
-contain much of the functionality from many UI components and Spark session attributes (such as storing the board,
-active color, etc.). Having this functionality housed inside of the newly added Game class would be more fitting as it
-would create greater cohesion throughout the program. 
+Additionally, the Game class could contain much of the functionality from many UI components and Spark session 
+attributes (such as storing the board, active color, etc.). Having this functionality housed inside of the newly added 
+Game class would be more fitting as it would create greater cohesion throughout the program. 
 
-A final design improvement can be made within the UI tier. Many 
-handle() methods are simply too large to be read without extensive documentation - this situation would be a perfect
-place to include several Pure Fabrications - these classes or methods would serve as 'helper' constructs that have no
-presence in the domain of the APP, but would greatly improve the cohesion and readability of the program.
+A final design improvement can be made within the UI tier. Many handle() methods are simply too large to be read without 
+extensive documentation - this situation would be a perfect place to include several Pure Fabrications - these classes 
+or methods would serve as 'helper' constructs that have no presence in the domain of the APP, but would greatly improve 
+the cohesion and readability of the program.
 
 ## Testing
 
