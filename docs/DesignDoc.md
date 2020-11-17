@@ -263,28 +263,33 @@ be implemented.
 
 ![The Chiadamber - Kemeber Metric ](Chidamber-Kemerer-Metrics.png)
 
-#####Weighted methods per class
+#####Weighted methods per class:
+
 The weighted sum of complexities of all the methods in a class. The average weighted methods per class is 6.64. This means
 that our WMC is relatively low and it is less prone to errors.
 
-#####Depth of inheritance tree
+#####Depth of inheritance tree:
+
 The maximum length of inheritance from a given class to its "root" class. The average depth of inheritance is 1.00 which
 means that we have a lower design complexity and this correlates to our WMC value.
 
-#####Number of children
+#####Number of children:
+
 The number of immediate subclasses. The average number of children is 0.00 which means our project has a low use of
 inheritance.
 
-#####Coupling between object classes
+#####Coupling between object classes:
 The number of object classes to which it is coupled. The average coupling between object classes is 9.59. This means that
 there are high coupling in some classes such as Game and BoardView class. Which is why it was harder to test these
 classes.
 
-#####Response for a class
+#####Response for a class:
+
 The set of methods that will be involved in a response to a message to an object of this class. The larger the number
 of methods that can be invoked from a class, the greater the complexity of the class and the harder it is to test.
 
-#####Lack of cohesion in methods
+#####Lack of cohesion in methods:
+
 The count of the difference between the method pairs that are not similar and those that are similar within a given
 class. The average lack of cohesion in methods is 1.11 which suggests the class is more cohesive.
 
