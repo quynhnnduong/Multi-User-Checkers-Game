@@ -279,6 +279,7 @@ The number of immediate subclasses. The average number of children is 0.00 which
 inheritance.
 
 #####Coupling between object classes:
+
 The number of object classes to which it is coupled. The average coupling between object classes is 9.59. This means that
 there are high coupling in some classes such as Game and BoardView class. Which is why it was harder to test these
 classes.
@@ -296,22 +297,28 @@ class. The average lack of cohesion in methods is 1.11 which suggests the class 
 
 ####Complexity Metrics
 
-#####Average Operation Complexity
+#####Average Operation Complexity:
+
 The average time complexity of all the functions in a class.
 
-#####Cyclomatic Complexity 
+#####Cyclomatic Complexity:
+
 The amount of paths there are to reach the end of a chunk of code's execution based on the number of splits in certain parts of the code
 due to branches and the non-executed parts of loops
 
-#####Weighted Method Complexity
+#####Weighted Method Complexity:
+
 The cyclomatic complexity of the class’s methods
 
-#####Essential Complexity 
+#####Essential Complexity:
+
 Measures the number of entry points, termination points, and nondeductible nodes to determine how well a program is structured. 
 The closer to 1 this value is, the more well-structured the program is.
 
-#####Design Complexity 
+#####Design Complexity:
+
 The amount of dependencies a module relies on. The higher the design complexity, the more the module will seriously complicate the design of the program
+
 
 
 ####Javadoc Coverage Metric
@@ -325,6 +332,8 @@ outliers ranging from 0-100. For the package metric, our average javadoc class c
 coverage was 17.25%, javadoc lines of code was 240.40, and method coverage was 46.01%. For module metrics, the javadoc
 lines of code was 1202. For the project metrics, the javadoc class coverage was 84.85%. Overall, we had high javadoc
 coverage in our application and model tier. For the model tier, we had a lower javadoc coverage.
+
+
 
 ####Line of Code Metric
 
