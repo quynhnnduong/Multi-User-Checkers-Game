@@ -158,6 +158,13 @@ Once the button is pressed, the APP begins to form a game session for the PRs, a
 With the latest update, the Replay portion of the UI tier has been added to the program. This allows users to view all 
 the moves in a previously completed game from any other PR in the session. The user can go forwards and backwards 
 throughout all the moves until they are finished viewing the replay.
+
+Once a game is finished a button asking the user if they want to watch a replay will appear at the bottom. If a user clicks
+on it, then they will be brought the the replay mode view where they will see the first turn of the replay. Then, the 
+player can press the forward and backward button to view the next and previous turns. The player can't view the previous 
+turn if it is the first turn, and cannot view the next turn if they are on the last turn.
+
+![The replay mode statechart](Replay-Mode.png)
  
 ### Application Tier
 
@@ -294,6 +301,8 @@ class. The average lack of cohesion in methods is 1.11 which suggests the class 
 
 ### Complexity Metrics
 
+![The class complexity metric](Complexity%20Metrics%20Package.png)
+
 #### Average Operation Complexity:
 
 The average time complexity of all the functions in a class.
@@ -303,6 +312,8 @@ The average time complexity of all the functions in a class.
 The amount of paths there are to reach the end of a chunk of code's execution based on the number of splits in certain parts of the code
 due to branches and the non-executed parts of loops
 
+![The class complexity metric](Complexity%20Metrics%20Class.png)
+
 #### Weighted Method Complexity:
 
 The cyclomatic complexity of the class’s methods
@@ -311,6 +322,8 @@ The cyclomatic complexity of the class’s methods
 
 Measures the number of entry points, termination points, and nondeductible nodes to determine how well a program is structured. 
 The closer to 1 this value is, the more well-structured the program is.
+
+![The class complexity metric](Complexity%20Metrics%20Method.png)
 
 #### Design Complexity:
 
