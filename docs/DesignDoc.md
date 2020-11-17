@@ -168,7 +168,7 @@ turn if it is the first turn, and cannot view the next turn if they are on the l
  
 ### Application Tier
 
-The Application Tier of this APP consists of 3 components: Game, GameCenter, and PL.
+The Application Tier of this APP consists of 2 components: GameCenter, and PL.
 A Game object represents a game event in the APP. It contains a "redPlayer" (a Player object that 
 represents the user who interacts with the red pieces on the checker board), a "whitePlayer" (a Player object that
 represents the user who interacts with the white pieces on the checker board), and an "id" (a unique number used to 
