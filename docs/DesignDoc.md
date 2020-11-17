@@ -261,7 +261,25 @@ be implemented.
 
 ####Chiadamber-Kemeber Metric
 
-####Complexity Metric
+####Complexity Metrics
+
+#####Average Operation Complexity
+The average time complexity of all the functions in a class.
+
+#####Cyclomatic Complexity 
+The amount of paths there are to reach the end of a chunk of code's execution based on the number of splits in certain parts of the code
+due to branches and the non-executed parts of loops
+
+#####Weighted Method Complexity
+The cyclomatic complexity of the class’s methods
+
+#####Essential Complexity 
+Measures the number of entry points, termination points, and nondeductible nodes to determine how well a program is structured. 
+The closer to 1 this value is, the more well-structured the program is.
+
+#####Design Complexity 
+The amount of dependencies a module relies on. The higher the design complexity, the more the module will seriously complicate the design of the program
+
 
 ####Javadoc Coverage Metric
 
