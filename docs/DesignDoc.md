@@ -74,7 +74,7 @@ Mode - which would allow users to replay previously played checkers games from t
 
 This section describes the APP domain.
 
-![The WebCheckers Domain Model](WebCheckers-Domain-Model.png)
+![The WebCheckers Domain Model](Domain-Model.png)
 
 The PR is represented on the domain model as an entity that plays the checkers game and takes turns making 
 moves that could either be a simple, single-jump, or multiple-jump move. Each move is performed by a Piece that is on 
@@ -103,7 +103,7 @@ built using plain-old Java objects (POJOs). Details of the components within the
 This section describes the web interface flow; this is how the user views and interacts
 with the WebCheckers APP.
 
-![The WebCheckers Web Interface Statechart](web-interface-placeholder.png)
+![The WebCheckers Web Interface Statechart](State-Chart.png)
 
 The user will begin their checkers experience on the Home page. They'll see "Welcome!" and a sign-in button.
 They will click the button and go to the sign-in page which has a text box and a submit button to enter their name.
