@@ -261,7 +261,7 @@ be implemented.
 
 ####Chiadamber-Kemeber Metric
 
-![The Chiadamber - Kemeber Metric ](Chiadamber-Kemeber-Metric.png)
+![The Chiadamber - Kemeber Metric ](Chiadamber-Kemeber-Metric.jpg)
 
 #####Weighted methods per class
 The weighted sum of complexities of all the methods in a class. The average weighted methods per class is 6.64. This means
