@@ -255,73 +255,73 @@ We reached our targets for both Model and APP tier, but in our results for the U
 struggled with testing the Routes, and some tests are absent. In the next release of the Checkers Web APP, these will 
 be implemented.
 
-### Analysis of Code Metrics
+## Analysis of Code Metrics
 
 
 
-####Chiadamber-Kemeber Metric
+###Chiadamber-Kemeber Metric
 
 ![The Chiadamber - Kemeber Metric ](Chidamber-Kemerer-Metrics.png)
 
-#####Weighted methods per class:
+Weighted methods per class:
 
 The weighted sum of complexities of all the methods in a class. The average weighted methods per class is 6.64. This means
 that our WMC is relatively low and it is less prone to errors.
 
-#####Depth of inheritance tree:
+Depth of inheritance tree:
 
 The maximum length of inheritance from a given class to its "root" class. The average depth of inheritance is 1.00 which
 means that we have a lower design complexity and this correlates to our WMC value.
 
-#####Number of children:
+Number of children:
 
 The number of immediate subclasses. The average number of children is 0.00 which means our project has a low use of
 inheritance.
 
-#####Coupling between object classes:
+Coupling between object classes:
 
 The number of object classes to which it is coupled. The average coupling between object classes is 9.59. This means that
 there are high coupling in some classes such as Game and BoardView class. Which is why it was harder to test these
 classes.
 
-#####Response for a class:
+Response for a class:
 
 The set of methods that will be involved in a response to a message to an object of this class. The larger the number
 of methods that can be invoked from a class, the greater the complexity of the class and the harder it is to test.
 
-#####Lack of cohesion in methods:
+Lack of cohesion in methods:
 
 The count of the difference between the method pairs that are not similar and those that are similar within a given
 class. The average lack of cohesion in methods is 1.11 which suggests the class is more cohesive.
 
 
-####Complexity Metrics
+###Complexity Metrics
 
-#####Average Operation Complexity:
+Average Operation Complexity:
 
 The average time complexity of all the functions in a class.
 
-#####Cyclomatic Complexity:
+Cyclomatic Complexity:
 
 The amount of paths there are to reach the end of a chunk of code's execution based on the number of splits in certain parts of the code
 due to branches and the non-executed parts of loops
 
-#####Weighted Method Complexity:
+Weighted Method Complexity:
 
 The cyclomatic complexity of the class’s methods
 
-#####Essential Complexity:
+Essential Complexity:
 
 Measures the number of entry points, termination points, and nondeductible nodes to determine how well a program is structured. 
 The closer to 1 this value is, the more well-structured the program is.
 
-#####Design Complexity:
+Design Complexity:
 
 The amount of dependencies a module relies on. The higher the design complexity, the more the module will seriously complicate the design of the program
 
 
 
-####Javadoc Coverage Metric
+###Javadoc Coverage Metric
 
 ![The Javadoc Coverage Metric ](JavadocCoverageComplexity.png)
 
@@ -335,17 +335,17 @@ coverage in our application and model tier. For the model tier, we had a lower j
 
 
 
-####Line of Code Metric
+###Line of Code Metric
 
 ![The Lines of Code Metrics ](LinesOfCodeMetrics.png)
 
 
 
-####Martin Package Metric
+###Martin Package Metric
 
 ![The Martin Package Metric](MartinPackageMetric.png)
     
-#####Afferent Coupling: 
+Afferent Coupling:
 
 The amount of incoming dependencies to a class; a measurement of the sensitivity of remaining classes to changes made 
 in a given class. The Model tier had the highest afferent coupling count at 38. Many Model tier classes build upon 
@@ -353,18 +353,18 @@ each other, i.e. a Turn object depends on a Move object, which in turn depends o
 of classes within this package on other classes within this package suggests a tendency to expanding a single class's 
 usability while resisting modification of the class's functionality.      
 
-#####Efferent Coupling: 
+Efferent Coupling:
 
 The number of classes in a given package which depend on classes in other packages. The UI tier had a 104 efferent 
 coupling rating, which was a large outlier. Our UI tier is designed to conduct APP and game logic in the route 
 handlers, which requires direct dependency on classes in the model and APP tiers.
 
-#####Abstractness:
+Abstractness:
 
 The degree of abstraction of a package. Each tier measured an abstraction of 0, meaning no abstraction was implemented 
 in our design. This indicates that the classes in each of our packages are highly dependent on other packages.
 
-#####Instability:  
+Instability:
      
 The relative susceptibility of a class to changes. The UI tier has a high instability of 1 while the Model and APP tiers 
 have median instabilities. A high instability means the UI tier has many outgoing dependencies; therefore, it is more 
@@ -373,7 +373,7 @@ on the state of the many Model and APP package classes which are manipulated dur
 median instability means the Model and APP classes are neither resistant nor susceptible to change. This a flaw in our 
 design as it is preferred for components of a program to be either highly stable or highly unstable.
         
-#####Normalized Distance from Main Sequence:
+Normalized Distance from Main Sequence:
 
 The balance between stability and abstractness. All three of our main packages measured a median value for distance 
 from the main sequence. Ideally, this number should be as low as possible to indicate that the components of our 
@@ -381,13 +381,13 @@ program were located close to the main sequence.
             
 ### Recommendations for Improvement
 
-####Improve the Stability of the Model and Application Tiers
+Improve the Stability of the Model and Application Tiers:
 
 Ideally, all packages should be either highly stable or highly unstable. This way, there are only classes that are 
 reliably resistant to change or classes that are reliably prone to change. There is less opportunity for a flaw in the 
 logic when the classes prone to change are dependent on classes that are concrete and invariable.
     
-####Improve the Essential Cyclomatic Complexity of Select Model Tier Classes
+Improve the Essential Cyclomatic Complexity of Select Model Tier Classes:
 
 The BoardView class had multiple classes that were weak with respect to each complexity metric (cyclomatic, essential 
 cyclomatic, and design). The essential cyclomatic complexity should be improved first because a low result in this 
